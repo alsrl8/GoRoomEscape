@@ -140,7 +140,7 @@ func openDoor(doorGrid *[6][7][4][2]int, user User, door string) {
 		}
 	case GlassDoor:
 		if user.items[Hammer] == 0 { // 유리문을 부술 망치가 없는 경우
-			fmt.Println(NotEnoughItemsToOpenDoor, Hammer, "현재 개수: ", user.items[Hammer])
+			fmt.Println(NotEnoughItemsToOpenDoor, ItemStringMap[Hammer], "현재 개수:", user.items[Hammer])
 		} else {
 			doorGrid[user.pos.r][user.pos.c][doorDir][0] = Clear
 			doorGrid[user.pos.r][user.pos.c][doorDir][1] = Open
@@ -153,7 +153,7 @@ func openDoor(doorGrid *[6][7][4][2]int, user User, door string) {
 		}
 	case LockedDoor:
 		if user.items[Key] == 0 { // 잠긴 문을 열 열쇠가 없는 경우
-			fmt.Println(NotEnoughItemsToOpenDoor, Key, "현재 개수: ", user.items[Key])
+			fmt.Println(NotEnoughItemsToOpenDoor, ItemStringMap[Key], "현재 개수:", user.items[Key])
 		} else {
 			doorGrid[user.pos.r][user.pos.c][doorDir][0] = WoodDoor
 			doorGrid[user.pos.r][user.pos.c][doorDir][1] = Open
@@ -166,5 +166,29 @@ func openDoor(doorGrid *[6][7][4][2]int, user User, door string) {
 		}
 	default:
 		fmt.Println(CanNotOpenSuchDoor, door)
+	}
+}
+
+func closeDoor(doorGrid *[6][7][4][2]int, user User, door string) {
+	doorDir := getDoorDirection(*doorGrid, user, door)
+	if doorDir == -1 { // 해당하는 문이 현재 방에 없는 경우
+		fmt.Println(NoSuchDoor, door)
+		return
+	}
+
+	switch StringWallMap[door] {
+	case WoodDoor:
+		if doorGrid[user.pos.r][user.pos.c][doorDir][1] == Closed {
+			fmt.Println(AlreadyClosedDoor, door)
+		} else {
+			doorGrid[user.pos.r][user.pos.c][doorDir][1] = Closed
+			oppositePos, oppositeDir := getOppositePositionAndDir(user.pos, doorDir)
+			if isValidPoistion(*doorGrid, oppositePos) {
+				doorGrid[oppositePos.r][oppositePos.c][oppositeDir][1] = Closed
+			}
+			fmt.Println(SucceedClosingDoor, door)
+		}
+	default:
+		fmt.Println(CanNotCloseSuchDoor, door)
 	}
 }

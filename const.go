@@ -83,6 +83,7 @@ const ItemTypeNum = 2
 
 // Common Messages
 const SucceedOpeningDoor = "문을 열었습니다."
+const SucceedClosingDoor = "문을 닫았습니다."
 
 // Warnings
 const WrongInput = "!!!잘못 입력하였습니다!!!"
@@ -90,5 +91,7 @@ const CanNotMoveWarning = "!!!그 방향으로 움직일 수 없습니다!!!"
 const NoSuchItem = "!!!그런 아이템은 없습니다!!!"
 const NoSuchDoor = "!!!그런 문은 없습니다!!!"
 const CanNotOpenSuchDoor = "!!!열 수 없는 종류의 문입니다!!!"
+const CanNotCloseSuchDoor = "!!!닫을 수 없는 종류의 문입니다!!!"
 const AlreadyOpenDoor = "!!!이미 문이 열려 있습니다!!!"
+const AlreadyClosedDoor = "!!!이미 문이 닫혀 있습니다!!!"
 const NotEnoughItemsToOpenDoor = "!!!아이템이 모자라 문을 열 수 없습니다!!!"

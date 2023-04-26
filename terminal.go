@@ -67,9 +67,12 @@ func initTerminal(doorGrid [6][7][4][2]int, itemGrid [6][7]int, user User) {
 				if sInput[1] == "봐" { // 입력된 아이템 정보를 본다.
 					item := sInput[0]
 					showItemInfo(user, item)
-				} else if sInput[1] == "열어" { // 입력된 문을 연다.
+				} else if sInput[1] == "열기" || sInput[1] == "열어" || sInput[1] == "열" { // 입력된 문을 연다.
 					door := sInput[0]
 					openDoor(&doorGrid, user, door)
+				} else if sInput[1] == "닫기" || sInput[1] == "닫아" || sInput[1] == "닫" {
+					door := sInput[0]
+					closeDoor(&doorGrid, user, door)
 				} else {
 					fmt.Print(WrongInput, input)
 				}
