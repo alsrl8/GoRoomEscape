@@ -22,12 +22,11 @@ var DirStringEngMap = map[int]string{
 	South: "S",
 }
 
-// State of wall
+// Type of boundary
 const (
 	Wall = iota
 	Clear
-	ClosedDoor
-	OpenDoor
+	WoodDoor
 	GlassDoor
 	LockedDoor
 )
@@ -35,20 +34,24 @@ const (
 var WallStringMap = map[int]string{
 	Wall:       "벽",
 	Clear:      "방",
-	ClosedDoor: "닫힌 문",
-	OpenDoor:   "열린 문",
+	WoodDoor:   "나무문",
 	GlassDoor:  "유리문",
-	LockedDoor: "잠긴 문",
+	LockedDoor: "잠긴문",
 }
 
 var StringWallMap = map[string]int{
-	"벽":    Wall,
-	"방":    Clear,
-	"닫힌 문": ClosedDoor,
-	"열린 문": OpenDoor,
-	"유리문":  GlassDoor,
-	"잠긴 문": LockedDoor,
+	"벽":   Wall,
+	"방":   Clear,
+	"나무문": WoodDoor,
+	"유리문": GlassDoor,
+	"잠긴문": LockedDoor,
 }
+
+// State of Boundary
+const (
+	Open = iota
+	Closed
+)
 
 // Item
 const (
@@ -78,7 +81,14 @@ var StringItemMap = map[string]int{
 
 const ItemTypeNum = 2
 
+// Common Messages
+const SucceedOpeningDoor = "문을 열었습니다."
+
+// Warnings
 const WrongInput = "!!!잘못 입력하였습니다!!!"
 const CanNotMoveWarning = "!!!그 방향으로 움직일 수 없습니다!!!"
 const NoSuchItem = "!!!그런 아이템은 없습니다!!!"
 const NoSuchDoor = "!!!그런 문은 없습니다!!!"
+const CanNotOpenSuchDoor = "!!!열 수 없는 종류의 문입니다!!!"
+const AlreadyOpenDoor = "!!!이미 문이 열려 있습니다!!!"
+const NotEnoughItemsToOpenDoor = "!!!아이템이 모자라 문을 열 수 없습니다!!!"

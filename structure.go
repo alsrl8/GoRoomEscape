@@ -1,8 +1,8 @@
 package main
 
 type Position struct {
-	r uint
-	c uint
+	r int
+	c int
 }
 
 type User struct {

@@ -24,75 +24,7 @@ func getInput() string {
 	return input
 }
 
-// 방 위치, 방 안에 있는 아이템, 다음으로 이동 가능한 방향을 출력한다.
-func showRoomInfo(doorGrid [6][7][4]int, itemGrid *[6][7]int, user *User) {
-	pos := user.pos
-
-	fmt.Println("=== 현재 방 정보 ===")
-	fmt.Printf("r: %d\tc: %d\n", pos.r, pos.c)
-	for d := 0; d < 4; d++ {
-		fmt.Printf("%s(%s) - %s\n", DirStringMap[d], DirStringEngMap[d], WallStringMap[doorGrid[pos.r][pos.c][d]])
-	}
-
-	// 방 안에 있는 아이템 출력
-	item := itemGrid[pos.r][pos.c]
-	fmt.Println()
-	fmt.Println("***", ItemStringMap[item], "***")
-
-	// 아이템이 있었다면 아이템 목록에 추가하고 방에 있던 아이템 삭제
-	user.items[item]++
-	itemGrid[pos.r][pos.c] = Empty
-
-	// 다음으로 이동 가능한 방향 출력
-	fmt.Println()
-	fmt.Printf("이동 가능한 장소 >>> ")
-	for d := 0; d < 4; d++ {
-		if canMove(doorGrid, &user.pos, d) {
-			fmt.Printf("%s(%s) ", DirStringMap[d], DirStringEngMap[d])
-		}
-	}
-	fmt.Println()
-
-	fmt.Println("====================")
-}
-
-// 소지한 아이템 목록을 출력한다.
-func showOwnedItems(user User) {
-	fmt.Println("소지한 아이템 목록")
-	for i := 1; i <= ItemTypeNum; i++ {
-		fmt.Printf("%s: %d\n", ItemStringMap[i], user.items[i])
-	}
-	fmt.Println()
-}
-
-// 아이템이 존재하는 경우에만 아이템 설명을 출력한다.
-func showItemInfo(user User, item string) {
-	i, ok := StringItemMap[item]
-
-	if !ok || user.items[i] == 0 {
-		fmt.Println(NoSuchItem)
-	} else {
-		fmt.Println(ItemDescMap[i])
-	}
-}
-
-func getDoorDirection(doorGrid [6][7][4]int, user User, door string) (d int) {
-	wall := StringWallMap[door]
-	for ; d < 4; d++ {
-		switch doorGrid[user.pos.r][user.pos.c][d] {
-		case wall:
-			return d
-		}
-	}
-	return -1
-}
-
-func gameStart() {
-
-	doorGrid := initDoorGrid()
-	itemGrid := initItemGrid()
-	user := initUser()
-
+func initTerminal(doorGrid [6][7][4][2]int, itemGrid [6][7]int, user User) {
 	clearTerminal()
 	for {
 		showRoomInfo(doorGrid, &itemGrid, &user)
@@ -100,8 +32,7 @@ func gameStart() {
 		clearTerminal()
 		switch input {
 		case "q", "quit", "Q", "그만":
-			goto ExitLoop
-		// 이동
+			goto QuitLoop
 		case "e", "east", "E", "동", "동 가", "동쪽으로 가":
 			if canMove(doorGrid, &user.pos, East) {
 				user.pos.c++
@@ -134,15 +65,11 @@ func gameStart() {
 			sInput := strings.Split(input, " ")
 			if len(sInput) == 2 {
 				if sInput[1] == "봐" { // 입력된 아이템 정보를 본다.
-					showItemInfo(user, sInput[0])
+					item := sInput[0]
+					showItemInfo(user, item)
 				} else if sInput[1] == "열어" { // 입력된 문을 연다.
 					door := sInput[0]
-					doorDir := getDoorDirection(doorGrid, user, door)
-					if doorDir == -1 { // 입력된 문이 현재 방에 없는 경우
-						fmt.Println(NoSuchDoor, input)
-					} else {
-
-					}
+					openDoor(&doorGrid, user, door)
 				} else {
 					fmt.Print(WrongInput, input)
 				}
@@ -150,9 +77,19 @@ func gameStart() {
 				fmt.Println(WrongInput, input)
 			}
 		}
+
+		// 탈출 조건: 현재 위치가 grid의 바깥인 경우
+		if !isValidPoistion(doorGrid, user.pos) {
+			goto ExitLoop
+		}
 	}
 
 ExitLoop:
 	clearTerminal()
-	fmt.Println("Finished")
+	fmt.Println("탈출했습니다.")
+	return
+
+QuitLoop:
+	clearTerminal()
+	fmt.Println("종료했습니다.")
 }
