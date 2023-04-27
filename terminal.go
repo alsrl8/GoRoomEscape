@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"regexp"
 	"strings"
 )
 
@@ -62,22 +63,27 @@ func initTerminal(doorGrid [6][7][4][2]int, itemGrid [6][7]int, user User) {
 		case "i", "item", "I", "소지품":
 			showOwnedItems(user)
 		default:
-			sInput := strings.Split(input, " ")
-			if len(sInput) == 2 {
-				if sInput[1] == "봐" { // 입력된 아이템 정보를 본다.
-					item := sInput[0]
-					showItemInfo(user, item)
-				} else if sInput[1] == "열기" || sInput[1] == "열어" || sInput[1] == "열" { // 입력된 문을 연다.
-					door := sInput[0]
-					openDoor(&doorGrid, user, door)
-				} else if sInput[1] == "닫기" || sInput[1] == "닫아" || sInput[1] == "닫" {
-					door := sInput[0]
-					closeDoor(&doorGrid, user, door)
-				} else {
-					fmt.Print(WrongInput, input)
-				}
+			// 아이템
+			reg, _ := regexp.Compile(" 봐$")
+			if reg.MatchString(input) {
+				item := strings.TrimSuffix(input, " 봐")
+				showItemInfo(user, item)
 			} else {
-				fmt.Println(WrongInput, input)
+				// 열기
+				reg, _ = regexp.Compile("( 열기| 열어| 열)$")
+				if reg.MatchString(input) {
+					door := reg.ReplaceAllString(input, "")
+					openDoor(&doorGrid, user, door)
+				} else {
+					// 닫기
+					reg, _ = regexp.Compile("( 닫기| 닫어| 닫)$")
+					if reg.MatchString(input) {
+						door := reg.ReplaceAllString(input, "")
+						closeDoor(&doorGrid, user, door)
+					} else {
+						fmt.Println(WrongInput, input)
+					}
+				}
 			}
 		}
 
