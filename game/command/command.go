@@ -37,7 +37,30 @@ func IsItemsEnoughToOpenDoor(door *structure.Door) bool {
 	return true
 }
 
-func OpenDoor(door *structure.Door, bag structure.Bag) bool {
-	door.IsClosed = false
-	return true
+func OpenDoor(door *structure.Door, bag *structure.Bag) bool {
+	if !door.IsClosed {
+		return false
+	}
+
+	switch door.DoorType {
+	case constants.WoodDoor:
+		door.IsClosed = false
+		return true
+	case constants.GlassDoor:
+		if (*bag)[constants.Hammer] == 0 {
+			return false
+		}
+		(*bag)[constants.Hammer] -= 1
+		door.IsClosed = false
+		return true
+	case constants.LockedDoor:
+		if (*bag)[constants.Key] == 0 {
+			return false
+		}
+		(*bag)[constants.Key] -= 1
+		door.IsClosed = false
+		return true
+	default:
+		return false
+	}
 }

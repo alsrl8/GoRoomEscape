@@ -83,7 +83,7 @@ func move(room *structure.Room, direction constants.Direction) *structure.Room {
 	return command.Move(room, direction)
 }
 
-func openDoorByName(room *structure.Room, doorName string) {
+func openDoorByName(room *structure.Room, bag *structure.Bag, doorName string) {
 	door := command.FindDoorByName(room, doorName)
 	if door == nil {
 		fmt.Println(constants.NoSuchDoor, doorName)
@@ -92,7 +92,8 @@ func openDoorByName(room *structure.Room, doorName string) {
 		fmt.Println(constants.NotEnoughItemsToOpenDoor, doorName)
 		return
 	}
-	door.IsClosed = false
+
+	command.OpenDoor(door, bag)
 }
 
 func closeDoorByName(room *structure.Room, doorName string) {
@@ -159,7 +160,7 @@ func RunTerminal(startRoom *structure.Room) {
 				reg, _ = regexp.Compile("( 열기| 열어| 열)$")
 				if reg.MatchString(input) {
 					doorName := reg.ReplaceAllString(input, "")
-					openDoorByName(room, doorName)
+					openDoorByName(room, bag, doorName)
 				} else {
 					// 닫기
 					reg, _ = regexp.Compile("( 닫기| 닫어| 닫)$")
