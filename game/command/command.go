@@ -37,7 +37,7 @@ func IsItemsEnoughToOpenDoor(door *structure.Door) bool {
 	return true
 }
 
-func OpenDoor(door *structure.Door) bool {
+func OpenDoor(door *structure.Door, bag structure.Bag) bool {
 	door.IsClosed = false
 	return true
 }

@@ -35,3 +35,5 @@ type ItemPositionAndType struct {
 	RoomPosition Position
 	ItemType     constants.ItemType
 }
+
+type Bag map[constants.ItemType]int

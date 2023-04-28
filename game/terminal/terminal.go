@@ -46,7 +46,7 @@ func getNextRoomInfo(room *structure.Room, direction constants.Direction) string
 	}
 }
 
-func showRoomInfo(room *structure.Room, bag *map[constants.ItemType]int) {
+func showRoomInfo(room *structure.Room, bag *structure.Bag) {
 	printLine()
 	for _, d := range constants.DirectionList {
 		fmt.Printf("%s(%s) - %s\n", constants.DirStringMap[d], constants.DirStringEngMap[d], getNextRoomInfo(room, d))
@@ -108,12 +108,12 @@ func closeDoorByName(room *structure.Room, doorName string) {
 	door.IsClosed = true
 }
 
-func newBag() *map[constants.ItemType]int {
-	bag := make(map[constants.ItemType]int)
+func newBag() *structure.Bag {
+	bag := make(structure.Bag)
 	return &bag
 }
 
-func pickUpItems(room *structure.Room, bag *map[constants.ItemType]int) {
+func pickUpItems(room *structure.Room, bag *structure.Bag) {
 	for itemType, itemNum := range room.Items {
 		if itemNum == 0 {
 			continue
