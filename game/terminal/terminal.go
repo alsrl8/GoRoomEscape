@@ -88,7 +88,10 @@ func openDoorByName(room *structure.Room, bag *structure.Bag, doorName string) {
 	if door == nil {
 		fmt.Println(constants.NoSuchDoor, doorName)
 		return
-	} else if !command.IsItemsEnoughToOpenDoor(door) {
+	} else if !door.IsClosed {
+		fmt.Println(constants.AlreadyOpenDoor, doorName)
+		return
+	} else if !command.IsItemsEnoughToOpenDoor(door, bag) {
 		fmt.Println(constants.NotEnoughItemsToOpenDoor, doorName)
 		return
 	}
@@ -145,33 +148,28 @@ func RunTerminal(startRoom *structure.Room) {
 			room = move(room, constants.West)
 		case "s", "south", "S", "남", "남 가", "남쪽으로 가":
 			room = move(room, constants.South)
-		case "l", "look", "L", "봐":
-			// showRoomInfo(doorGrid, &itemGrid, &user)
-		case "i", "item", "I", "소지품":
-			// showOwnedItems(user)
 		default:
 			// 아이템
-			reg, _ := regexp.Compile(" 봐$")
+			reg, _ := regexp.Compile("(?s:[^ 사용]*) 사용 [^ 사용]*$")
 			if reg.MatchString(input) {
-				item := strings.TrimSuffix(input, " 봐")
-				fmt.Println(item)
-			} else {
-				// 열기
-				reg, _ = regexp.Compile("( 열기| 열어| 열)$")
-				if reg.MatchString(input) {
-					doorName := reg.ReplaceAllString(input, "")
-					openDoorByName(room, bag, doorName)
-				} else {
-					// 닫기
-					reg, _ = regexp.Compile("( 닫기| 닫어| 닫)$")
-					if reg.MatchString(input) {
-						doorName := reg.ReplaceAllString(input, "")
-						closeDoorByName(room, doorName)
-					} else {
-						fmt.Println(constants.WrongInput, input)
-					}
-				}
+				// item := strings.TrimSuffix(input, " 사용 ")
+				continue
 			}
+			// 열기
+			reg, _ = regexp.Compile("( 열기| 열어| 열)$")
+			if reg.MatchString(input) {
+				doorName := reg.ReplaceAllString(input, "")
+				openDoorByName(room, bag, doorName)
+				continue
+			}
+			// 닫기
+			reg, _ = regexp.Compile("( 닫기| 닫어| 닫)$")
+			if reg.MatchString(input) {
+				doorName := reg.ReplaceAllString(input, "")
+				closeDoorByName(room, doorName)
+				continue
+			}
+			fmt.Println(constants.WrongInput, input)
 		}
 		if room.IsGoal {
 			goto ExitLoop
