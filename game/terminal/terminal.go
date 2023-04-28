@@ -46,14 +46,21 @@ func getNextRoomInfo(room *structure.Room, direction constants.Direction) string
 	}
 }
 
-func showRoomInfo(room *structure.Room) {
+func showRoomInfo(room *structure.Room, bag *map[constants.ItemType]int) {
 	printLine()
 	for _, d := range constants.DirectionList {
 		fmt.Printf("%s(%s) - %s\n", constants.DirStringMap[d], constants.DirStringEngMap[d], getNextRoomInfo(room, d))
 	}
 
 	printLine()
-	fmt.Println("아이템 정보 >>> ")
+	fmt.Printf("아이템 정보 >>> ")
+	for itemType, itemNum := range *bag {
+		if itemNum == 0 {
+			continue
+		}
+		fmt.Printf("%s(%d) ", constants.ItemTypeStringMap[itemType], itemNum)
+	}
+	fmt.Println()
 
 	printLine()
 	fmt.Printf("이동 가능한 방향 >>> ")
@@ -101,12 +108,29 @@ func closeDoorByName(room *structure.Room, doorName string) {
 	door.IsClosed = true
 }
 
+func newBag() *map[constants.ItemType]int {
+	bag := make(map[constants.ItemType]int)
+	return &bag
+}
+
+func pickUpItems(room *structure.Room, bag *map[constants.ItemType]int) {
+	for itemType, itemNum := range room.Items {
+		if itemNum == 0 {
+			continue
+		}
+		fmt.Printf("%s을 (%d)개 주웠습니다.\n", constants.ItemTypeStringMap[itemType], itemNum)
+		room.Items[itemType] -= itemNum
+		(*bag)[itemType] += itemNum
+	}
+}
+
 func RunTerminal(startRoom *structure.Room) {
 	room := startRoom
+	bag := newBag()
 	clearTerminal()
 
 	for {
-		showRoomInfo(room)
+		showRoomInfo(room, bag)
 		input := getInput()
 		clearTerminal()
 		switch input {
@@ -151,6 +175,7 @@ func RunTerminal(startRoom *structure.Room) {
 		if room.IsGoal {
 			goto ExitLoop
 		}
+		pickUpItems(room, bag)
 	}
 QuitLoop:
 	clearTerminal()

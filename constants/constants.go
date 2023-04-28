@@ -58,64 +58,18 @@ var DoorCloseStateStringMap = map[bool]string{
 	false: "열림",
 }
 
-// // Type of boundary
-// const (
-// 	Wall = iota
-// 	Clear
-// 	WoodDoor
-// 	GlassDoor
-// 	LockedDoor
-// )
+// Item Type
+type ItemType int
 
-// var WallStringMap = map[int]string{
-// 	Wall:       "벽",
-// 	Clear:      "방",
-// 	WoodDoor:   "나무문",
-// 	GlassDoor:  "유리문",
-// 	LockedDoor: "잠긴문",
-// }
+const (
+	Hammer ItemType = iota
+	Key
+)
 
-// var StringWallMap = map[string]int{
-// 	"벽":   Wall,
-// 	"방":   Clear,
-// 	"나무문": WoodDoor,
-// 	"유리문": GlassDoor,
-// 	"잠긴문": LockedDoor,
-// }
-
-// // State of Boundary
-// const (
-// 	Open = iota
-// 	Closed
-// )
-
-// // Item
-// const (
-// 	Empty = iota
-// 	Hammer
-// 	Key
-// )
-
-// var ItemStringMap = map[int]string{
-// 	Empty:  "없음",
-// 	Hammer: "망치",
-// 	Key:    "열쇠",
-// }
-
-// var ItemDescMap = map[int]string{
-// 	Hammer: "유리문을 부수고 지나갈 수 있게 한다.",
-// 	Key:    "잠긴 문을 열고 지나갈 수 있게 한다.",
-// }
-
-// var StringItemMap = map[string]int{
-// 	"망치": Hammer,
-// 	"열쇠": Key,
-
-// 	"Hammer": Hammer,
-// 	"Key":    Key,
-// }
-
-// const ItemTypeNum = 2
+var ItemTypeStringMap = map[ItemType]string{
+	Hammer: "망치",
+	Key:    "열쇠",
+}
 
 // // Common Messages
 // const SucceedOpeningDoor = "문을 열었습니다."

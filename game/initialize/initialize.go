@@ -18,6 +18,7 @@ func newRoom(isGoal bool) *structure.Room {
 		Directions: make(map[constants.Direction]*structure.Room),
 		Doors:      make(map[constants.Direction]*structure.Door),
 		IsGoal:     isGoal,
+		Items:      make(map[constants.ItemType]int),
 	}
 }
 
@@ -77,7 +78,7 @@ func buildDoorsBetweenRooms(grid *[][]*structure.Room, doorPositionAndType *[]st
 
 		oppositeRoom := getNextRoom(grid, door.RoomPosition, door.Direction)
 		if oppositeRoom == nil {
-			return
+			continue
 		}
 		counterDirection := getCounterDirection(door.Direction)
 		oppositeRoom.Doors[counterDirection] = room.Doors[door.Direction]
@@ -89,13 +90,20 @@ func addEndPoint(grid *[][]*structure.Room, endPosition structure.Position, dire
 	room.Directions[direction] = newRoom(true)
 }
 
-func InitGameAndReturnStartPoint(rowLen int, colLen int, roomPositions *[]structure.Position, doorPositionAndType *[]structure.DoorPositionAndType, startPosition structure.Position, endPosition structure.Position, endDirection constants.Direction) *structure.Room {
+func putItemsOnRooms(grid *[][]*structure.Room, itemPositionAndType *[]structure.ItemPositionAndType) {
+	for _, item := range *itemPositionAndType {
+		(*grid)[item.RoomPosition.Row][item.RoomPosition.Col].Items[item.ItemType] += 1
+	}
+}
+
+func InitGameAndReturnStartPoint(rowLen int, colLen int, roomPositions *[]structure.Position, doorPositionAndType *[]structure.DoorPositionAndType, startPosition structure.Position, endPosition structure.Position, endDirection constants.Direction, itemPositionAndType *[]structure.ItemPositionAndType) *structure.Room {
 
 	var grid = initGrid(rowLen, colLen)
 	createEmptyRooms(grid, roomPositions)
 	connectAdjacentRooms(grid)
 	buildDoorsBetweenRooms(grid, doorPositionAndType)
 	addEndPoint(grid, endPosition, endDirection)
+	putItemsOnRooms(grid, itemPositionAndType)
 
 	return (*grid)[startPosition.Row][startPosition.Col]
 }
