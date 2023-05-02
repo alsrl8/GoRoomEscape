@@ -91,9 +91,6 @@ func openDoorByName(room *structure.Room, bag *structure.Bag, doorName string) {
 	} else if !door.IsClosed {
 		fmt.Println(constants.AlreadyOpenDoor, doorName)
 		return
-	} else if !command.IsItemsEnoughToOpenDoor(door, bag) {
-		fmt.Println(constants.NotEnoughItemsToOpenDoor, doorName)
-		return
 	}
 
 	command.OpenDoor(door, bag)
@@ -128,6 +125,28 @@ func pickUpItems(room *structure.Room, bag *structure.Bag) {
 	}
 }
 
+func useItem(room *structure.Room, bag *structure.Bag, itemName string, doorName string) {
+	if !command.IsItemInBag(bag, itemName) {
+		fmt.Println(constants.NoSuchItem, itemName)
+	} else if command.FindDoorByName(room, doorName) == nil {
+		fmt.Println(constants.NoSuchDoor, doorName)
+	}
+
+	if constants.Hammer == constants.StringItemTypeMap[itemName] {
+		if constants.GlassDoor == constants.StringDoorTypeMap[doorName] {
+			command.BreakGlassDoorAndReduceHammer(room, bag)
+			return
+		}
+	}
+
+	if constants.Key == constants.StringItemTypeMap[itemName] {
+		if constants.LockedDoor == constants.StringDoorTypeMap[doorName] {
+			command.UnlockLockedDoorAndReduceKey(room, bag)
+			return
+		}
+	}
+}
+
 func RunTerminal(startRoom *structure.Room) {
 	room := startRoom
 	bag := newBag()
@@ -150,9 +169,11 @@ func RunTerminal(startRoom *structure.Room) {
 			room = move(room, constants.South)
 		default:
 			// 아이템
-			reg, _ := regexp.Compile("(?s:[^ 사용]*) 사용 [^ 사용]*$")
+			reg, _ := regexp.Compile(" 사용 ")
 			if reg.MatchString(input) {
-				// item := strings.TrimSuffix(input, " 사용 ")
+				s := strings.Split(input, " 사용 ")
+				itemName, doorName := s[0], s[1]
+				useItem(room, bag, itemName, doorName)
 				continue
 			}
 			// 열기

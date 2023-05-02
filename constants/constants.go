@@ -16,6 +16,8 @@ var SpaceTypeStringMap = map[SpaceType]string{
 type Direction int
 
 var DirectionList = []Direction{East, North, West, South}
+var DRow = [4]int{0, -1, 0, 1}
+var DCol = [4]int{1, 0, -1, 0}
 
 const (
 	East Direction = iota
@@ -23,6 +25,7 @@ const (
 	West
 	South
 )
+const NoDirection Direction = -1
 
 var DirStringMap = map[Direction]string{
 	East:  "동쪽",
@@ -53,6 +56,12 @@ var DoorTypeStringMap = map[DoorType]string{
 	LockedDoor: "잠긴문",
 }
 
+var StringDoorTypeMap = map[string]DoorType{
+	"나무문": WoodDoor,
+	"유리문": GlassDoor,
+	"잠긴문": LockedDoor,
+}
+
 var DoorCloseStateStringMap = map[bool]string{
 	true:  "닫힘",
 	false: "열림",
@@ -71,9 +80,16 @@ var ItemTypeStringMap = map[ItemType]string{
 	Key:    "열쇠",
 }
 
+var StringItemTypeMap = map[string]ItemType{
+	"망치": Hammer,
+	"열쇠": Key,
+}
+
 // // Common Messages
-// const SucceedOpeningDoor = "문을 열었습니다."
-// const SucceedClosingDoor = "문을 닫았습니다."
+const SucceedOpeningDoor = "문을 열었습니다."
+const SucceedClosingDoor = "문을 닫았습니다."
+const SucceedBreakingGlassDoor = "유리문을 망치로 부쉈습니다."
+const SucceedUnlockLockedDoor = "잠긴문을 열쇠로 열었습니다."
 
 // Warnings
 const WrongInput = "!!!잘못 입력하였습니다!!!"
