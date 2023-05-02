@@ -2,6 +2,7 @@ package initialize
 
 import (
 	"goproject/constants"
+	"goproject/game/command"
 	"goproject/structure"
 )
 
@@ -27,9 +28,9 @@ func getNextRoom(grid *[][]*structure.Room, position structure.Position, directi
 	return room.Directions[direction]
 }
 
-func getCounterDirection(direction constants.Direction) constants.Direction {
-	return constants.DirectionList[(direction+2)%4]
-}
+// func getCounterDirection(direction constants.Direction) constants.Direction {
+// 	return constants.DirectionList[(direction+2)%4]
+// }
 
 func createEmptyRooms(grid *[][]*structure.Room, roomPositions *[]structure.Position) {
 	for _, pos := range *roomPositions {
@@ -43,12 +44,11 @@ func connectTwoRooms(fromRoom *structure.Room, toRoom *structure.Room, direction
 	}
 
 	fromRoom.Directions[direction] = toRoom
-	counterDirection := getCounterDirection(direction)
+	counterDirection := command.GetCounterDirection(direction)
 	toRoom.Directions[counterDirection] = fromRoom
 }
 
 func connectAdjacentRooms(grid *[][]*structure.Room) {
-	dRow, dCol := [4]int{0, -1, 0, 1}, [4]int{1, 0, -1, 0}
 	rowLen, colLen := len(*grid), len((*grid)[0])
 
 	for row := 0; row < rowLen; row++ {
@@ -58,7 +58,7 @@ func connectAdjacentRooms(grid *[][]*structure.Room) {
 			}
 
 			for _, d := range constants.DirectionList {
-				nr, nc := row+dRow[d], col+dCol[d]
+				nr, nc := row+constants.DRow[d], col+constants.DCol[d]
 				if nr < 0 || rowLen <= nr || nc < 0 || colLen <= nc {
 					continue
 				} else if (*grid)[nr][nc] == nil {
@@ -80,7 +80,7 @@ func buildDoorsBetweenRooms(grid *[][]*structure.Room, doorPositionAndType *[]st
 		if oppositeRoom == nil {
 			continue
 		}
-		counterDirection := getCounterDirection(door.Direction)
+		counterDirection := command.GetCounterDirection(door.Direction)
 		oppositeRoom.Doors[counterDirection] = room.Doors[door.Direction]
 	}
 }

@@ -1,6 +1,7 @@
 package command
 
 import (
+	"fmt"
 	"goproject/constants"
 	"goproject/structure"
 )
@@ -16,6 +17,18 @@ func CanMove(room *structure.Room, direction constants.Direction) bool {
 
 func Move(room *structure.Room, direction constants.Direction) *structure.Room {
 	return room.Directions[direction]
+}
+
+func findDoorDirectionByType(room *structure.Room, doorType constants.DoorType) constants.Direction {
+	for _, direction := range constants.DirectionList {
+		if room.Doors[direction] == nil {
+			continue
+		} else if room.Doors[direction].DoorType != doorType {
+			continue
+		}
+		return direction
+	}
+	return constants.NoDirection
 }
 
 func FindDoorByName(room *structure.Room, doorName string) *structure.Door {
@@ -52,10 +65,35 @@ func OpenDoor(door *structure.Door, bag *structure.Bag) {
 	case constants.WoodDoor:
 		door.IsClosed = false
 	case constants.GlassDoor:
-		(*bag)[constants.Hammer] -= 1
-		door.IsClosed = false
+		fmt.Println(constants.CanNotOpenSuchDoor, constants.DoorTypeStringMap[constants.GlassDoor])
 	case constants.LockedDoor:
 		(*bag)[constants.Key] -= 1
 		door.IsClosed = false
 	}
+}
+
+func IsItemInBag(bag *structure.Bag, itemName string) bool {
+	item, ok := constants.StringItemTypeMap[itemName]
+	if !ok {
+		return false
+	} else if (*bag)[item] == 0 {
+		return false
+	}
+	return true
+}
+
+func GetCounterDirection(direction constants.Direction) constants.Direction {
+	return constants.DirectionList[(direction+2)%4]
+}
+
+func BreakGlassDoorAndReduceHammer(room *structure.Room, bag *structure.Bag) {
+	(*bag)[constants.Hammer] -= 1
+	glassDoorDirection := findDoorDirectionByType(room, constants.GlassDoor)
+	room.Doors[glassDoorDirection] = nil
+	oppositeRoom := room.Directions[glassDoorDirection]
+	if oppositeRoom != nil {
+		counterDirection := GetCounterDirection(glassDoorDirection)
+		oppositeRoom.Doors[counterDirection] = nil
+	}
+	fmt.Println(constants.SucceedBreakingGlassDoor, constants.DirStringMap[glassDoorDirection])
 }
