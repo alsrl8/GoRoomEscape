@@ -89,6 +89,7 @@ var StringItemTypeMap = map[string]ItemType{
 const SucceedOpeningDoor = "문을 열었습니다."
 const SucceedClosingDoor = "문을 닫았습니다."
 const SucceedBreakingGlassDoor = "유리문을 망치로 부쉈습니다."
+const SucceedUnlockLockedDoor = "잠긴문을 열쇠로 열었습니다."
 
 // Warnings
 const WrongInput = "!!!잘못 입력하였습니다!!!"

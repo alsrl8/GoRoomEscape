@@ -67,8 +67,7 @@ func OpenDoor(door *structure.Door, bag *structure.Bag) {
 	case constants.GlassDoor:
 		fmt.Println(constants.CanNotOpenSuchDoor, constants.DoorTypeStringMap[constants.GlassDoor])
 	case constants.LockedDoor:
-		(*bag)[constants.Key] -= 1
-		door.IsClosed = false
+		fmt.Println(constants.CanNotOpenSuchDoor, constants.DoorTypeStringMap[constants.LockedDoor])
 	}
 }
 
@@ -87,7 +86,6 @@ func GetCounterDirection(direction constants.Direction) constants.Direction {
 }
 
 func BreakGlassDoorAndReduceHammer(room *structure.Room, bag *structure.Bag) {
-	(*bag)[constants.Hammer] -= 1
 	glassDoorDirection := findDoorDirectionByType(room, constants.GlassDoor)
 	room.Doors[glassDoorDirection] = nil
 	oppositeRoom := room.Directions[glassDoorDirection]
@@ -95,5 +93,20 @@ func BreakGlassDoorAndReduceHammer(room *structure.Room, bag *structure.Bag) {
 		counterDirection := GetCounterDirection(glassDoorDirection)
 		oppositeRoom.Doors[counterDirection] = nil
 	}
+	(*bag)[constants.Hammer] -= 1
 	fmt.Println(constants.SucceedBreakingGlassDoor, constants.DirStringMap[glassDoorDirection])
+}
+
+func UnlockLockedDoorAndReduceKey(room *structure.Room, bag *structure.Bag) {
+	lockedDoorDirection := findDoorDirectionByType(room, constants.LockedDoor)
+	room.Doors[lockedDoorDirection].DoorType = constants.WoodDoor
+	oppositeRoom := room.Directions[lockedDoorDirection]
+	if oppositeRoom != nil {
+		counterDirection := GetCounterDirection(lockedDoorDirection)
+		if oppositeRoom.Doors[counterDirection] != nil {
+			oppositeRoom.Doors[counterDirection].DoorType = constants.WoodDoor
+		}
+	}
+	(*bag)[constants.Key] -= 1
+	fmt.Println(constants.SucceedUnlockLockedDoor, constants.DirStringMap[lockedDoorDirection])
 }

@@ -139,6 +139,12 @@ func useItem(room *structure.Room, bag *structure.Bag, itemName string, doorName
 		}
 	}
 
+	if constants.Key == constants.StringItemTypeMap[itemName] {
+		if constants.LockedDoor == constants.StringDoorTypeMap[doorName] {
+			command.UnlockLockedDoorAndReduceKey(room, bag)
+			return
+		}
+	}
 }
 
 func RunTerminal(startRoom *structure.Room) {
