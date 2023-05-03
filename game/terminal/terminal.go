@@ -184,7 +184,7 @@ func RunTerminal(startRoom *structure.Room) {
 				continue
 			}
 			// 닫기
-			reg, _ = regexp.Compile("( 닫기| 닫어| 닫)$")
+			reg, _ = regexp.Compile("( 닫기| 닫아| 닫)$")
 			if reg.MatchString(input) {
 				doorName := reg.ReplaceAllString(input, "")
 				closeDoorByName(room, doorName)

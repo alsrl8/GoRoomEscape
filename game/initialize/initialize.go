@@ -28,10 +28,6 @@ func getNextRoom(grid *[][]*structure.Room, position structure.Position, directi
 	return room.Directions[direction]
 }
 
-// func getCounterDirection(direction constants.Direction) constants.Direction {
-// 	return constants.DirectionList[(direction+2)%4]
-// }
-
 func createEmptyRooms(grid *[][]*structure.Room, roomPositions *[]structure.Position) {
 	for _, pos := range *roomPositions {
 		(*grid)[pos.Row][pos.Col] = newRoom(false)
