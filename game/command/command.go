@@ -9,7 +9,7 @@ import (
 func CanMove(room *structure.Room, direction constants.Direction) bool {
 	if room.Directions[direction] == nil {
 		return false
-	} else if room.Doors[direction] != nil && room.Doors[direction].IsClosed {
+	} else if room.Doors[direction] != nil && room.Doors[direction].Closed {
 		return false
 	}
 	return true
@@ -63,7 +63,7 @@ func IsItemsEnoughToOpenDoor(door *structure.Door, bag *structure.Bag) bool {
 func OpenDoor(door *structure.Door, bag *structure.Bag) {
 	switch door.DoorType {
 	case constants.WoodDoor:
-		door.IsClosed = false
+		door.Closed = false
 	case constants.GlassDoor:
 		fmt.Println(constants.CanNotOpenSuchDoor, constants.DoorTypeStringMap[constants.GlassDoor])
 	case constants.LockedDoor:

@@ -70,7 +70,7 @@ func connectAdjacentRooms(grid *[][]*structure.Room) {
 func buildDoorsBetweenRooms(grid *[][]*structure.Room, doorPositionAndType *[]structure.DoorPositionAndType) {
 	for _, door := range *doorPositionAndType {
 		room := (*grid)[door.RoomPosition.Row][door.RoomPosition.Col]
-		room.Doors[door.Direction] = &structure.Door{IsClosed: true, DoorType: door.DoorType}
+		room.Doors[door.Direction] = &structure.Door{Closed: true, DoorType: door.DoorType}
 
 		oppositeRoom := getNextRoom(grid, door.RoomPosition, door.Direction)
 		if oppositeRoom == nil {

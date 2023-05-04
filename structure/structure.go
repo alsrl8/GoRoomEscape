@@ -12,7 +12,7 @@ type Room struct {
 }
 
 type Door struct {
-	IsClosed bool
+	Closed   bool
 	DoorType constants.DoorType
 }
 

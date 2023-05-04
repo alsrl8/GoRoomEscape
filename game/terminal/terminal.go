@@ -35,7 +35,7 @@ func getInput() string {
 func getNextRoomInfo(room *structure.Room, direction constants.Direction) string {
 	if room.Doors[direction] != nil {
 		doorType := room.Doors[direction].DoorType
-		isClosed := room.Doors[direction].IsClosed
+		isClosed := room.Doors[direction].Closed
 		return fmt.Sprintf("%s(%s)", constants.DoorTypeStringMap[doorType], constants.DoorCloseStateStringMap[isClosed])
 	}
 
@@ -88,7 +88,7 @@ func openDoorByName(room *structure.Room, bag *structure.Bag, doorName string) {
 	if door == nil {
 		fmt.Println(constants.NoSuchDoor, doorName)
 		return
-	} else if !door.IsClosed {
+	} else if !door.Closed {
 		fmt.Println(constants.AlreadyOpenDoor, doorName)
 		return
 	}
@@ -101,12 +101,12 @@ func closeDoorByName(room *structure.Room, doorName string) {
 	if door == nil {
 		fmt.Println(constants.NoSuchDoor, doorName)
 		return
-	} else if door.IsClosed {
+	} else if door.Closed {
 		fmt.Println(constants.AlreadyClosedDoor, doorName)
 		return
 	}
 
-	door.IsClosed = true
+	door.Closed = true
 }
 
 func newBag() *structure.Bag {
