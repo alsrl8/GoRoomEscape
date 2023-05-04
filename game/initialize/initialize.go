@@ -14,11 +14,11 @@ func initGrid(rowLen int, colLen int) *[][]*structure.Room {
 	return &grid
 }
 
-func newRoom(isGoal bool) *structure.Room {
+func newRoom(goalFlag bool) *structure.Room {
 	return &structure.Room{
 		Directions: make(map[constants.Direction]*structure.Room),
 		Doors:      make(map[constants.Direction]*structure.Door),
-		IsGoal:     isGoal,
+		GoalFlag:   goalFlag,
 		Items:      make(map[constants.ItemType]int),
 	}
 }

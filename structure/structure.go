@@ -7,7 +7,7 @@ import (
 type Room struct {
 	Doors      map[constants.Direction]*Door
 	Directions map[constants.Direction]*Room
-	IsGoal     bool
+	GoalFlag   bool
 	Items      map[constants.ItemType]int
 }
 

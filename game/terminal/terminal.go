@@ -192,7 +192,7 @@ func RunTerminal(startRoom *structure.Room) {
 			}
 			fmt.Println(constants.WrongInput, input)
 		}
-		if room.IsGoal {
+		if room.GoalFlag {
 			goto ExitLoop
 		}
 		pickUpItems(room, bag)
