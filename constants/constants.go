@@ -20,12 +20,12 @@ var DRow = [4]int{0, -1, 0, 1}
 var DCol = [4]int{1, 0, -1, 0}
 
 const (
-	East Direction = iota
+	NoDirection Direction = iota - 1
+	East
 	North
 	West
 	South
 )
-const NoDirection Direction = -1
 
 var DirStringMap = map[Direction]string{
 	East:  "동쪽",
