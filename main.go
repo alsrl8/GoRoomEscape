@@ -13,28 +13,41 @@ func gameStart(startRoom *structure.Room) {
 
 func main() {
 
-	rowLen := 6
-	colLen := 7
+	rowLen := 10
+	colLen := 10
 	roomPositions := []structure.Position{
-		{Row: 0, Col: 4}, {Row: 0, Col: 5}, {Row: 0, Col: 6},
-		{Row: 1, Col: 3}, {Row: 1, Col: 4},
-		{Row: 2, Col: 0}, {Row: 2, Col: 1}, {Row: 2, Col: 2}, {Row: 2, Col: 3},
-		{Row: 3, Col: 1}, {Row: 3, Col: 3},
-		{Row: 4, Col: 1}, {Row: 4, Col: 3}, {Row: 4, Col: 4},
-		{Row: 5, Col: 1}, {Row: 5, Col: 4},
+		{Row: 0, Col: 4},
+		{Row: 1, Col: 4},
+		{Row: 2, Col: 1}, {Row: 2, Col: 4},
+		{Row: 3, Col: 1}, {Row: 3, Col: 3}, {Row: 3, Col: 4}, {Row: 3, Col: 5}, {Row: 3, Col: 6}, {Row: 3, Col: 7}, {Row: 3, Col: 8}, {Row: 3, Col: 9},
+		{Row: 4, Col: 1}, {Row: 4, Col: 4}, {Row: 4, Col: 6},
+		{Row: 5, Col: 1}, {Row: 5, Col: 4}, {Row: 5, Col: 6},
+		{Row: 6, Col: 1}, {Row: 6, Col: 2}, {Row: 6, Col: 3}, {Row: 6, Col: 4}, {Row: 6, Col: 6},
+		{Row: 7, Col: 6}, {Row: 7, Col: 7}, {Row: 7, Col: 8}, {Row: 7, Col: 9},
+		{Row: 8, Col: 6}, {Row: 8, Col: 9},
+		{Row: 9, Col: 6}, {Row: 9, Col: 9},
 	}
 	doorPositionAndType := []structure.DoorPositionAndType{
-		{RoomPosition: structure.Position{Row: 0, Col: 4}, Direction: constants.South, DoorType: constants.WoodDoor},
-		{RoomPosition: structure.Position{Row: 0, Col: 6}, Direction: constants.East, DoorType: constants.LockedDoor},
-		{RoomPosition: structure.Position{Row: 2, Col: 1}, Direction: constants.East, DoorType: constants.GlassDoor},
-		{RoomPosition: structure.Position{Row: 4, Col: 3}, Direction: constants.East, DoorType: constants.WoodDoor},
+		{RoomPosition: structure.Position{Row: 2, Col: 1}, Direction: constants.West, DoorType: constants.LockedDoor},
+		{RoomPosition: structure.Position{Row: 3, Col: 4}, Direction: constants.West, DoorType: constants.WoodDoor},
+		{RoomPosition: structure.Position{Row: 3, Col: 8}, Direction: constants.East, DoorType: constants.GlassDoor},
+		{RoomPosition: structure.Position{Row: 6, Col: 2}, Direction: constants.West, DoorType: constants.GlassDoor},
+		{RoomPosition: structure.Position{Row: 6, Col: 4}, Direction: constants.West, DoorType: constants.GlassDoor},
+		{RoomPosition: structure.Position{Row: 8, Col: 6}, Direction: constants.South, DoorType: constants.WoodDoor},
 	}
-	startPositon := structure.Position{Row: 5, Col: 1}
-	endPosition := structure.Position{Row: 0, Col: 6}
-	endDirection := constants.East
+	startPositon := structure.Position{Row: 9, Col: 9}
+	endPosition := structure.Position{Row: 2, Col: 1}
+	endDirection := constants.West
 	itemPositionAndtype := []structure.ItemPositionAndType{
-		{RoomPosition: structure.Position{Row: 2, Col: 0}, ItemType: constants.Hammer},
-		{RoomPosition: structure.Position{Row: 5, Col: 4}, ItemType: constants.Key},
+		{RoomPosition: structure.Position{Row: 0, Col: 4}, ItemType: constants.Hammer},
+		{RoomPosition: structure.Position{Row: 0, Col: 4}, ItemType: constants.Box},
+		{RoomPosition: structure.Position{Row: 2, Col: 1}, ItemType: constants.Key},
+		{RoomPosition: structure.Position{Row: 3, Col: 6}, ItemType: constants.Box},
+		{RoomPosition: structure.Position{Row: 3, Col: 9}, ItemType: constants.Box},
+		{RoomPosition: structure.Position{Row: 6, Col: 4}, ItemType: constants.Hammer},
+		{RoomPosition: structure.Position{Row: 7, Col: 6}, ItemType: constants.Hammer},
+		{RoomPosition: structure.Position{Row: 7, Col: 9}, ItemType: constants.WoodSword},
+		{RoomPosition: structure.Position{Row: 9, Col: 6}, ItemType: constants.Box},
 	}
 
 	startRoom := initialize.InitGameAndReturnStartPoint(rowLen, colLen, &roomPositions, &doorPositionAndType, startPositon, endPosition, endDirection, &itemPositionAndtype)

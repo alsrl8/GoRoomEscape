@@ -8,7 +8,7 @@ import (
 
 func initGrid(rowLen int, colLen int) *[][]*structure.Room {
 	var grid [][]*structure.Room
-	for i := 0; i < 6; i++ {
+	for i := 0; i < rowLen; i++ {
 		grid = append(grid, make([]*structure.Room, colLen))
 	}
 	return &grid

@@ -167,6 +167,8 @@ func RunTerminal(startRoom *structure.Room) {
 			room = move(room, constants.West)
 		case "s", "south", "S", "남", "남 가", "남쪽으로 가":
 			room = move(room, constants.South)
+		case "장비":
+
 		default:
 			// 아이템
 			reg, _ := regexp.Compile(" 사용 ")

@@ -71,18 +71,42 @@ var DoorCloseStateStringMap = map[bool]string{
 type ItemType int
 
 const (
-	Hammer ItemType = iota
+	Nothing ItemType = iota - 1
+	Hammer
 	Key
+	Box
+	WoodSword
+	IronSword
+	LeatherCloth
+	LeatherPants
+	LeatherHat
+	HealPotion
 )
 
 var ItemTypeStringMap = map[ItemType]string{
-	Hammer: "망치",
-	Key:    "열쇠",
+	Nothing:      "없음",
+	Hammer:       "망치",
+	Key:          "열쇠",
+	Box:          "상자",
+	WoodSword:    "목검",
+	IronSword:    "철검",
+	LeatherCloth: "가죽옷",
+	LeatherPants: "가죽바지",
+	LeatherHat:   "가죽모자",
+	HealPotion:   "회복약",
 }
 
 var StringItemTypeMap = map[string]ItemType{
-	"망치": Hammer,
-	"열쇠": Key,
+	"없음":   Nothing,
+	"망치":   Hammer,
+	"열쇠":   Key,
+	"상자":   Box,
+	"목검":   WoodSword,
+	"철검":   IronSword,
+	"가죽옷":  LeatherCloth,
+	"가죽바지": LeatherPants,
+	"가죽모자": LeatherHat,
+	"회복약":  HealPotion,
 }
 
 // // Common Messages
