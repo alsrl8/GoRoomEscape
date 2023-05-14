@@ -49,6 +49,15 @@ func main() {
 		{RoomPosition: structure.Position{Row: 7, Col: 9}, ItemType: constants.WoodSword},
 		{RoomPosition: structure.Position{Row: 9, Col: 6}, ItemType: constants.Box},
 	}
+	// boxItemPercentageMap := map[constants.ItemType]map[int]float32{
+	// 	constants.WoodSword:    {1: 0.2},
+	// 	constants.IronSword:    {1: 0.15},
+	// 	constants.LeatherCloth: {1: 0.07},
+	// 	constants.LeatherPants: {1: 0.08},
+	// 	constants.LeatherHat:   {1: 0.1},
+	// 	constants.HealPotion:   {1: 0.15, 2: 0.1, 3: 0.05},
+	// 	constants.Nothing:      {1: 0.1},
+	// }
 
 	startRoom := initialize.InitGameAndReturnStartPoint(rowLen, colLen, &roomPositions, &doorPositionAndType, startPositon, endPosition, endDirection, &itemPositionAndtype)
 	gameStart(startRoom)

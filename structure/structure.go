@@ -39,6 +39,6 @@ type ItemPositionAndType struct {
 type Bag map[constants.ItemType]int
 
 type DropPercentage struct {
-	percentage int
-	num        int
+	Percentage float32
+	Num        int
 }
