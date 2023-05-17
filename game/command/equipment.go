@@ -91,6 +91,7 @@ func Equip(status *structure.Status, itemName string) {
 			continue
 		}
 		setEquipmentToBodyPart(status, bodyPart, itemType)
+		removeItemInInventory(status.Inventory, itemType)
 		return
 	}
 }

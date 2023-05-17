@@ -54,21 +54,7 @@ func findDoorByName(room *structure.Room, doorName string) *structure.Door {
 	return nil
 }
 
-func isItemsEnoughToOpenDoor(door *structure.Door, inventory *structure.Inventory) bool {
-	switch door.DoorType {
-	case constants.GlassDoor:
-		if (*inventory)[constants.Hammer] == 0 {
-			return false
-		}
-	case constants.LockedDoor:
-		if (*inventory)[constants.Key] == 0 {
-			return false
-		}
-	}
-	return true
-}
-
-func openDoor(door *structure.Door, inventory *structure.Inventory) {
+func openDoor(door *structure.Door) {
 	switch door.DoorType {
 	case constants.WoodDoor:
 		door.Closed = false
@@ -77,16 +63,6 @@ func openDoor(door *structure.Door, inventory *structure.Inventory) {
 	case constants.LockedDoor:
 		fmt.Println(constants.CanNotOpenSuchDoor, constants.DoorTypeStringMap[constants.LockedDoor])
 	}
-}
-
-func isItemInInventory(inventory *structure.Inventory, itemName string) bool {
-	item, ok := constants.StringItemTypeMap[itemName]
-	if !ok {
-		return false
-	} else if (*inventory)[item] == 0 {
-		return false
-	}
-	return true
 }
 
 func GetCounterDirection(direction constants.Direction) constants.Direction {
@@ -101,7 +77,7 @@ func breakGlassDoorAndReduceHammer(room *structure.Room, inventory *structure.In
 		counterDirection := GetCounterDirection(glassDoorDirection)
 		oppositeRoom.Doors[counterDirection] = nil
 	}
-	(*inventory)[constants.Hammer] -= 1
+	removeItemInInventory(inventory, constants.Hammer)
 	fmt.Println(constants.SucceedBreakingGlassDoor, constants.DirStringMap[glassDoorDirection])
 }
 
@@ -115,12 +91,12 @@ func unlockLockedDoorAndReduceKey(room *structure.Room, inventory *structure.Inv
 			oppositeRoom.Doors[counterDirection].DoorType = constants.WoodDoor
 		}
 	}
-	(*inventory)[constants.Key] -= 1
+	removeItemInInventory(inventory, constants.Key)
 	fmt.Println(constants.SucceedUnlockLockedDoor, constants.DirStringMap[lockedDoorDirection])
 }
 
 func UseItem(room *structure.Room, inventory *structure.Inventory, itemName string, doorName string) {
-	if !isItemInInventory(inventory, itemName) {
+	if !hasItemInInventory(*inventory, constants.StringItemTypeMap[itemName]) {
 		fmt.Println(constants.NoSuchItem, itemName)
 	} else if findDoorByName(room, doorName) == nil {
 		fmt.Println(constants.NoSuchDoor, doorName)
@@ -151,7 +127,7 @@ func OpenDoorByName(room *structure.Room, inventory *structure.Inventory, doorNa
 		return
 	}
 
-	openDoor(door, inventory)
+	openDoor(door)
 }
 
 func CloseDoorByName(room *structure.Room, doorName string) {
