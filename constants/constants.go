@@ -71,7 +71,7 @@ var DoorCloseStateStringMap = map[bool]string{
 type ItemType int
 
 const (
-	Nothing ItemType = iota - 1
+	Nothing ItemType = iota
 	Hammer
 	Key
 	Box

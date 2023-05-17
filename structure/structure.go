@@ -4,6 +4,12 @@ import (
 	"goproject/constants"
 )
 
+type Status struct {
+	Position  Position
+	Inventory map[constants.ItemType]int
+	Equipment Equipment
+}
+
 type Room struct {
 	Doors      map[constants.Direction]*Door
 	Directions map[constants.Direction]*Room
@@ -28,6 +34,14 @@ type Weapon struct {
 	Item
 }
 
+type Equipment struct {
+	Top       constants.ItemType
+	Pants     constants.ItemType
+	Shoes     constants.ItemType
+	LeftHand  constants.ItemType
+	RightHand constants.ItemType
+}
+
 type Position struct {
 	Row int
 	Col int
@@ -44,7 +58,7 @@ type ItemPositionAndType struct {
 	ItemType     constants.ItemType
 }
 
-type Bag map[constants.ItemType]int
+type Inventory map[constants.ItemType]int
 
 type DropPercentage struct {
 	Percentage float32

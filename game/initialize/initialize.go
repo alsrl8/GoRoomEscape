@@ -103,3 +103,12 @@ func InitGameAndReturnStartPoint(rowLen int, colLen int, roomPositions *[]struct
 
 	return (*grid)[startPosition.Row][startPosition.Col]
 }
+
+func InitStatus(startPosition structure.Position) *structure.Status {
+	status := structure.Status{
+		Position:  structure.Position{Row: startPosition.Row, Col: startPosition.Col},
+		Inventory: structure.Inventory{},
+		Equipment: structure.Equipment{},
+	}
+	return &status
+}

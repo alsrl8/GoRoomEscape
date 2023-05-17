@@ -46,7 +46,7 @@ func getNextRoomInfo(room *structure.Room, direction constants.Direction) string
 	}
 }
 
-func showRoomInfo(room *structure.Room, bag *structure.Bag) {
+func showRoomInfo(room *structure.Room, bag *structure.Inventory) {
 	printLine()
 	for _, d := range constants.DirectionList {
 		fmt.Printf("%s(%s) - %s\n", constants.DirStringMap[d], constants.DirStringEngMap[d], getNextRoomInfo(room, d))
@@ -83,7 +83,7 @@ func move(room *structure.Room, direction constants.Direction) *structure.Room {
 	return command.Move(room, direction)
 }
 
-func openDoorByName(room *structure.Room, bag *structure.Bag, doorName string) {
+func openDoorByName(room *structure.Room, bag *structure.Inventory, doorName string) {
 	door := command.FindDoorByName(room, doorName)
 	if door == nil {
 		fmt.Println(constants.NoSuchDoor, doorName)
@@ -109,12 +109,12 @@ func closeDoorByName(room *structure.Room, doorName string) {
 	door.Closed = true
 }
 
-func newBag() *structure.Bag {
-	bag := make(structure.Bag)
+func newBag() *structure.Inventory {
+	bag := make(structure.Inventory)
 	return &bag
 }
 
-func pickUpItems(room *structure.Room, bag *structure.Bag) {
+func pickUpItems(room *structure.Room, bag *structure.Inventory) {
 	for itemType, itemNum := range room.Items {
 		if itemNum == 0 {
 			continue
@@ -125,7 +125,7 @@ func pickUpItems(room *structure.Room, bag *structure.Bag) {
 	}
 }
 
-func useItem(room *structure.Room, bag *structure.Bag, itemName string, doorName string) {
+func useItem(room *structure.Room, bag *structure.Inventory, itemName string, doorName string) {
 	if !command.IsItemInBag(bag, itemName) {
 		fmt.Println(constants.NoSuchItem, itemName)
 	} else if command.FindDoorByName(room, doorName) == nil {
