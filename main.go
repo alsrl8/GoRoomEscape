@@ -7,8 +7,8 @@ import (
 	"goproject/structure"
 )
 
-func gameStart(startRoom *structure.Room) {
-	terminal.RunTerminal(startRoom)
+func gameStart(status *structure.Status) {
+	terminal.RunTerminal(status)
 }
 
 func main() {
@@ -59,6 +59,6 @@ func main() {
 	// 	constants.Nothing:      {1: 0.1},
 	// }
 
-	startRoom := initialize.InitGameAndReturnStartPoint(rowLen, colLen, &roomPositions, &doorPositionAndType, startPositon, endPosition, endDirection, &itemPositionAndtype)
-	gameStart(startRoom)
+	status := initialize.InitGameAndReturnStatus(rowLen, colLen, &roomPositions, &doorPositionAndType, startPositon, endPosition, endDirection, &itemPositionAndtype)
+	gameStart(status)
 }

@@ -5,9 +5,9 @@ import (
 )
 
 type Status struct {
-	Position  Position
-	Inventory map[constants.ItemType]int
-	Equipment Equipment
+	Room      *Room
+	Inventory *Inventory
+	Equipment *Equipment
 }
 
 type Room struct {

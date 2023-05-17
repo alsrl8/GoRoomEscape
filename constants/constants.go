@@ -12,7 +12,6 @@ var SpaceTypeStringMap = map[SpaceType]string{
 	EmptyRoom: "방",
 }
 
-// Direction
 type Direction int
 
 var DirectionList = []Direction{East, North, West, South}
@@ -41,7 +40,7 @@ var DirStringEngMap = map[Direction]string{
 	South: "S",
 }
 
-// Door Type
+// DoorType Door Type
 type DoorType int
 
 const (
@@ -67,7 +66,7 @@ var DoorCloseStateStringMap = map[bool]string{
 	false: "열림",
 }
 
-// Item Type
+// ItemType Item Type
 type ItemType int
 
 const (
@@ -77,9 +76,10 @@ const (
 	Box
 	WoodSword
 	IronSword
+	LeatherHat
 	LeatherCloth
 	LeatherPants
-	LeatherHat
+	LeatherShoes
 	HealPotion
 )
 
@@ -90,9 +90,10 @@ var ItemTypeStringMap = map[ItemType]string{
 	Box:          "상자",
 	WoodSword:    "목검",
 	IronSword:    "철검",
+	LeatherHat:   "가죽모자",
 	LeatherCloth: "가죽옷",
 	LeatherPants: "가죽바지",
-	LeatherHat:   "가죽모자",
+	LeatherShoes: "가죽신발",
 	HealPotion:   "회복약",
 }
 
@@ -103,13 +104,40 @@ var StringItemTypeMap = map[string]ItemType{
 	"상자":   Box,
 	"목검":   WoodSword,
 	"철검":   IronSword,
+	"가죽모자": LeatherHat,
 	"가죽옷":  LeatherCloth,
 	"가죽바지": LeatherPants,
-	"가죽모자": LeatherHat,
+	"가죽신발": LeatherShoes,
 	"회복약":  HealPotion,
 }
 
-// // Common Messages
+var ItemTypeWearableMap = map[ItemType]bool{
+	WoodSword:    true,
+	IronSword:    true,
+	LeatherCloth: true,
+	LeatherPants: true,
+	LeatherShoes: true,
+}
+
+type BodyPart int
+
+const (
+	Top BodyPart = iota
+	Pants
+	Shoes
+	LeftHand
+	RightHand
+)
+
+var ItemTypeBodyPartMap = map[ItemType][]BodyPart{
+	WoodSword:    {LeftHand, RightHand},
+	IronSword:    {LeftHand, RightHand},
+	LeatherCloth: {Top},
+	LeatherPants: {Pants},
+	LeatherShoes: {Shoes},
+}
+
+// Common Messages
 const SucceedOpeningDoor = "문을 열었습니다."
 const SucceedClosingDoor = "문을 닫았습니다."
 const SucceedBreakingGlassDoor = "유리문을 망치로 부쉈습니다."
@@ -125,3 +153,5 @@ const CanNotCloseSuchDoor = "!!!닫을 수 없는 종류의 문입니다!!!"
 const AlreadyOpenDoor = "!!!이미 문이 열려 있습니다!!!"
 const AlreadyClosedDoor = "!!!이미 문이 닫혀 있습니다!!!"
 const NotEnoughItemsToOpenDoor = "!!!아이템이 모자라 문을 열 수 없습니다!!!"
+const CanNotWear = "!!!장비할 수 없는 아이템입니다!!!"
+const NoBodyPartToWear = "!!!몸에 장비할 빈 공간이 없습니다!!!"

@@ -92,23 +92,23 @@ func putItemsOnRooms(grid *[][]*structure.Room, itemPositionAndType *[]structure
 	}
 }
 
-func InitGameAndReturnStartPoint(rowLen int, colLen int, roomPositions *[]structure.Position, doorPositionAndType *[]structure.DoorPositionAndType, startPosition structure.Position, endPosition structure.Position, endDirection constants.Direction, itemPositionAndType *[]structure.ItemPositionAndType) *structure.Room {
-
+func InitGameAndReturnStatus(rowLen int, colLen int, roomPositions *[]structure.Position, doorPositionAndType *[]structure.DoorPositionAndType, startPosition structure.Position, endPosition structure.Position, endDirection constants.Direction, itemPositionAndType *[]structure.ItemPositionAndType) *structure.Status {
 	var grid = initGrid(rowLen, colLen)
 	createEmptyRooms(grid, roomPositions)
 	connectAdjacentRooms(grid)
 	buildDoorsBetweenRooms(grid, doorPositionAndType)
 	addEndPoint(grid, endPosition, endDirection)
 	putItemsOnRooms(grid, itemPositionAndType)
+	status := initStatus((*grid)[startPosition.Row][startPosition.Col])
 
-	return (*grid)[startPosition.Row][startPosition.Col]
+	return status
 }
 
-func InitStatus(startPosition structure.Position) *structure.Status {
+func initStatus(startRoom *structure.Room) *structure.Status {
 	status := structure.Status{
-		Position:  structure.Position{Row: startPosition.Row, Col: startPosition.Col},
-		Inventory: structure.Inventory{},
-		Equipment: structure.Equipment{},
+		Room:      startRoom,
+		Inventory: &structure.Inventory{},
+		Equipment: &structure.Equipment{},
 	}
 	return &status
 }
