@@ -18,8 +18,12 @@ func getEquipmentList(status structure.Status) []constants.ItemType {
 
 func ShowEquipment(status structure.Status) {
 	equipmentList := getEquipmentList(status)
-	for _, equipment := range equipmentList {
-		fmt.Println(constants.ItemTypeStringMap[equipment])
+	if len(equipmentList) != len(constants.BodyPartList) {
+		panic("Length of equipment list and body part list must be same")
+	}
+	for i, equipment := range equipmentList {
+		bodyPartName := constants.BodyPartStringMap[constants.BodyPartList[i]]
+		fmt.Println(bodyPartName + ": " + constants.ItemTypeStringMap[equipment])
 	}
 }
 

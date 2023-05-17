@@ -121,6 +121,8 @@ var ItemTypeWearableMap = map[ItemType]bool{
 
 type BodyPart int
 
+var BodyPartList = []BodyPart{Top, Pants, Shoes, LeftHand, RightHand}
+
 const (
 	Top BodyPart = iota
 	Pants
@@ -135,6 +137,14 @@ var ItemTypeBodyPartMap = map[ItemType][]BodyPart{
 	LeatherCloth: {Top},
 	LeatherPants: {Pants},
 	LeatherShoes: {Shoes},
+}
+
+var BodyPartStringMap = map[BodyPart]string{
+	Top:       "상의",
+	Pants:     "하의",
+	Shoes:     "신발",
+	LeftHand:  "왼손",
+	RightHand: "오른손",
 }
 
 // Common Messages
