@@ -20,6 +20,14 @@ type Item struct {
 	ItemType constants.ItemType
 }
 
+type Armor struct {
+	Item
+}
+
+type Weapon struct {
+	Item
+}
+
 type Position struct {
 	Row int
 	Col int
