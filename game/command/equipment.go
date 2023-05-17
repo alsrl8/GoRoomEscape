@@ -69,7 +69,10 @@ func isBodyPartToWearExist(status *structure.Status, itemType constants.ItemType
 func Equip(status *structure.Status, itemName string) {
 	wearable := isWearableItem(itemName)
 	itemType := constants.StringItemTypeMap[itemName]
-	if !wearable {
+	if (*status.Inventory)[itemType] == 0 {
+		fmt.Println(constants.NoItemInInventory)
+		return
+	} else if !wearable {
 		fmt.Println(constants.CanNotWear)
 		return
 	}
