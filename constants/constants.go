@@ -124,7 +124,8 @@ type BodyPart int
 var BodyPartList = []BodyPart{Top, Pants, Shoes, LeftHand, RightHand}
 
 const (
-	Top BodyPart = iota
+	Nowhere BodyPart = iota - 1
+	Top
 	Pants
 	Shoes
 	LeftHand
@@ -166,3 +167,4 @@ const NotEnoughItemsToOpenDoor = "!!!아이템이 모자라 문을 열 수 없�
 const CanNotWear = "!!!장비할 수 없는 아이템입니다!!!"
 const NoBodyPartToWear = "!!!몸에 장비할 빈 공간이 없습니다!!!"
 const NoItemInInventory = "!!!해당 아이템이 가방에 없습니다!!!"
+const NoEquipmentOnBody = "!!!해당 아이템은 몸에 장비하고 있지 않습니다!!!"

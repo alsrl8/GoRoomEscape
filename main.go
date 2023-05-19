@@ -12,7 +12,6 @@ func gameStart(status *structure.Status) {
 }
 
 func main() {
-
 	rowLen := 10
 	colLen := 10
 	roomPositions := []structure.Position{

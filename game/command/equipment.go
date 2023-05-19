@@ -28,20 +28,8 @@ func ShowEquipment(status structure.Status) {
 }
 
 func isBodyPartsEmpty(status *structure.Status, part constants.BodyPart) bool {
-	equippedItem := constants.Nothing
-	switch part {
-	case constants.Top:
-		equippedItem = status.Equipment.Top
-	case constants.Pants:
-		equippedItem = status.Equipment.Pants
-	case constants.Shoes:
-		equippedItem = status.Equipment.Shoes
-	case constants.LeftHand:
-		equippedItem = status.Equipment.LeftHand
-	case constants.RightHand:
-		equippedItem = status.Equipment.RightHand
-	}
-	return equippedItem == constants.Nothing
+	itemOnBody := getEquipmentPartByBodyPart(status.Equipment, part)
+	return *itemOnBody == constants.Nothing
 }
 
 func isWearableItem(itemName string) bool {
@@ -97,16 +85,49 @@ func Equip(status *structure.Status, itemName string) {
 }
 
 func setEquipmentToBodyPart(status *structure.Status, bodyPart constants.BodyPart, itemType constants.ItemType) {
+	equipmentPart := getEquipmentPartByBodyPart(status.Equipment, bodyPart)
+	*equipmentPart = itemType
+}
+
+func Disarm(status *structure.Status, itemName string) {
+	bodyPart := getBodyPartByItemName(*status.Equipment, itemName)
+	if bodyPart == constants.Nowhere {
+		fmt.Println(constants.NoEquipmentOnBody, itemName)
+		return
+	}
+
+}
+
+func getBodyPartByItemName(equipment structure.Equipment, itemName string) constants.BodyPart {
+	itemType := constants.StringItemTypeMap[itemName]
+	switch itemType {
+	case equipment.Top:
+		return constants.Top
+	case equipment.Pants:
+		return constants.Pants
+	case equipment.Shoes:
+		return constants.Shoes
+	case equipment.LeftHand:
+		return constants.LeftHand
+	case equipment.RightHand:
+		return constants.RightHand
+	default:
+		return constants.Nowhere
+	}
+}
+
+func getEquipmentPartByBodyPart(equipment *structure.Equipment, bodyPart constants.BodyPart) *constants.ItemType {
 	switch bodyPart {
 	case constants.Top:
-		status.Equipment.Top = itemType
+		return &equipment.Top
 	case constants.Pants:
-		status.Equipment.Pants = itemType
+		return &equipment.Pants
 	case constants.Shoes:
-		status.Equipment.Shoes = itemType
+		return &equipment.Shoes
 	case constants.LeftHand:
-		status.Equipment.LeftHand = itemType
+		return &equipment.LeftHand
 	case constants.RightHand:
-		status.Equipment.RightHand = itemType
+		return &equipment.RightHand
 	}
+	return nil
 }
