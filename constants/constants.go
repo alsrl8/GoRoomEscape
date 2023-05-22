@@ -170,6 +170,12 @@ var MonsterTypeStringMap = map[MonsterType]string{
 	Deer:     "사슴",
 }
 
+var StringMonsterTypeMap = map[string]MonsterType{
+	"다람쥐": Squirrel,
+	"토끼":  Rabbit,
+	"사슴":  Deer,
+}
+
 // Common Messages
 const SucceedOpeningDoor = "문을 열었습니다."
 const SucceedClosingDoor = "문을 닫았습니다."
@@ -191,3 +197,4 @@ const NoBodyPartToWear = "!!!몸에 장비할 빈 공간이 없습니다!!!"
 const NoItemInInventory = "!!!해당 아이템이 가방에 없습니다!!!"
 const NoEquipmentOnBodyPart = "!!!해당 부위에 장비하고 있는 아이템이 없습니다!!!"
 const MonsterExistsInTheRoom = "!!!방 안에 몬스터가 있습니다!!!"
+const NoSuchMonster = "!!!그런 몬스터는 없습니다!!!"

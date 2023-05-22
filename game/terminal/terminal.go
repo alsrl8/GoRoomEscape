@@ -95,6 +95,13 @@ func RunTerminal(status *structure.Status) {
 				command.Disarm(status, bodyPartName)
 				continue
 			}
+			// 공격
+			reg, _ = regexp.Compile(" 공격$")
+			if reg.MatchString(input) {
+				monsterName := reg.ReplaceAllString(input, "")
+				command.AttackMonsterInRoom(status, monsterName)
+				continue
+			}
 			fmt.Println(constants.WrongInput, input)
 		}
 		if status.Room.GoalFlag {

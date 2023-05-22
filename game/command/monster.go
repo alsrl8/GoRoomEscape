@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"goproject/constants"
 	"goproject/structure"
-	"math"
 )
 
 func isMonsterExistInRoom(room *structure.Room) bool {
@@ -20,15 +19,20 @@ func printMonster(monster *structure.Monster) {
 	fmt.Printf("%s >> Health: %d, Attack: %d, Defense: %d\n", constants.MonsterTypeStringMap[monster.MonsterType], monster.Attribute.Health, monster.Attribute.Attack, monster.Attribute.Defense)
 }
 
-func attackFromMonsterInRoom(status *structure.Status) {
+func reduceMonsterHealth(monster *structure.Monster, attack int) {
+	reduceHealth(&monster.Attribute, attack)
+}
+
+func AttackMonsterInRoom(status *structure.Status, monsterName string) {
 	room := status.Room
 	if !isMonsterExistInRoom(room) {
+		fmt.Println(constants.NoSuchMonster)
+		return
+	} else if room.Monster.MonsterType != constants.StringMonsterTypeMap[monsterName] {
+		fmt.Println(constants.NoSuchMonster)
 		return
 	}
 	monster := room.Monster
-	status.Attribute.Health -= int(math.Min(0, float64(status.Attribute.Defense-monster.Attribute.Attack)))
-}
-
-func attackMonster(status *structure.Status, monster *structure.Monster) {
-
+	reduceMonsterHealth(monster, status.Attribute.Attack)
+	reduceHealth(&status.Attribute, monster.Attribute.Attack)
 }
