@@ -66,7 +66,7 @@ func RunTerminal(status *structure.Status) {
 			reg, _ := regexp.Compile(" 사용$")
 			if reg.MatchString(input) {
 				itemName := reg.ReplaceAllString(input, "")
-				command.UseItem(itemName)
+				command.UseItem(status.Inventory, itemName)
 				continue
 			}
 			// 아이템 With Target
@@ -92,7 +92,7 @@ func RunTerminal(status *structure.Status) {
 				continue
 			}
 			// 착용
-			reg, _ = regexp.Compile(" 착용$")
+			reg, _ = regexp.Compile("( 착용| 장비)$")
 			if reg.MatchString(input) {
 				itemName := reg.ReplaceAllString(input, "")
 				command.Equip(status, itemName)
@@ -111,7 +111,7 @@ func RunTerminal(status *structure.Status) {
 				monsterName := reg.ReplaceAllString(input, "")
 				monster := command.GetMonsterInRoomByName(status.Room, monsterName)
 				if monster == nil {
-					fmt.Println(constants.NoSuchMonster)
+					fmt.Println(constants.NoSuchMonster, monsterName)
 					continue
 				}
 				command.AttackMonster(status, monster)

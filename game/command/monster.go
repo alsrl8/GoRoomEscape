@@ -33,6 +33,7 @@ func reduceMonsterHealth(monster *structure.Monster, attack int) {
 func AttackMonster(status *structure.Status, monster *structure.Monster) {
 	reduceMonsterHealth(monster, status.Attribute.Attack)
 	reduceHealth(&status.Attribute, monster.Attribute.Attack)
+	fmt.Printf("몬스터(%s)와 공격을 주고 받았습니다.\n", constants.MonsterTypeStringMap[monster.MonsterType])
 }
 
 func RemoveMonsterInRoom(room *structure.Room) {

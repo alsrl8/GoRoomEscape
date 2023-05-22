@@ -6,6 +6,63 @@ import (
 	"goproject/structure"
 )
 
+var itemTypeWearableMap = map[constants.ItemType]bool{
+	constants.WoodSword:    true,
+	constants.IronSword:    true,
+	constants.WoodShield:   true,
+	constants.LeatherHat:   true,
+	constants.LeatherCloth: true,
+	constants.LeatherPants: true,
+	constants.LeatherShoes: true,
+}
+
+var equipmentEffectMap = map[constants.ItemType]structure.Attribute{
+	constants.WoodSword: {
+		Health:  0,
+		Attack:  3,
+		Defense: 0,
+	},
+	constants.IronSword: {
+		Health:  0,
+		Attack:  3,
+		Defense: 0,
+	},
+	constants.WoodShield: {
+		Health:  0,
+		Attack:  0,
+		Defense: 0,
+	},
+	constants.LeatherHat: {
+		Health:  0,
+		Attack:  0,
+		Defense: 0,
+	},
+	constants.LeatherCloth: {
+		Health:  0,
+		Attack:  0,
+		Defense: 6,
+	},
+	constants.LeatherPants: {
+		Health:  0,
+		Attack:  0,
+		Defense: 4,
+	},
+	constants.LeatherShoes: {
+		Health:  0,
+		Attack:  0,
+		Defense: 3,
+	},
+}
+
+var itemTypeBodyPartMap = map[constants.ItemType][]constants.BodyPart{
+	constants.WoodSword:    {constants.LeftHand, constants.RightHand},
+	constants.IronSword:    {constants.LeftHand, constants.RightHand},
+	constants.WoodShield:   {constants.LeftHand, constants.RightHand},
+	constants.LeatherCloth: {constants.Top},
+	constants.LeatherPants: {constants.Pants},
+	constants.LeatherShoes: {constants.Shoes},
+}
+
 func getEquipmentList(status structure.Status) []constants.ItemType {
 	return []constants.ItemType{
 		status.Equipment.Top,
@@ -34,12 +91,12 @@ func isBodyPartsEmpty(status *structure.Status, part constants.BodyPart) bool {
 
 func isWearableItem(itemName string) bool {
 	item := constants.StringItemTypeMap[itemName]
-	wearable := constants.ItemTypeWearableMap[item]
+	wearable := itemTypeWearableMap[item]
 	return wearable
 }
 
 func isBodyPartToWearExist(status *structure.Status, itemType constants.ItemType) bool {
-	bodyParts := constants.ItemTypeBodyPartMap[itemType]
+	bodyParts := itemTypeBodyPartMap[itemType]
 	if len(bodyParts) == 0 {
 		return false
 	}
@@ -59,27 +116,26 @@ func isBodyPartToWearExist(status *structure.Status, itemType constants.ItemType
 }
 
 func Equip(status *structure.Status, itemName string) {
-	wearable := isWearableItem(itemName)
 	itemType := constants.StringItemTypeMap[itemName]
 	if (*status.Inventory)[itemType] == 0 {
-		fmt.Println(constants.NoItemInInventory)
+		fmt.Println(constants.NoItemInInventory, itemName)
 		return
-	} else if !wearable {
-		fmt.Println(constants.CanNotWear)
+	} else if !isWearableItem(itemName) {
+		fmt.Println(constants.CanNotWear, itemName)
 		return
-	}
-	validBodyPartExist := isBodyPartToWearExist(status, itemType)
-	if !validBodyPartExist {
+	} else if !isBodyPartToWearExist(status, itemType) {
 		fmt.Println(constants.NoBodyPartToWear)
 		return
 	}
 
-	for _, bodyPart := range constants.ItemTypeBodyPartMap[itemType] {
+	for _, bodyPart := range itemTypeBodyPartMap[itemType] {
 		if !isBodyPartsEmpty(status, bodyPart) {
 			continue
 		}
 		setEquipmentToBodyPart(status, bodyPart, itemType)
+		applyEquipmentEffect(status, itemType)
 		removeItemInInventory(status.Inventory, itemType)
+		fmt.Printf("%s에 장비(%s)를 장비했습니다.\n", constants.BodyPartStringMap[bodyPart], constants.ItemTypeStringMap[itemType])
 		return
 	}
 }
@@ -89,18 +145,32 @@ func setEquipmentToBodyPart(status *structure.Status, bodyPart constants.BodyPar
 	*equipmentPart = itemType
 }
 
+func applyEquipmentEffect(status *structure.Status, itemType constants.ItemType) {
+	status.Attribute.Health += equipmentEffectMap[itemType].Health
+	status.Attribute.Attack += equipmentEffectMap[itemType].Attack
+	status.Attribute.Defense += equipmentEffectMap[itemType].Defense
+}
+
+func removeEquipmentEffect(status *structure.Status, itemType constants.ItemType) {
+	status.Attribute.Health -= equipmentEffectMap[itemType].Health
+	status.Attribute.Attack -= equipmentEffectMap[itemType].Attack
+	status.Attribute.Defense -= equipmentEffectMap[itemType].Defense
+}
+
 func Disarm(status *structure.Status, bodyPartName string) {
 	bodyPart := constants.StringBodyPartMap[bodyPartName]
 	equipmentPart := getEquipmentPartByBodyPart(status.Equipment, bodyPart)
 
 	if *equipmentPart == constants.Nothing {
-		fmt.Println(constants.NoEquipmentOnBodyPart)
+		fmt.Println(constants.NoEquipmentOnBodyPart, bodyPartName)
 		return
 	}
 
-	item := *equipmentPart
+	itemType := *equipmentPart
 	*equipmentPart = constants.Nothing
-	(*status.Inventory)[item] += 1
+	addItemToInventory(status.Inventory, itemType)
+	removeEquipmentEffect(status, itemType)
+	fmt.Printf("%s에서 장비(%s)를 해제했습니다.\n", bodyPartName, constants.ItemTypeStringMap[itemType])
 }
 
 func getEquipmentPartByBodyPart(equipment *structure.Equipment, bodyPart constants.BodyPart) *constants.ItemType {

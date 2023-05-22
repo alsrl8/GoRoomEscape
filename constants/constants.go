@@ -76,6 +76,7 @@ const (
 	Box
 	WoodSword
 	IronSword
+	WoodShield
 	LeatherHat
 	LeatherCloth
 	LeatherPants
@@ -111,14 +112,6 @@ var StringItemTypeMap = map[string]ItemType{
 	"회복약":  HealPotion,
 }
 
-var ItemTypeWearableMap = map[ItemType]bool{
-	WoodSword:    true,
-	IronSword:    true,
-	LeatherCloth: true,
-	LeatherPants: true,
-	LeatherShoes: true,
-}
-
 type BodyPart int
 
 var BodyPartList = []BodyPart{Top, Pants, Shoes, LeftHand, RightHand}
@@ -131,14 +124,6 @@ const (
 	LeftHand
 	RightHand
 )
-
-var ItemTypeBodyPartMap = map[ItemType][]BodyPart{
-	WoodSword:    {LeftHand, RightHand},
-	IronSword:    {LeftHand, RightHand},
-	LeatherCloth: {Top},
-	LeatherPants: {Pants},
-	LeatherShoes: {Shoes},
-}
 
 var BodyPartStringMap = map[BodyPart]string{
 	Top:       "상의",
@@ -198,3 +183,4 @@ const NoItemInInventory = "!!!해당 아이템이 가방에 없습니다!!!"
 const NoEquipmentOnBodyPart = "!!!해당 부위에 장비하고 있는 아이템이 없습니다!!!"
 const MonsterExistsInTheRoom = "!!!방 안에 몬스터가 있습니다!!!"
 const NoSuchMonster = "!!!그런 몬스터는 없습니다!!!"
+const CanNotUseSuchItem = "!!!사용할 수 없는 종류의 아이템입니다!!!"

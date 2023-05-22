@@ -8,10 +8,10 @@ import (
 
 func Move(room *structure.Room, direction constants.Direction) *structure.Room {
 	if !canMove(room, direction) {
-		fmt.Println(constants.CanNotMoveWarning)
+		fmt.Println(constants.CanNotMoveWarning, constants.DirStringMap[direction], constants.DirStringEngMap[direction])
 		return room
 	} else if isMonsterExistInRoom(room) {
-		fmt.Println(constants.MonsterExistsInTheRoom)
+		fmt.Println(constants.MonsterExistsInTheRoom, constants.MonsterTypeStringMap[room.Monster.MonsterType])
 		return room
 	}
 	return getNextRoomInDirection(room, direction)
@@ -189,6 +189,6 @@ func PickUpItems(room *structure.Room, inventory *structure.Inventory) {
 		}
 		fmt.Printf("%s을 (%d)개 주웠습니다.\n", constants.ItemTypeStringMap[itemType], itemNum)
 		room.Items[itemType] -= itemNum
-		(*inventory)[itemType] += itemNum
+		addItemToInventory(inventory, itemType)
 	}
 }
