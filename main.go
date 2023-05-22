@@ -8,6 +8,7 @@ import (
 )
 
 func gameStart(status *structure.Status) {
+	terminal.SetUserInputAsUserName(status)
 	terminal.RunTerminal(status)
 }
 

@@ -169,6 +169,9 @@ func ShowRoomAndInventoryInfo(status *structure.Status) {
 	inventory := status.Inventory
 
 	printLine()
+	fmt.Printf("이름 : %s\n", status.Name)
+
+	printLine()
 	for _, d := range constants.DirectionList {
 		fmt.Printf("%s(%s) - %s\n", constants.DirStringMap[d], constants.DirStringEngMap[d], getNextRoomInfo(room, d))
 	}

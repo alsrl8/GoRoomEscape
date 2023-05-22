@@ -31,6 +31,13 @@ func getInput() string {
 	return input
 }
 
+func SetUserInputAsUserName(status *structure.Status) {
+	clearTerminal()
+	fmt.Println("사용자 이름")
+	userName := getInput()
+	status.Name = userName
+}
+
 func RunTerminal(status *structure.Status) {
 	clearTerminal()
 

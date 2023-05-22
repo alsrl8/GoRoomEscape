@@ -5,6 +5,7 @@ import (
 )
 
 type Status struct {
+	Name      string
 	Room      *Room
 	Inventory *Inventory
 	Equipment *Equipment
