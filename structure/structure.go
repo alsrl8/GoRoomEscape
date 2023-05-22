@@ -18,6 +18,7 @@ type Room struct {
 	GoalFlag   bool
 	Items      map[constants.ItemType]int
 	Monster    *Monster
+	DropItem   *[]DropItem
 }
 
 type Door struct {
@@ -88,4 +89,9 @@ type Monster struct {
 type DropItem struct {
 	ItemType       constants.ItemType
 	DropPercentage DropPercentage
+}
+
+type BoxPositionAndDropItem struct {
+	RoomPosition Position
+	DropItem     *[]DropItem
 }

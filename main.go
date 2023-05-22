@@ -108,16 +108,35 @@ func main() {
 			},
 		},
 	}
-	// boxItemPercentageMap := map[constants.ItemType]map[int]float32{
-	// 	constants.WoodSword:    {1: 0.2},
-	// 	constants.IronSword:    {1: 0.15},
-	// 	constants.LeatherCloth: {1: 0.07},
-	// 	constants.LeatherPants: {1: 0.08},
-	// 	constants.LeatherHat:   {1: 0.1},
-	// 	constants.HealPotion:   {1: 0.15, 2: 0.1, 3: 0.05},
-	// 	constants.Nothing:      {1: 0.1},
-	// }
+	boxDropItems := []structure.DropItem{
+		{ItemType: constants.WoodSword, DropPercentage: structure.DropPercentage{Percentage: 0.2, Num: 1}},
+		{ItemType: constants.IronSword, DropPercentage: structure.DropPercentage{Percentage: 0.15, Num: 1}},
+		{ItemType: constants.LeatherCloth, DropPercentage: structure.DropPercentage{Percentage: 0.07, Num: 1}},
+		{ItemType: constants.LeatherPants, DropPercentage: structure.DropPercentage{Percentage: 0.08, Num: 1}},
+		{ItemType: constants.LeatherShoes, DropPercentage: structure.DropPercentage{Percentage: 0.1, Num: 1}},
+		{ItemType: constants.HealPotion, DropPercentage: structure.DropPercentage{Percentage: 0.15, Num: 1}},
+		{ItemType: constants.HealPotion, DropPercentage: structure.DropPercentage{Percentage: 0.1, Num: 2}},
+		{ItemType: constants.HealPotion, DropPercentage: structure.DropPercentage{Percentage: 0.05, Num: 3}},
+	}
+	boxPositionAndDropItems := []structure.BoxPositionAndDropItem{
+		{
+			RoomPosition: structure.Position{Row: 0, Col: 4},
+			DropItem:     &boxDropItems,
+		},
+		{
+			RoomPosition: structure.Position{Row: 3, Col: 3},
+			DropItem:     &boxDropItems,
+		},
+		{
+			RoomPosition: structure.Position{Row: 3, Col: 9},
+			DropItem:     &boxDropItems,
+		},
+		{
+			RoomPosition: structure.Position{Row: 9, Col: 6},
+			DropItem:     &boxDropItems,
+		},
+	}
 
-	status := initialize.InitGameAndReturnStatus(rowLen, colLen, &roomPositions, &doorPositionAndType, startPosition, endPosition, endDirection, &itemPositionAndType, &monsterWithPosition)
+	status := initialize.InitGameAndReturnStatus(rowLen, colLen, &roomPositions, &doorPositionAndType, startPosition, endPosition, endDirection, &itemPositionAndType, &monsterWithPosition, &boxPositionAndDropItems)
 	gameStart(status)
 }

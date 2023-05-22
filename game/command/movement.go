@@ -98,28 +98,6 @@ func unlockLockedDoorAndReduceKey(room *structure.Room, inventory *structure.Inv
 	fmt.Println(constants.SucceedUnlockLockedDoor, constants.DirStringMap[lockedDoorDirection])
 }
 
-func UseItem(room *structure.Room, inventory *structure.Inventory, itemName string, doorName string) {
-	if !hasItemInInventory(*inventory, constants.StringItemTypeMap[itemName]) {
-		fmt.Println(constants.NoSuchItem, itemName)
-	} else if findDoorByName(room, doorName) == nil {
-		fmt.Println(constants.NoSuchDoor, doorName)
-	}
-
-	if constants.Hammer == constants.StringItemTypeMap[itemName] {
-		if constants.GlassDoor == constants.StringDoorTypeMap[doorName] {
-			breakGlassDoorAndReduceHammer(room, inventory)
-			return
-		}
-	}
-
-	if constants.Key == constants.StringItemTypeMap[itemName] {
-		if constants.LockedDoor == constants.StringDoorTypeMap[doorName] {
-			unlockLockedDoorAndReduceKey(room, inventory)
-			return
-		}
-	}
-}
-
 func OpenDoorByName(room *structure.Room, inventory *structure.Inventory, doorName string) {
 	door := findDoorByName(room, doorName)
 	if door == nil {

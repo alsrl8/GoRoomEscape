@@ -102,6 +102,12 @@ func putMonstersOnRooms(grid *[][]*structure.Room, monsterWithPosition *[]struct
 	}
 }
 
+func putBoxesOnRooms(grid *[][]*structure.Room, boxPositionAndDropItem *[]structure.BoxPositionAndDropItem) {
+	for _, boxInfo := range *boxPositionAndDropItem {
+		(*grid)[boxInfo.RoomPosition.Row][boxInfo.RoomPosition.Col].DropItem = boxInfo.DropItem
+	}
+}
+
 func InitGameAndReturnStatus(
 	rowLen int,
 	colLen int,
@@ -112,6 +118,7 @@ func InitGameAndReturnStatus(
 	endDirection constants.Direction,
 	itemPositionAndType *[]structure.ItemPositionAndType,
 	monsterWithPosition *[]structure.MonsterWithPosition,
+	boxPositionAndDropItem *[]structure.BoxPositionAndDropItem,
 ) *structure.Status {
 	var grid = initGrid(rowLen, colLen)
 	createEmptyRooms(grid, roomPositions)
@@ -120,8 +127,8 @@ func InitGameAndReturnStatus(
 	addEndPoint(grid, endPosition, endDirection)
 	putItemsOnRooms(grid, itemPositionAndType)
 	putMonstersOnRooms(grid, monsterWithPosition)
+	putBoxesOnRooms(grid, boxPositionAndDropItem)
 	status := initStatus((*grid)[startPosition.Row][startPosition.Col])
-
 	return status
 }
 

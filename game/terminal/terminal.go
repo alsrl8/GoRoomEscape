@@ -63,11 +63,18 @@ func RunTerminal(status *structure.Status) {
 		// Multiple Words
 		default:
 			// 아이템
-			reg, _ := regexp.Compile(" 사용 ")
+			reg, _ := regexp.Compile(" 사용$")
+			if reg.MatchString(input) {
+				itemName := reg.ReplaceAllString(input, "")
+				command.UseItem(itemName)
+				continue
+			}
+			// 아이템 With Target
+			reg, _ = regexp.Compile(" 사용 ")
 			if reg.MatchString(input) {
 				s := strings.Split(input, " 사용 ")
 				itemName, doorName := s[0], s[1]
-				command.UseItem(status.Room, status.Inventory, itemName, doorName)
+				command.UseItemToDoor(status.Room, status.Inventory, itemName, doorName)
 				continue
 			}
 			// 열기
