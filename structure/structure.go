@@ -70,7 +70,7 @@ type ItemPositionAndType struct {
 type Inventory map[constants.ItemType]int
 
 type DropPercentage struct {
-	Percentage float32
+	Percentage float64
 	Num        int
 }
 

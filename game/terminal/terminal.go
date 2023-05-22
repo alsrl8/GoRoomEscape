@@ -58,6 +58,9 @@ func RunTerminal(status *structure.Status) {
 			status.Room = command.Move(status.Room, constants.South)
 		case "eq", "장비":
 			command.ShowEquipment(*status)
+		case "도망":
+			continue // TODO 도망 명령어
+		// Multiple Words
 		default:
 			// 아이템
 			reg, _ := regexp.Compile(" 사용 ")
@@ -99,7 +102,18 @@ func RunTerminal(status *structure.Status) {
 			reg, _ = regexp.Compile(" 공격$")
 			if reg.MatchString(input) {
 				monsterName := reg.ReplaceAllString(input, "")
-				command.AttackMonsterInRoom(status, monsterName)
+				monster := command.GetMonsterInRoomByName(status.Room, monsterName)
+				if monster == nil {
+					fmt.Println(constants.NoSuchMonster)
+					continue
+				}
+				command.AttackMonster(status, monster)
+				if command.IsDead(status.Attribute) {
+					goto GameOver
+				} else if command.IsDead(monster.Attribute) {
+					command.RemoveMonsterInRoom(status.Room)
+					command.CarveMonster(status, monster)
+				}
 				continue
 			}
 			fmt.Println(constants.WrongInput, input)
@@ -112,6 +126,10 @@ func RunTerminal(status *structure.Status) {
 QuitLoop:
 	clearTerminal()
 	fmt.Println("종료했습니다.")
+	return
+GameOver:
+	clearTerminal()
+	fmt.Println("실패했습니다.")
 	return
 ExitLoop:
 	clearTerminal()
