@@ -89,31 +89,18 @@ func setEquipmentToBodyPart(status *structure.Status, bodyPart constants.BodyPar
 	*equipmentPart = itemType
 }
 
-func Disarm(status *structure.Status, itemName string) {
-	bodyPart := getBodyPartByItemName(*status.Equipment, itemName)
-	if bodyPart == constants.Nowhere {
-		fmt.Println(constants.NoEquipmentOnBody, itemName)
+func Disarm(status *structure.Status, bodyPartName string) {
+	bodyPart := constants.StringBodyPartMap[bodyPartName]
+	equipmentPart := getEquipmentPartByBodyPart(status.Equipment, bodyPart)
+
+	if *equipmentPart == constants.Nothing {
+		fmt.Println(constants.NoEquipmentOnBodyPart)
 		return
 	}
 
-}
-
-func getBodyPartByItemName(equipment structure.Equipment, itemName string) constants.BodyPart {
-	itemType := constants.StringItemTypeMap[itemName]
-	switch itemType {
-	case equipment.Top:
-		return constants.Top
-	case equipment.Pants:
-		return constants.Pants
-	case equipment.Shoes:
-		return constants.Shoes
-	case equipment.LeftHand:
-		return constants.LeftHand
-	case equipment.RightHand:
-		return constants.RightHand
-	default:
-		return constants.Nowhere
-	}
+	item := *equipmentPart
+	*equipmentPart = constants.Nothing
+	(*status.Inventory)[item] += 1
 }
 
 func getEquipmentPartByBodyPart(equipment *structure.Equipment, bodyPart constants.BodyPart) *constants.ItemType {

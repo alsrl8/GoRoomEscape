@@ -84,8 +84,8 @@ func RunTerminal(status *structure.Status) {
 			// 해제
 			reg, _ = regexp.Compile(" 해제$")
 			if reg.MatchString(input) {
-				//itemName := reg.ReplaceAllString(input, "")
-
+				bodyPartName := reg.ReplaceAllString(input, "")
+				command.Disarm(status, bodyPartName)
 				continue
 			}
 			fmt.Println(constants.WrongInput, input)

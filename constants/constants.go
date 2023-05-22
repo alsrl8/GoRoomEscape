@@ -148,6 +148,14 @@ var BodyPartStringMap = map[BodyPart]string{
 	RightHand: "오른손",
 }
 
+var StringBodyPartMap = map[string]BodyPart{
+	"상의":  Top,
+	"하의":  Pants,
+	"신발":  Shoes,
+	"왼손":  LeftHand,
+	"오른손": RightHand,
+}
+
 // Common Messages
 const SucceedOpeningDoor = "문을 열었습니다."
 const SucceedClosingDoor = "문을 닫았습니다."
@@ -167,4 +175,4 @@ const NotEnoughItemsToOpenDoor = "!!!아이템이 모자라 문을 열 수 없�
 const CanNotWear = "!!!장비할 수 없는 아이템입니다!!!"
 const NoBodyPartToWear = "!!!몸에 장비할 빈 공간이 없습니다!!!"
 const NoItemInInventory = "!!!해당 아이템이 가방에 없습니다!!!"
-const NoEquipmentOnBody = "!!!해당 아이템은 몸에 장비하고 있지 않습니다!!!"
+const NoEquipmentOnBodyPart = "!!!해당 부위에 장비하고 있는 아이템이 없습니다!!!"
