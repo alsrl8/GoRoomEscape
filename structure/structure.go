@@ -8,6 +8,7 @@ type Status struct {
 	Room      *Room
 	Inventory *Inventory
 	Equipment *Equipment
+	Attribute Attribute
 }
 
 type Room struct {
@@ -21,6 +22,12 @@ type Room struct {
 type Door struct {
 	Closed   bool
 	DoorType constants.DoorType
+}
+
+type Attribute struct {
+	Health  int
+	Attack  int
+	Defense int
 }
 
 type Item struct {
@@ -72,10 +79,8 @@ type MonsterPositionAndType struct {
 }
 
 type Monster struct {
-	Health   int
-	Attack   int
-	Defense  int
-	DropItem []DropItem
+	Attribute Attribute
+	DropItem  []DropItem
 }
 
 type DropItem struct {

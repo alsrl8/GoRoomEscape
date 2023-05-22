@@ -8,25 +8,30 @@ import (
 
 var monsterMap = map[constants.MonsterType]structure.Monster{
 	constants.Squirrel: {
-		Health:  50,
-		Attack:  5,
-		Defense: 0,
+		Attribute: structure.Attribute{
+			Health:  50,
+			Attack:  5,
+			Defense: 0},
 		DropItem: []structure.DropItem{
 			{ItemType: constants.HealPotion, DropPercentage: structure.DropPercentage{Percentage: 0.7, Num: 1}},
 		},
 	},
 	constants.Rabbit: {
-		Health:  70,
-		Attack:  7,
-		Defense: 3,
+		Attribute: structure.Attribute{
+			Health:  70,
+			Attack:  7,
+			Defense: 3,
+		},
 		DropItem: []structure.DropItem{
 			{ItemType: constants.HealPotion, DropPercentage: structure.DropPercentage{Percentage: 0.5, Num: 1}},
 			{ItemType: constants.HealPotion, DropPercentage: structure.DropPercentage{Percentage: 0.3, Num: 2}}},
 	},
 	constants.Deer: {
-		Health:  100,
-		Attack:  10,
-		Defense: 5,
+		Attribute: structure.Attribute{
+			Health:  100,
+			Attack:  10,
+			Defense: 5,
+		},
 		DropItem: []structure.DropItem{
 			{ItemType: constants.Key, DropPercentage: structure.DropPercentage{Percentage: 1.0, Num: 1}}},
 	},
