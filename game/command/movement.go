@@ -10,6 +10,9 @@ func Move(room *structure.Room, direction constants.Direction) *structure.Room {
 	if !canMove(room, direction) {
 		fmt.Println(constants.CanNotMoveWarning)
 		return room
+	} else if isMonsterExistInRoom(room) {
+		fmt.Println(constants.MonsterExistsInTheRoom)
+		return room
 	}
 	return getNextRoomInDirection(room, direction)
 }
@@ -189,6 +192,11 @@ func ShowRoomAndInventoryInfo(status *structure.Status) {
 		fmt.Printf("%s(%s) ", constants.DirStringMap[d], constants.DirStringEngMap[d])
 	}
 	fmt.Println()
+
+	if isMonsterExistInRoom(room) {
+		printLine()
+		printMonstersInRoom(room)
+	}
 
 	printLine()
 }

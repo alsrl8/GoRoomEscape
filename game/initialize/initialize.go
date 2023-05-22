@@ -20,6 +20,7 @@ func newRoom(goalFlag bool) *structure.Room {
 		Doors:      make(map[constants.Direction]*structure.Door),
 		GoalFlag:   goalFlag,
 		Items:      make(map[constants.ItemType]int),
+		Monsters:   make(map[constants.MonsterType]int),
 	}
 }
 
@@ -92,13 +93,30 @@ func putItemsOnRooms(grid *[][]*structure.Room, itemPositionAndType *[]structure
 	}
 }
 
-func InitGameAndReturnStatus(rowLen int, colLen int, roomPositions *[]structure.Position, doorPositionAndType *[]structure.DoorPositionAndType, startPosition structure.Position, endPosition structure.Position, endDirection constants.Direction, itemPositionAndType *[]structure.ItemPositionAndType) *structure.Status {
+func putMonstersOnRooms(grid *[][]*structure.Room, monsterPositionAnyType *[]structure.MonsterPositionAndType) {
+	for _, monster := range *monsterPositionAnyType {
+		(*grid)[monster.RoomPosition.Row][monster.RoomPosition.Col].Monsters[monster.MonsterType] += 1
+	}
+}
+
+func InitGameAndReturnStatus(
+	rowLen int,
+	colLen int,
+	roomPositions *[]structure.Position,
+	doorPositionAndType *[]structure.DoorPositionAndType,
+	startPosition structure.Position,
+	endPosition structure.Position,
+	endDirection constants.Direction,
+	itemPositionAndType *[]structure.ItemPositionAndType,
+	monsterPositionAnyType *[]structure.MonsterPositionAndType,
+) *structure.Status {
 	var grid = initGrid(rowLen, colLen)
 	createEmptyRooms(grid, roomPositions)
 	connectAdjacentRooms(grid)
 	buildDoorsBetweenRooms(grid, doorPositionAndType)
 	addEndPoint(grid, endPosition, endDirection)
 	putItemsOnRooms(grid, itemPositionAndType)
+	putMonstersOnRooms(grid, monsterPositionAnyType)
 	status := initStatus((*grid)[startPosition.Row][startPosition.Col])
 
 	return status

@@ -15,6 +15,7 @@ type Room struct {
 	Directions map[constants.Direction]*Room
 	GoalFlag   bool
 	Items      map[constants.ItemType]int
+	Monsters   map[constants.MonsterType]int
 }
 
 type Door struct {
@@ -63,4 +64,21 @@ type Inventory map[constants.ItemType]int
 type DropPercentage struct {
 	Percentage float32
 	Num        int
+}
+
+type MonsterPositionAndType struct {
+	RoomPosition Position
+	MonsterType  constants.MonsterType
+}
+
+type Monster struct {
+	Health   int
+	Attack   int
+	Defense  int
+	DropItem []DropItem
+}
+
+type DropItem struct {
+	ItemType       constants.ItemType
+	DropPercentage DropPercentage
 }

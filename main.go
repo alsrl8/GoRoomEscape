@@ -48,6 +48,11 @@ func main() {
 		{RoomPosition: structure.Position{Row: 7, Col: 9}, ItemType: constants.WoodSword},
 		{RoomPosition: structure.Position{Row: 9, Col: 6}, ItemType: constants.Box},
 	}
+	monsterPositionAndType := []structure.MonsterPositionAndType{
+		{RoomPosition: structure.Position{Row: 3, Col: 4}, MonsterType: constants.Squirrel},
+		{RoomPosition: structure.Position{Row: 4, Col: 6}, MonsterType: constants.Squirrel},
+		{RoomPosition: structure.Position{Row: 6, Col: 1}, MonsterType: constants.Deer}, {RoomPosition: structure.Position{Row: 6, Col: 4}, MonsterType: constants.Rabbit},
+	}
 	// boxItemPercentageMap := map[constants.ItemType]map[int]float32{
 	// 	constants.WoodSword:    {1: 0.2},
 	// 	constants.IronSword:    {1: 0.15},
@@ -58,6 +63,6 @@ func main() {
 	// 	constants.Nothing:      {1: 0.1},
 	// }
 
-	status := initialize.InitGameAndReturnStatus(rowLen, colLen, &roomPositions, &doorPositionAndType, startPosition, endPosition, endDirection, &itemPositionAndType)
+	status := initialize.InitGameAndReturnStatus(rowLen, colLen, &roomPositions, &doorPositionAndType, startPosition, endPosition, endDirection, &itemPositionAndType, &monsterPositionAndType)
 	gameStart(status)
 }
