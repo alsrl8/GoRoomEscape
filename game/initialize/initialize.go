@@ -127,6 +127,11 @@ func initStatus(startRoom *structure.Room) *structure.Status {
 		Room:      startRoom,
 		Inventory: &structure.Inventory{},
 		Equipment: &structure.Equipment{},
+		Attribute: structure.Attribute{
+			Health:  50,
+			Attack:  3,
+			Defense: 3,
+		},
 	}
 	return &status
 }
