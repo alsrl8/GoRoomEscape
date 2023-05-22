@@ -198,7 +198,7 @@ func ShowRoomAndInventoryInfo(status *structure.Status) {
 
 	if isMonsterExistInRoom(room) {
 		printLine()
-		printMonstersInRoom(room)
+		printMonsterInRoom(room)
 	}
 
 	printLine()
