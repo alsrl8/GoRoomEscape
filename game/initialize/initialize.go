@@ -3,6 +3,7 @@ package initialize
 import (
 	"goproject/constants"
 	"goproject/game/command"
+	"goproject/game/data"
 	"goproject/structure"
 )
 
@@ -92,8 +93,9 @@ func putItemsOnRooms(grid *[][]*structure.Room, itemPositionAndType *[]structure
 	}
 }
 
-func putMonstersOnRooms(grid *[][]*structure.Room, monsterWithPosition *[]structure.MonsterWithPosition) {
-	for _, monsterInfo := range *monsterWithPosition {
+func putMonstersOnRooms(grid *[][]*structure.Room) {
+	monsterWithPosition := data.GetMonsterWithPositionData()
+	for _, monsterInfo := range monsterWithPosition {
 		(*grid)[monsterInfo.RoomPosition.Row][monsterInfo.RoomPosition.Col].Monster = &structure.Monster{
 			MonsterType: monsterInfo.Monster.MonsterType,
 			Attribute:   monsterInfo.Monster.Attribute,
@@ -117,7 +119,6 @@ func InitGameAndReturnStatus(
 	endPosition structure.Position,
 	endDirection constants.Direction,
 	itemPositionAndType *[]structure.ItemPositionAndType,
-	monsterWithPosition *[]structure.MonsterWithPosition,
 	boxPositionAndDropItem *[]structure.BoxPositionAndDropItem,
 ) *structure.Status {
 	var grid = initGrid(rowLen, colLen)
@@ -126,7 +127,7 @@ func InitGameAndReturnStatus(
 	buildDoorsBetweenRooms(grid, doorPositionAndType)
 	addEndPoint(grid, endPosition, endDirection)
 	putItemsOnRooms(grid, itemPositionAndType)
-	putMonstersOnRooms(grid, monsterWithPosition)
+	putMonstersOnRooms(grid)
 	putBoxesOnRooms(grid, boxPositionAndDropItem)
 	status := initStatus((*grid)[startPosition.Row][startPosition.Col])
 	return status

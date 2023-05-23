@@ -3,16 +3,10 @@ package command
 import (
 	"fmt"
 	"goproject/constants"
+	"goproject/game/data"
 	"goproject/structure"
 	"math/rand"
 )
-
-var itemTypeUsableMap = map[constants.ItemType]bool{
-	constants.Hammer:     true,
-	constants.Key:        true,
-	constants.Box:        true,
-	constants.HealPotion: true,
-}
 
 func addItemToInventory(inventory *structure.Inventory, itemType constants.ItemType) {
 	(*inventory)[itemType] += 1
@@ -27,7 +21,7 @@ func hasItemInInventory(inventory structure.Inventory, itemType constants.ItemTy
 }
 
 func isUsableItem(itemType constants.ItemType) bool {
-	return itemTypeUsableMap[itemType]
+	return data.ItemTypeUsableMap[itemType]
 }
 
 func UseItem(inventory *structure.Inventory, itemName string) {

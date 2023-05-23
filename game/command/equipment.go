@@ -3,65 +3,9 @@ package command
 import (
 	"fmt"
 	"goproject/constants"
+	"goproject/game/data"
 	"goproject/structure"
 )
-
-var itemTypeWearableMap = map[constants.ItemType]bool{
-	constants.WoodSword:    true,
-	constants.IronSword:    true,
-	constants.WoodShield:   true,
-	constants.LeatherHat:   true,
-	constants.LeatherCloth: true,
-	constants.LeatherPants: true,
-	constants.LeatherShoes: true,
-}
-
-var equipmentEffectMap = map[constants.ItemType]structure.Attribute{
-	constants.WoodSword: {
-		Health:  0,
-		Attack:  3,
-		Defense: 0,
-	},
-	constants.IronSword: {
-		Health:  0,
-		Attack:  3,
-		Defense: 0,
-	},
-	constants.WoodShield: {
-		Health:  0,
-		Attack:  0,
-		Defense: 0,
-	},
-	constants.LeatherHat: {
-		Health:  0,
-		Attack:  0,
-		Defense: 0,
-	},
-	constants.LeatherCloth: {
-		Health:  0,
-		Attack:  0,
-		Defense: 6,
-	},
-	constants.LeatherPants: {
-		Health:  0,
-		Attack:  0,
-		Defense: 4,
-	},
-	constants.LeatherShoes: {
-		Health:  0,
-		Attack:  0,
-		Defense: 3,
-	},
-}
-
-var itemTypeBodyPartMap = map[constants.ItemType][]constants.BodyPart{
-	constants.WoodSword:    {constants.LeftHand, constants.RightHand},
-	constants.IronSword:    {constants.LeftHand, constants.RightHand},
-	constants.WoodShield:   {constants.LeftHand, constants.RightHand},
-	constants.LeatherCloth: {constants.Top},
-	constants.LeatherPants: {constants.Pants},
-	constants.LeatherShoes: {constants.Shoes},
-}
 
 func getEquipmentList(status structure.Status) []constants.ItemType {
 	return []constants.ItemType{
@@ -91,12 +35,12 @@ func isBodyPartsEmpty(status *structure.Status, part constants.BodyPart) bool {
 
 func isWearableItem(itemName string) bool {
 	item := constants.StringItemTypeMap[itemName]
-	wearable := itemTypeWearableMap[item]
+	wearable := data.ItemTypeWearableMap[item]
 	return wearable
 }
 
 func isBodyPartToWearExist(status *structure.Status, itemType constants.ItemType) bool {
-	bodyParts := itemTypeBodyPartMap[itemType]
+	bodyParts := data.ItemTypeBodyPartMap[itemType]
 	if len(bodyParts) == 0 {
 		return false
 	}
@@ -128,14 +72,14 @@ func Equip(status *structure.Status, itemName string) {
 		return
 	}
 
-	for _, bodyPart := range itemTypeBodyPartMap[itemType] {
+	for _, bodyPart := range data.ItemTypeBodyPartMap[itemType] {
 		if !isBodyPartsEmpty(status, bodyPart) {
 			continue
 		}
 		setEquipmentToBodyPart(status, bodyPart, itemType)
 		applyEquipmentEffect(status, itemType)
 		removeItemInInventory(status.Inventory, itemType)
-		fmt.Printf("%s에 장비(%s)를 장비했습니다.\n", constants.BodyPartStringMap[bodyPart], constants.ItemTypeStringMap[itemType])
+		fmt.Printf("%s에 %s 장비\n", constants.BodyPartStringMap[bodyPart], constants.ItemTypeStringMap[itemType])
 		return
 	}
 }
@@ -146,15 +90,15 @@ func setEquipmentToBodyPart(status *structure.Status, bodyPart constants.BodyPar
 }
 
 func applyEquipmentEffect(status *structure.Status, itemType constants.ItemType) {
-	status.Attribute.Health += equipmentEffectMap[itemType].Health
-	status.Attribute.Attack += equipmentEffectMap[itemType].Attack
-	status.Attribute.Defense += equipmentEffectMap[itemType].Defense
+	status.Attribute.Health += data.EquipmentEffectMap[itemType].Health
+	status.Attribute.Attack += data.EquipmentEffectMap[itemType].Attack
+	status.Attribute.Defense += data.EquipmentEffectMap[itemType].Defense
 }
 
 func removeEquipmentEffect(status *structure.Status, itemType constants.ItemType) {
-	status.Attribute.Health -= equipmentEffectMap[itemType].Health
-	status.Attribute.Attack -= equipmentEffectMap[itemType].Attack
-	status.Attribute.Defense -= equipmentEffectMap[itemType].Defense
+	status.Attribute.Attack -= data.EquipmentEffectMap[itemType].Attack
+	status.Attribute.Health -= data.EquipmentEffectMap[itemType].Health
+	status.Attribute.Defense -= data.EquipmentEffectMap[itemType].Defense
 }
 
 func Disarm(status *structure.Status, bodyPartName string) {
