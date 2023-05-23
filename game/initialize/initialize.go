@@ -93,9 +93,8 @@ func putItemsOnRooms(grid *[][]*structure.Room, itemPositionAndType *[]structure
 	}
 }
 
-func putMonstersOnRooms(grid *[][]*structure.Room) {
-	monsterWithPosition := data.GetMonsterWithPositionData()
-	for _, monsterInfo := range monsterWithPosition {
+func putMonstersOnRooms(grid *[][]*structure.Room, monsterWithPosition *[]structure.MonsterWithPosition) {
+	for _, monsterInfo := range *monsterWithPosition {
 		(*grid)[monsterInfo.RoomPosition.Row][monsterInfo.RoomPosition.Col].Monster = &structure.Monster{
 			MonsterType: monsterInfo.Monster.MonsterType,
 			Attribute:   monsterInfo.Monster.Attribute,
@@ -110,25 +109,31 @@ func putBoxesOnRooms(grid *[][]*structure.Room, boxPositionAndDropItem *[]struct
 	}
 }
 
-func InitGameAndReturnStatus(
-	rowLen int,
-	colLen int,
-	roomPositions *[]structure.Position,
-	doorPositionAndType *[]structure.DoorPositionAndType,
-	startPosition structure.Position,
-	endPosition structure.Position,
-	endDirection constants.Direction,
-	itemPositionAndType *[]structure.ItemPositionAndType,
-	boxPositionAndDropItem *[]structure.BoxPositionAndDropItem,
-) *structure.Status {
-	var grid = initGrid(rowLen, colLen)
+func InitGameAndReturnStatus() *structure.Status {
+	rowLen := data.GetRowLen()
+	colLen := data.GetColLen()
+	roomPositions := data.GetRoomPositions()
+	grid := initGrid(rowLen, colLen)
 	createEmptyRooms(grid, roomPositions)
 	connectAdjacentRooms(grid)
-	buildDoorsBetweenRooms(grid, doorPositionAndType)
+
+	startPosition := data.GetStartPosition()
+	endPosition := data.GetEndPosition()
+	endDirection := data.GetEndDirection()
 	addEndPoint(grid, endPosition, endDirection)
+
+	doorPositionAndType := data.GetDoorPositionAndType()
+	buildDoorsBetweenRooms(grid, doorPositionAndType)
+
+	monsterWithPosition := data.GetMonsterWithPositionData()
+	putMonstersOnRooms(grid, &monsterWithPosition)
+
+	itemPositionAndType := data.GetItemPositionAndType()
 	putItemsOnRooms(grid, itemPositionAndType)
-	putMonstersOnRooms(grid)
+
+	boxPositionAndDropItem := data.GetBoxPositionAndDropItem()
 	putBoxesOnRooms(grid, boxPositionAndDropItem)
+
 	status := initStatus((*grid)[startPosition.Row][startPosition.Col])
 	return status
 }
