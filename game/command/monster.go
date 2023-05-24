@@ -6,7 +6,7 @@ import (
 	"goproject/structure"
 )
 
-func GetMonsterInRoomByName(room *structure.Room, monsterName string) *structure.Monster {
+func FindMonsterByName(room *structure.Room, monsterName string) *structure.Monster {
 	if !isMonsterExistInRoom(room) || room.Monster.MonsterType != constants.StringMonsterTypeMap[monsterName] {
 		return nil
 	}
@@ -17,7 +17,7 @@ func isMonsterExistInRoom(room *structure.Room) bool {
 	return room.Monster != nil
 }
 
-func printMonsterInRoom(room *structure.Room) {
+func PrintMonsterInRoom(room *structure.Room) {
 	monster := room.Monster
 	printMonster(monster)
 }

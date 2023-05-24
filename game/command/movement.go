@@ -142,18 +142,19 @@ func printLine() {
 	fmt.Println("==================================================")
 }
 
-func ShowRoomAndInventoryInfo(status *structure.Status) {
-	room := status.Room
-	inventory := status.Inventory
-
+func PrintUserNameAndStatus(status *structure.Status) {
 	printLine()
 	fmt.Printf("이름 : %s, Health: %d, Attack: %d, Defense: %d\n", status.Name, status.Attribute.Health, status.Attribute.Attack, status.Attribute.Defense)
+}
 
+func printObjectsInDirections(room *structure.Room) {
 	printLine()
 	for _, d := range constants.DirectionList {
 		fmt.Printf("%s(%s) - %s\n", constants.DirStringMap[d], constants.DirStringEngMap[d], getNextRoomInfo(room, d))
 	}
+}
 
+func printInventory(inventory *structure.Inventory) {
 	printLine()
 	fmt.Printf("아이템 정보 >>> ")
 	for itemType, itemNum := range *inventory {
@@ -163,7 +164,9 @@ func ShowRoomAndInventoryInfo(status *structure.Status) {
 		fmt.Printf("%s(%d) ", constants.ItemTypeStringMap[itemType], itemNum)
 	}
 	fmt.Println()
+}
 
+func printMovableDirections(room *structure.Room) {
 	printLine()
 	fmt.Printf("이동 가능한 방향 >>> ")
 	for _, d := range constants.DirectionList {
@@ -173,10 +176,19 @@ func ShowRoomAndInventoryInfo(status *structure.Status) {
 		fmt.Printf("%s(%s) ", constants.DirStringMap[d], constants.DirStringEngMap[d])
 	}
 	fmt.Println()
+}
+
+func ShowRoomAndInventoryInfo(status *structure.Status) {
+	room := status.Room
+
+	PrintUserNameAndStatus(status)
+	printObjectsInDirections(status.Room)
+	printInventory(status.Inventory)
+	printMovableDirections(status.Room)
 
 	if isMonsterExistInRoom(room) {
 		printLine()
-		printMonsterInRoom(room)
+		PrintMonsterInRoom(room)
 	}
 
 	printLine()

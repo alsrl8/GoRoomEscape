@@ -62,14 +62,12 @@ func RunTerminal(status *structure.Status) {
 			continue // TODO 도망 명령어
 		// Multiple Words
 		default:
-			// 아이템
 			reg, _ := regexp.Compile(" 사용$")
 			if reg.MatchString(input) {
 				itemName := reg.ReplaceAllString(input, "")
 				command.UseItem(status.Inventory, itemName)
 				continue
 			}
-			// 아이템 With Target
 			reg, _ = regexp.Compile(" 사용 ")
 			if reg.MatchString(input) {
 				s := strings.Split(input, " 사용 ")
@@ -77,49 +75,41 @@ func RunTerminal(status *structure.Status) {
 				command.UseItemToDoor(status.Room, status.Inventory, itemName, doorName)
 				continue
 			}
-			// 열기
 			reg, _ = regexp.Compile("( 열기| 열어| 열)$")
 			if reg.MatchString(input) {
 				doorName := reg.ReplaceAllString(input, "")
 				command.OpenDoorByName(status.Room, status.Inventory, doorName)
 				continue
 			}
-			// 닫기
 			reg, _ = regexp.Compile("( 닫기| 닫아| 닫)$")
 			if reg.MatchString(input) {
 				doorName := reg.ReplaceAllString(input, "")
 				command.CloseDoorByName(status.Room, doorName)
 				continue
 			}
-			// 착용
 			reg, _ = regexp.Compile("( 착용| 장비)$")
 			if reg.MatchString(input) {
 				itemName := reg.ReplaceAllString(input, "")
 				command.Equip(status, itemName)
 				continue
 			}
-			// 해제
 			reg, _ = regexp.Compile(" 해제$")
 			if reg.MatchString(input) {
 				bodyPartName := reg.ReplaceAllString(input, "")
 				command.Disarm(status, bodyPartName)
 				continue
 			}
-			// 공격
 			reg, _ = regexp.Compile(" 공격$")
 			if reg.MatchString(input) {
 				monsterName := reg.ReplaceAllString(input, "")
-				monster := command.GetMonsterInRoomByName(status.Room, monsterName)
+				monster := command.FindMonsterByName(status.Room, monsterName)
 				if monster == nil {
 					fmt.Println(constants.NoSuchMonster, monsterName)
 					continue
 				}
-				command.AttackMonster(status, monster)
-				if command.IsDead(status.Attribute) {
+				gameOverFlag := battleToMonster(status, monster)
+				if gameOverFlag {
 					goto GameOver
-				} else if command.IsDead(monster.Attribute) {
-					command.RemoveMonsterInRoom(status.Room)
-					command.CarveMonster(status, monster)
 				}
 				continue
 			}
