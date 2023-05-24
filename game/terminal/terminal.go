@@ -71,14 +71,26 @@ func RunTerminal(status *structure.Status) {
 			reg, _ := regexp.Compile(" 사용$")
 			if reg.MatchString(input) {
 				itemName := reg.ReplaceAllString(input, "")
-				command.UseItem(status.Inventory, itemName)
+				itemType := constants.StringItemTypeMap[itemName]
+				err := command.ValidateItemUsability(status.Inventory, itemType)
+				if err != nil {
+					fmt.Println(err.Error())
+					continue
+				}
+				command.UseItemByName(status, itemName)
 				continue
 			}
 			reg, _ = regexp.Compile(" 사용 ")
 			if reg.MatchString(input) {
 				s := strings.Split(input, " 사용 ")
 				itemName, doorName := s[0], s[1]
-				command.UseItemToDoor(status.Room, status.Inventory, itemName, doorName)
+				itemType := constants.StringItemTypeMap[itemName]
+				err := command.ValidateItemUsability(status.Inventory, itemType)
+				if err != nil {
+					fmt.Println(err.Error())
+					continue
+				}
+				command.UseItemToDoorByName(status.Room, status.Inventory, itemName, doorName)
 				continue
 			}
 			reg, _ = regexp.Compile("( 열기| 열어| 열)$")

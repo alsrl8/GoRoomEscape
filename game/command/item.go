@@ -1,7 +1,7 @@
 package command
 
 import (
-	"fmt"
+	"errors"
 	"goproject/constants"
 	"goproject/game/data"
 	"goproject/structure"
@@ -17,47 +17,41 @@ func removeItemInInventory(inventory *structure.Inventory, itemType constants.It
 	(*inventory)[itemType] -= 1
 }
 
-func hasItemInInventory(inventory structure.Inventory, itemType constants.ItemType) bool {
-	return inventory[itemType] > 0
+func hasItemInInventory(inventory *structure.Inventory, itemType constants.ItemType) bool {
+	return (*inventory)[itemType] > 0
 }
 
 func isUsableItem(itemType constants.ItemType) bool {
 	return data.ItemTypeUsableMap[itemType]
 }
 
-// TODO UseItem에서 item validation 분리
-func UseItem(inventory *structure.Inventory, itemName string) {
+func UseItemByName(status *structure.Status, itemName string) {
 	itemType := constants.StringItemTypeMap[itemName]
-	if !hasItemInInventory(*inventory, itemType) {
-		fmt.Println(constants.NoSuchItem, itemName)
-	} else if !isUsableItem(itemType) {
-		fmt.Println(constants.CanNotUseSuchItem, itemName)
-	}
 
-	// TODO UseItem 상세 로직 추가
+	switch itemType {
+	case constants.HealPotion:
+		status.Attribute.Health += 30
+		removeItemInInventory(status.Inventory, constants.HealPotion)
+	default:
+		return
+	}
 }
 
-// TODO UseItemToDoor Validation 분리
-func UseItemToDoor(room *structure.Room, inventory *structure.Inventory, itemName string, doorName string) {
+func UseItemToDoorByName(room *structure.Room, inventory *structure.Inventory, itemName string, doorName string) {
 	itemType := constants.StringItemTypeMap[itemName]
-	if !hasItemInInventory(*inventory, itemType) {
-		fmt.Println(constants.NoSuchItem, itemName)
-	} else if !isUsableItem(itemType) {
-		fmt.Println(constants.CanNotUseSuchItem, itemName)
-	} else if findDoorByName(room, doorName) == nil {
-		fmt.Println(constants.NoSuchDoor, doorName)
-	}
 
-	if constants.Hammer == constants.StringItemTypeMap[itemName] {
+	if constants.Hammer == itemType {
 		if constants.GlassDoor == constants.StringDoorTypeMap[doorName] {
-			breakGlassDoorAndReduceHammer(room, inventory)
+			breakGlassDoor(room, inventory)
+			removeItemInInventory(inventory, constants.Hammer)
 			return
 		}
 	}
 
-	if constants.Key == constants.StringItemTypeMap[itemName] {
+	if constants.Key == itemType {
 		if constants.LockedDoor == constants.StringDoorTypeMap[doorName] {
-			unlockLockedDoorAndReduceKey(room, inventory)
+			unlockLockedDoor(room, inventory)
+			removeItemInInventory(inventory, constants.Key)
 			return
 		}
 	}
@@ -75,4 +69,13 @@ func GetItemByPercentage(dropItems *[]structure.DropItem) (constants.ItemType, i
 		}
 	}
 	return constants.Nothing, 0
+}
+
+func ValidateItemUsability(inventory *structure.Inventory, itemType constants.ItemType) error {
+	if hasItemInInventory(inventory, itemType) {
+		return errors.New(constants.NoItemInInventory)
+	} else if isUsableItem(itemType) {
+		return errors.New(constants.CanNotUseSuchItem)
+	}
+	return nil
 }

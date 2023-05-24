@@ -72,7 +72,7 @@ func GetCounterDirection(direction constants.Direction) constants.Direction {
 	return constants.DirectionList[(direction+2)%4]
 }
 
-func breakGlassDoorAndReduceHammer(room *structure.Room, inventory *structure.Inventory) {
+func breakGlassDoor(room *structure.Room, inventory *structure.Inventory) {
 	glassDoorDirection := findDoorDirectionByType(room, constants.GlassDoor)
 	room.Doors[glassDoorDirection] = nil
 	oppositeRoom := room.Directions[glassDoorDirection]
@@ -80,11 +80,10 @@ func breakGlassDoorAndReduceHammer(room *structure.Room, inventory *structure.In
 		counterDirection := GetCounterDirection(glassDoorDirection)
 		oppositeRoom.Doors[counterDirection] = nil
 	}
-	removeItemInInventory(inventory, constants.Hammer)
 	fmt.Println(constants.SucceedBreakingGlassDoor, constants.DirStringMap[glassDoorDirection])
 }
 
-func unlockLockedDoorAndReduceKey(room *structure.Room, inventory *structure.Inventory) {
+func unlockLockedDoor(room *structure.Room, inventory *structure.Inventory) {
 	lockedDoorDirection := findDoorDirectionByType(room, constants.LockedDoor)
 	room.Doors[lockedDoorDirection].DoorType = constants.WoodDoor
 	oppositeRoom := room.Directions[lockedDoorDirection]
@@ -94,7 +93,6 @@ func unlockLockedDoorAndReduceKey(room *structure.Room, inventory *structure.Inv
 			oppositeRoom.Doors[counterDirection].DoorType = constants.WoodDoor
 		}
 	}
-	removeItemInInventory(inventory, constants.Key)
 	fmt.Println(constants.SucceedUnlockLockedDoor, constants.DirStringMap[lockedDoorDirection])
 }
 
