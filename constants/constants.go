@@ -161,6 +161,8 @@ var StringMonsterTypeMap = map[string]MonsterType{
 	"사슴":  Deer,
 }
 
+const LineDivider = "=================================================="
+
 const SucceedOpeningDoor = "문을 열었습니다."
 const SucceedClosingDoor = "문을 닫았습니다."
 const SucceedBreakingGlassDoor = "유리문을 망치로 부쉈습니다."
@@ -169,7 +171,13 @@ const SucceedUnlockLockedDoor = "잠긴문을 열쇠로 열었습니다."
 const GetItem = "아이템을 얻었습니다 >> %s: %d개\n"
 const NoSpecificItemOnBody = "%s 아이템을 몸에 장비하고 있지 않습니다.\n"
 
+const PlayerStatus = "이름 : %s, Health: %d, Attack: %d, Defense: %d\n"
 const MonsterStatus = "%s >> Health: %d, Attack: %d, Defense: %d\n"
+const DirectionInfoWithRoomInfo = "%s(%s) - %s\n"
+const DirectionInfo = "%s(%s) "
+const MovableDirectionTitle = "이동 가능한 방향 >>> "
+const ItemInfoTitle = "아이템 정보 >>> "
+const ItemTypeAndNum = "%s(%d)"
 
 const DuringBattle = "<<< 몬스터(%s)와 전투 중입니다 >>>\n"
 const AttackMonster = "몬스터(%s)를 공격했습니다.\n"
@@ -178,6 +186,7 @@ const GetAttackedByMonster = "몬스터(%s)가 공격했습니다.\n"
 const DamageByMonster = "몬스터(%s)로부터 %d 만큼 피해를 입었습니다.\n"
 const CanNotAttack = "공격할 수 없습니다."
 const CanNotGuard = "방어할 수 없습니다."
+const OnGuard = "방어 중입니다."
 
 const KillMonster = "당신은 %s를 죽였습니다. ㅠㅠ\n"
 const GetKilled = "당신은 죽었습니다. ㅠㅠ\n"

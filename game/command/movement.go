@@ -128,7 +128,7 @@ func getNextRoomInfo(room *structure.Room, direction constants.Direction) string
 	if room.Doors[direction] != nil {
 		doorType := room.Doors[direction].DoorType
 		isClosed := room.Doors[direction].Closed
-		return fmt.Sprintf("%s(%s)", constants.DoorTypeStringMap[doorType], constants.DoorCloseStateStringMap[isClosed])
+		return fmt.Sprintf(constants.DirectionInfo, constants.DoorTypeStringMap[doorType], constants.DoorCloseStateStringMap[isClosed])
 	}
 
 	if room.Directions[direction] == nil {
@@ -139,44 +139,44 @@ func getNextRoomInfo(room *structure.Room, direction constants.Direction) string
 }
 
 func printLine() {
-	fmt.Println("==================================================")
+	fmt.Println(constants.LineDivider)
 }
 
 func PrintUserNameAndStatus(status *structure.Status) {
 	printLine()
-	fmt.Printf("이름 : %s, Health: %d, Attack: %d, Defense: %d\n", status.Name, status.Attribute.Health, status.Attribute.Attack, status.Attribute.Defense)
+	fmt.Printf(constants.PlayerStatus, status.Name, status.Attribute.Health, status.Attribute.Attack, status.Attribute.Defense)
 	if status.GuardFlag {
-		fmt.Println("방어 중입니다.")
+		fmt.Println(constants.OnGuard)
 	}
 }
 
 func printObjectsInDirections(room *structure.Room) {
 	printLine()
 	for _, d := range constants.DirectionList {
-		fmt.Printf("%s(%s) - %s\n", constants.DirStringMap[d], constants.DirStringEngMap[d], getNextRoomInfo(room, d))
+		fmt.Printf(constants.DirectionInfoWithRoomInfo, constants.DirStringMap[d], constants.DirStringEngMap[d], getNextRoomInfo(room, d))
 	}
 }
 
 func printInventory(inventory *structure.Inventory) {
 	printLine()
-	fmt.Printf("아이템 정보 >>> ")
+	fmt.Printf(constants.ItemInfoTitle)
 	for itemType, itemNum := range *inventory {
 		if itemNum == 0 {
 			continue
 		}
-		fmt.Printf("%s(%d) ", constants.ItemTypeStringMap[itemType], itemNum)
+		fmt.Printf(constants.ItemTypeAndNum, constants.ItemTypeStringMap[itemType], itemNum)
 	}
 	fmt.Println()
 }
 
 func printMovableDirections(room *structure.Room) {
 	printLine()
-	fmt.Printf("이동 가능한 방향 >>> ")
+	fmt.Printf(constants.MovableDirectionTitle)
 	for _, d := range constants.DirectionList {
 		if !canMove(room, d) {
 			continue
 		}
-		fmt.Printf("%s(%s) ", constants.DirStringMap[d], constants.DirStringEngMap[d])
+		fmt.Printf(constants.DirectionInfo, constants.DirStringMap[d], constants.DirStringEngMap[d])
 	}
 	fmt.Println()
 }
@@ -202,7 +202,7 @@ func PickUpItems(room *structure.Room, inventory *structure.Inventory) {
 		if itemNum == 0 {
 			continue
 		}
-		fmt.Printf("%s을 (%d)개 주웠습니다.\n", constants.ItemTypeStringMap[itemType], itemNum)
+		fmt.Printf(constants.GetItem, constants.ItemTypeStringMap[itemType], itemNum)
 		room.Items[itemType] -= itemNum
 		addItemToInventory(inventory, itemType)
 	}
