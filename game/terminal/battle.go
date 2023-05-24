@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"goproject/constants"
 	"goproject/game/command"
+	"goproject/game/data"
 	"goproject/structure"
 	"regexp"
 )
@@ -37,7 +38,13 @@ func battleToMonster(status *structure.Status, monster *structure.Monster) (game
 			command.Guard(status)
 			continue
 		case "도망":
-			goto FinishTheBattle
+			runSuccessFlag := command.Run(data.RunSuccessPercentage)
+			if runSuccessFlag {
+				fmt.Println(constants.RunningSucceeded)
+				goto FinishTheBattle
+			} else {
+				fmt.Println(constants.RunningFailed)
+			}
 		default:
 			reg, _ := regexp.Compile(" 사용$")
 			if reg.MatchString(input) {

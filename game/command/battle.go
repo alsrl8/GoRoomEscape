@@ -3,6 +3,8 @@ package command
 import (
 	"goproject/structure"
 	"math"
+	"math/rand"
+	"time"
 )
 
 func reduceHealth(attribute *structure.Attribute, attack int) int {
@@ -23,4 +25,10 @@ func Guard(status *structure.Status) {
 func DropGuard(status *structure.Status) {
 	status.GuardFlag = false
 	status.Attribute.Defense -= 10
+}
+
+func Run(successPercentage float64) bool {
+	rand.Seed(time.Now().UnixNano())
+	randomNum := rand.Float64()
+	return randomNum <= successPercentage
 }
