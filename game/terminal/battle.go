@@ -49,8 +49,15 @@ func battleToMonster(status *structure.Status, monster *structure.Monster) (game
 			reg, _ := regexp.Compile(" 사용$")
 			if reg.MatchString(input) {
 				itemName := reg.ReplaceAllString(input, "")
+				itemType := constants.StringItemTypeMap[itemName]
+				err := command.ValidateItemUsability(status.Inventory, itemType)
+				if err != nil {
+					fmt.Println(err.Error())
+					continue
+				}
 				command.UseItemByName(status, itemName)
 				command.DropGuard(status)
+				fmt.Printf(constants.UseItem, itemName)
 			} else {
 				fmt.Println(constants.WrongInput, input)
 				continue

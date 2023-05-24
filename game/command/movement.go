@@ -202,6 +202,6 @@ func PickUpItems(room *structure.Room, inventory *structure.Inventory) {
 		}
 		fmt.Printf(constants.GetItem, constants.ItemTypeStringMap[itemType], itemNum)
 		room.Items[itemType] -= itemNum
-		addItemToInventory(inventory, itemType)
+		addItemToInventory(inventory, itemType, itemNum)
 	}
 }

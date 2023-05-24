@@ -20,7 +20,7 @@ func getEquipmentList(status structure.Status) []constants.ItemType {
 func ShowEquipment(status structure.Status) {
 	equipmentList := getEquipmentList(status)
 	if len(equipmentList) != len(constants.BodyPartList) {
-		panic("Length of equipment list and body part list must be same")
+		panic(constants.PanicEquipmentListLengthAndBodyPartListLength)
 	}
 	for i, equipment := range equipmentList {
 		bodyPartName := constants.BodyPartStringMap[constants.BodyPartList[i]]
@@ -78,8 +78,8 @@ func Equip(status *structure.Status, itemName string) {
 		}
 		setEquipmentToBodyPart(status, bodyPart, itemType)
 		applyEquipmentEffect(status, itemType)
-		removeItemInInventory(status.Inventory, itemType)
-		fmt.Printf("%s에 %s 장비\n", constants.BodyPartStringMap[bodyPart], constants.ItemTypeStringMap[itemType])
+		removeItemInInventory(status.Inventory, itemType, 1)
+		fmt.Printf(constants.EquipEquipment, constants.BodyPartStringMap[bodyPart], constants.ItemTypeStringMap[itemType])
 		return
 	}
 }
@@ -112,9 +112,9 @@ func Disarm(status *structure.Status, bodyPartName string) {
 
 	itemType := *equipmentPart
 	*equipmentPart = constants.Nothing
-	addItemToInventory(status.Inventory, itemType)
+	addItemToInventory(status.Inventory, itemType, 1)
 	removeEquipmentEffect(status, itemType)
-	fmt.Printf("%s에서 장비(%s)를 해제했습니다.\n", bodyPartName, constants.ItemTypeStringMap[itemType])
+	fmt.Printf(constants.DisarmEquipment, bodyPartName, constants.ItemTypeStringMap[itemType])
 }
 
 func getEquipmentPartByBodyPart(equipment *structure.Equipment, bodyPart constants.BodyPart) *constants.ItemType {

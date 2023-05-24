@@ -103,12 +103,6 @@ func putMonstersOnRooms(grid *[][]*structure.Room, monsterWithPosition *[]struct
 	}
 }
 
-func putBoxesOnRooms(grid *[][]*structure.Room, boxPositionAndDropItem *[]structure.BoxPositionAndDropItem) {
-	for _, boxInfo := range *boxPositionAndDropItem {
-		(*grid)[boxInfo.RoomPosition.Row][boxInfo.RoomPosition.Col].DropItem = boxInfo.DropItem
-	}
-}
-
 func InitGameAndReturnStatus() *structure.Status {
 	rowLen := data.GetRowLen()
 	colLen := data.GetColLen()
@@ -130,9 +124,6 @@ func InitGameAndReturnStatus() *structure.Status {
 
 	itemPositionAndType := data.GetItemPositionAndType()
 	putItemsOnRooms(grid, itemPositionAndType)
-
-	boxPositionAndDropItem := data.GetBoxPositionAndDropItem()
-	putBoxesOnRooms(grid, boxPositionAndDropItem)
 
 	status := initStatus((*grid)[startPosition.Row][startPosition.Col])
 	return status

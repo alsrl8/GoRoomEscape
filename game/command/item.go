@@ -2,6 +2,7 @@ package command
 
 import (
 	"errors"
+	"fmt"
 	"goproject/constants"
 	"goproject/game/data"
 	"goproject/structure"
@@ -10,12 +11,12 @@ import (
 	"time"
 )
 
-func addItemToInventory(inventory *structure.Inventory, itemType constants.ItemType) {
-	(*inventory)[itemType] += 1
+func addItemToInventory(inventory *structure.Inventory, itemType constants.ItemType, itemNum int) {
+	(*inventory)[itemType] += itemNum
 }
 
-func removeItemInInventory(inventory *structure.Inventory, itemType constants.ItemType) {
-	(*inventory)[itemType] -= 1
+func removeItemInInventory(inventory *structure.Inventory, itemType constants.ItemType, itemNum int) {
+	(*inventory)[itemType] -= itemNum
 }
 
 func hasItemInInventory(inventory *structure.Inventory, itemType constants.ItemType) bool {
@@ -23,7 +24,7 @@ func hasItemInInventory(inventory *structure.Inventory, itemType constants.ItemT
 }
 
 func isUsableItem(itemType constants.ItemType) bool {
-	return data.ItemTypeUsableMap[itemType]
+	return data.ItemTypeUsableAloneMap[itemType]
 }
 
 func UseItemByName(status *structure.Status, itemName string) {
@@ -33,7 +34,12 @@ func UseItemByName(status *structure.Status, itemName string) {
 	case constants.HealPotion:
 		healPoint := 30
 		status.Attribute.Health = int(math.Min(float64(data.MaxHealth), float64(status.Attribute.Health+healPoint)))
-		removeItemInInventory(status.Inventory, constants.HealPotion)
+		removeItemInInventory(status.Inventory, constants.HealPotion, 1)
+	case constants.Box:
+		boxItemType, boxItemNum := GetItemByPercentage(&data.BoxDropItems)
+		addItemToInventory(status.Inventory, boxItemType, boxItemNum)
+		removeItemInInventory(status.Inventory, constants.Box, 1)
+		fmt.Printf(constants.GetItem, constants.ItemTypeStringMap[boxItemType], boxItemNum)
 	default:
 		return
 	}
@@ -45,7 +51,7 @@ func UseItemToDoorByName(room *structure.Room, inventory *structure.Inventory, i
 	if constants.Hammer == itemType {
 		if constants.GlassDoor == constants.StringDoorTypeMap[doorName] {
 			breakGlassDoor(room, inventory)
-			removeItemInInventory(inventory, constants.Hammer)
+			removeItemInInventory(inventory, constants.Hammer, 1)
 			return
 		}
 	}
@@ -53,7 +59,7 @@ func UseItemToDoorByName(room *structure.Room, inventory *structure.Inventory, i
 	if constants.Key == itemType {
 		if constants.LockedDoor == constants.StringDoorTypeMap[doorName] {
 			unlockLockedDoor(room, inventory)
-			removeItemInInventory(inventory, constants.Key)
+			removeItemInInventory(inventory, constants.Key, 1)
 			return
 		}
 	}
