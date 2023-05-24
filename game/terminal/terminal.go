@@ -84,12 +84,15 @@ func RunTerminal(status *structure.Status) {
 				s := strings.Split(input, " 사용 ")
 				itemName, doorName := s[0], s[1]
 				itemType := constants.StringItemTypeMap[itemName]
+				doorType := constants.StringDoorTypeMap[doorName]
 				if err := command.ValidateItemUsability(status.Inventory, itemType, true); err != nil {
 					fmt.Println(err.Error())
 					continue
-				} else if err = command.ValidateDoorByName(status.Room, doorName); err != nil {
+				} else if err = command.ValidateDoorExist(status.Room, doorType); err != nil {
 					fmt.Println(err.Error())
 					continue
+				} else if err = command.ValidateItemDoorMatch(itemType, doorType); err != nil {
+					fmt.Println(err.Error())
 				}
 				command.UseItemToDoorByName(status.Room, status.Inventory, itemName, doorName)
 				fmt.Printf(constants.UseItem, itemName)
@@ -98,21 +101,23 @@ func RunTerminal(status *structure.Status) {
 			reg, _ = regexp.Compile("( 열기| 열어| 열)$")
 			if reg.MatchString(input) {
 				doorName := reg.ReplaceAllString(input, "")
-				if err := command.ValidateDoorByName(status.Room, doorName); err != nil {
+				doorType := constants.StringDoorTypeMap[doorName]
+				if err := command.ValidateDoorExist(status.Room, doorType); err != nil {
 					fmt.Println(err.Error())
 					continue
 				}
-				command.OpenDoorByName(status.Room, status.Inventory, doorName)
+				command.OpenDoorByName(status.Room, doorType)
 				continue
 			}
 			reg, _ = regexp.Compile("( 닫기| 닫아| 닫)$")
 			if reg.MatchString(input) {
 				doorName := reg.ReplaceAllString(input, "")
-				if err := command.ValidateDoorByName(status.Room, doorName); err != nil {
+				doorType := constants.StringDoorTypeMap[doorName]
+				if err := command.ValidateDoorExist(status.Room, doorType); err != nil {
 					fmt.Println(err.Error())
 					continue
 				}
-				command.CloseDoorByName(status.Room, doorName)
+				command.CloseDoorByName(status.Room, doorType)
 				continue
 			}
 			reg, _ = regexp.Compile("( 착용| 장비)$")

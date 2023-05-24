@@ -12,7 +12,7 @@ func Move(room *structure.Room, direction constants.Direction) *structure.Room {
 		fmt.Println(constants.CanNotMoveWarning, constants.DirStringMap[direction], constants.DirStringEngMap[direction])
 		return room
 	} else if isMonsterExistInRoom(room) {
-		fmt.Println(constants.MonsterExistsInTheRoom, constants.MonsterTypeStringMap[room.Monster.MonsterType])
+		fmt.Println(constants.MonsterExistInTheRoom, constants.MonsterTypeStringMap[room.Monster.MonsterType])
 		return room
 	}
 	return getNextRoomInDirection(room, direction)
@@ -43,16 +43,13 @@ func findDoorDirectionByType(room *structure.Room, doorType constants.DoorType) 
 	return constants.NoDirection
 }
 
-func findDoorByName(room *structure.Room, doorName string) *structure.Door {
+func findDoorInRoom(room *structure.Room, doorType constants.DoorType) *structure.Door {
 	for _, direction := range constants.DirectionList {
 		if room.Doors[direction] == nil {
 			continue
-		}
-		doorType := room.Doors[direction].DoorType
-		if constants.DoorTypeStringMap[doorType] != doorName {
+		} else if doorType == room.Doors[direction].DoorType {
 			continue
 		}
-
 		return room.Doors[direction]
 	}
 	return nil
@@ -97,20 +94,20 @@ func unlockLockedDoor(room *structure.Room, inventory *structure.Inventory) {
 	fmt.Println(constants.SucceedUnlockLockedDoor, constants.DirStringMap[lockedDoorDirection])
 }
 
-func OpenDoorByName(room *structure.Room, inventory *structure.Inventory, doorName string) {
-	door := findDoorByName(room, doorName)
+func OpenDoorByName(room *structure.Room, doorType constants.DoorType) {
+	door := findDoorInRoom(room, doorType)
 	if !door.Closed {
-		fmt.Println(constants.AlreadyOpenDoor, doorName)
+		fmt.Println(constants.AlreadyOpenDoor, constants.DoorTypeStringMap[doorType])
 		return
 	}
 
 	openDoor(door)
 }
 
-func CloseDoorByName(room *structure.Room, doorName string) {
-	door := findDoorByName(room, doorName)
+func CloseDoorByName(room *structure.Room, doorType constants.DoorType) {
+	door := findDoorInRoom(room, doorType)
 	if door.Closed {
-		fmt.Println(constants.AlreadyClosedDoor, doorName)
+		fmt.Println(constants.AlreadyClosedDoor, constants.DoorTypeStringMap[doorType])
 		return
 	}
 
@@ -201,8 +198,8 @@ func PickUpItems(room *structure.Room, inventory *structure.Inventory) {
 	}
 }
 
-func ValidateDoorByName(room *structure.Room, doorName string) error {
-	if findDoorByName(room, doorName) == nil {
+func ValidateDoorExist(room *structure.Room, doorType constants.DoorType) error {
+	if findDoorInRoom(room, doorType) == nil {
 		return errors.New(constants.NoSuchDoor)
 	}
 	return nil

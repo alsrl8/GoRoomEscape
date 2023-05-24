@@ -89,3 +89,22 @@ func ValidateItemUsability(inventory *structure.Inventory, itemType constants.It
 	}
 	return nil
 }
+
+func ValidateItemDoorMatch(itemType constants.ItemType, doorType constants.DoorType) error {
+	switch itemType {
+	case constants.Hammer:
+		if doorType == constants.GlassDoor {
+			return nil
+		} else {
+			return errors.New(constants.NoMatchItemAndDoor)
+		}
+	case constants.Key:
+		if doorType == constants.LockedDoor {
+			return nil
+		} else {
+			return errors.New(constants.NoMatchItemAndDoor)
+		}
+	default:
+		return errors.New(constants.NoMatchItemAndDoor)
+	}
+}
