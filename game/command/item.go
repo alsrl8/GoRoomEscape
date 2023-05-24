@@ -5,6 +5,7 @@ import (
 	"goproject/constants"
 	"goproject/game/data"
 	"goproject/structure"
+	"math"
 	"math/rand"
 	"time"
 )
@@ -30,7 +31,8 @@ func UseItemByName(status *structure.Status, itemName string) {
 
 	switch itemType {
 	case constants.HealPotion:
-		status.Attribute.Health += 30
+		healPoint := 30
+		status.Attribute.Health = int(math.Min(float64(data.MaxHealth), float64(status.Attribute.Health+healPoint)))
 		removeItemInInventory(status.Inventory, constants.HealPotion)
 	default:
 		return
@@ -72,9 +74,9 @@ func GetItemByPercentage(dropItems *[]structure.DropItem) (constants.ItemType, i
 }
 
 func ValidateItemUsability(inventory *structure.Inventory, itemType constants.ItemType) error {
-	if hasItemInInventory(inventory, itemType) {
+	if !hasItemInInventory(inventory, itemType) {
 		return errors.New(constants.NoItemInInventory)
-	} else if isUsableItem(itemType) {
+	} else if !isUsableItem(itemType) {
 		return errors.New(constants.CanNotUseSuchItem)
 	}
 	return nil

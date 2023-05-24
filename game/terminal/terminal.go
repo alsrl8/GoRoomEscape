@@ -78,6 +78,7 @@ func RunTerminal(status *structure.Status) {
 					continue
 				}
 				command.UseItemByName(status, itemName)
+				fmt.Printf(constants.UseItem, itemName)
 				continue
 			}
 			reg, _ = regexp.Compile(" 사용 ")
@@ -91,6 +92,7 @@ func RunTerminal(status *structure.Status) {
 					continue
 				}
 				command.UseItemToDoorByName(status.Room, status.Inventory, itemName, doorName)
+				fmt.Printf(constants.UseItem, itemName)
 				continue
 			}
 			reg, _ = regexp.Compile("( 열기| 열어| 열)$")

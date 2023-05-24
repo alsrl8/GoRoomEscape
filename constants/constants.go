@@ -170,6 +170,7 @@ const SucceedUnlockLockedDoor = "잠긴문을 열쇠로 열었습니다."
 
 const GetItem = "아이템을 얻었습니다 >> %s: %d개\n"
 const NoSpecificItemOnBody = "%s 아이템을 몸에 장비하고 있지 않습니다.\n"
+const UseItem = "아이템(%s)을 사용했습니다.\n"
 
 const PlayerStatus = "이름 : %s, Health: %d, Attack: %d, Defense: %d\n"
 const MonsterStatus = "%s >> Health: %d, Attack: %d, Defense: %d\n"
