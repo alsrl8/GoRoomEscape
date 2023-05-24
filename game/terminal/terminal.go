@@ -34,8 +34,16 @@ func getInput() string {
 func SetUserInputAsUserName(status *structure.Status) {
 	clearTerminal()
 	fmt.Println("사용자 이름")
-	userName := getInput()
-	status.Name = userName
+	for {
+		userName := getInput()
+		if len(userName) > 0 && len(userName) <= 16 {
+			status.Name = userName
+			return
+		} else {
+			clearTerminal()
+			fmt.Println(constants.InvalidUserName, userName)
+		}
+	}
 }
 
 func RunTerminal(status *structure.Status) {

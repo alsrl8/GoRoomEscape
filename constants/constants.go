@@ -168,6 +168,7 @@ const SucceedBreakingGlassDoor = "유리문을 망치로 부쉈습니다."
 const SucceedUnlockLockedDoor = "잠긴문을 열쇠로 열었습니다."
 
 // Warnings
+const InvalidUserName = "!!!사용자 이름이 잘못 입력되었습니다!!!"
 const WrongInput = "!!!잘못 입력하였습니다!!!"
 const CanNotMoveWarning = "!!!그 방향으로 움직일 수 없습니다!!!"
 const NoSuchItem = "!!!그런 아이템은 없습니다!!!"
