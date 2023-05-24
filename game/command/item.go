@@ -6,6 +6,7 @@ import (
 	"goproject/game/data"
 	"goproject/structure"
 	"math/rand"
+	"time"
 )
 
 func addItemToInventory(inventory *structure.Inventory, itemType constants.ItemType) {
@@ -61,6 +62,7 @@ func UseItemToDoor(room *structure.Room, inventory *structure.Inventory, itemNam
 }
 
 func GetItemByPercentage(dropItems *[]structure.DropItem) (constants.ItemType, int) {
+	rand.Seed(time.Now().UnixNano())
 	randomNum := rand.Float64()
 	totalProbability := 0.0
 
