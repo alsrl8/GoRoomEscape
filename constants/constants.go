@@ -192,6 +192,7 @@ const CanNotGuard = "방어할 수 없습니다."
 const OnGuard = "방어 중입니다."
 const RunningSucceeded = "도망쳤습니다."
 const RunningFailed = "도망치려 했으나 실패했습니다."
+const RaiseShield = "방패를 들었습니다."
 
 const KillMonster = "당신은 %s를 죽였습니다. ㅠㅠ\n"
 const GetKilled = "당신은 죽었습니다. ㅠㅠ\n"

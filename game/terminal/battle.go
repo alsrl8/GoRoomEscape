@@ -36,6 +36,7 @@ func battleToMonster(status *structure.Status, monster *structure.Monster) (game
 				continue
 			}
 			command.Guard(status)
+			fmt.Println(constants.RaiseShield)
 			continue
 		case "도망":
 			runSuccessFlag := command.Run(data.RunSuccessPercentage)
