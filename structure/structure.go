@@ -10,6 +10,7 @@ type Status struct {
 	Inventory *Inventory
 	Equipment *Equipment
 	Attribute Attribute
+	GuardFlag bool
 }
 
 type Room struct {

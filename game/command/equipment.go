@@ -132,3 +132,29 @@ func getEquipmentPartByBodyPart(equipment *structure.Equipment, bodyPart constan
 	}
 	return nil
 }
+
+func IsAttackAble(status *structure.Status) bool {
+	if status.GuardFlag {
+		return false
+	}
+	return true
+}
+
+func IsGuardAble(status *structure.Status) bool {
+	if status.GuardFlag {
+		return false
+	} else if !isSpecificItemEquipped(status.Equipment, constants.WoodShield) {
+		return false
+	}
+	return true
+}
+
+func isSpecificItemEquipped(equipment *structure.Equipment, itemType constants.ItemType) bool {
+	for _, bodyPart := range constants.BodyPartList {
+		equipmentOnBody := getEquipmentPartByBodyPart(equipment, bodyPart)
+		if *equipmentOnBody == itemType {
+			return true
+		}
+	}
+	return false
+}

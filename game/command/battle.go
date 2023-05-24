@@ -14,3 +14,13 @@ func reduceHealth(attribute *structure.Attribute, attack int) int {
 func IsDead(attribute structure.Attribute) bool {
 	return attribute.Health <= 0
 }
+
+func Guard(status *structure.Status) {
+	status.GuardFlag = true
+	status.Attribute.Defense += 10
+}
+
+func DropGuard(status *structure.Status) {
+	status.GuardFlag = false
+	status.Attribute.Defense -= 10
+}

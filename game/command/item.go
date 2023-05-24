@@ -25,6 +25,7 @@ func isUsableItem(itemType constants.ItemType) bool {
 	return data.ItemTypeUsableMap[itemType]
 }
 
+// TODO UseItem에서 item validation 분리
 func UseItem(inventory *structure.Inventory, itemName string) {
 	itemType := constants.StringItemTypeMap[itemName]
 	if !hasItemInInventory(*inventory, itemType) {
@@ -33,9 +34,10 @@ func UseItem(inventory *structure.Inventory, itemName string) {
 		fmt.Println(constants.CanNotUseSuchItem, itemName)
 	}
 
-	// TODO 아이템 사용 상세 로직 추가
+	// TODO UseItem 상세 로직 추가
 }
 
+// TODO UseItemToDoor Validation 분리
 func UseItemToDoor(room *structure.Room, inventory *structure.Inventory, itemName string, doorName string) {
 	itemType := constants.StringItemTypeMap[itemName]
 	if !hasItemInInventory(*inventory, itemType) {

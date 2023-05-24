@@ -167,6 +167,7 @@ const SucceedBreakingGlassDoor = "유리문을 망치로 부쉈습니다."
 const SucceedUnlockLockedDoor = "잠긴문을 열쇠로 열었습니다."
 
 const GetItem = "아이템을 얻었습니다 >> %s: %d개\n"
+const NoSpecificItemOnBody = "%s 아이템을 몸에 장비하고 있지 않습니다.\n"
 
 const MonsterStatus = "%s >> Health: %d, Attack: %d, Defense: %d\n"
 
@@ -175,6 +176,8 @@ const AttackMonster = "몬스터(%s)를 공격했습니다.\n"
 const DamageMonster = "%s에게 %d 만큼 피해를 입혔습니다.\n"
 const GetAttackedByMonster = "몬스터(%s)가 공격했습니다.\n"
 const DamageByMonster = "몬스터(%s)로부터 %d 만큼 피해를 입었습니다.\n"
+const CanNotAttack = "공격할 수 없습니다."
+const CanNotGuard = "방어할 수 없습니다."
 
 const KillMonster = "당신은 %s를 죽였습니다. ㅠㅠ\n"
 const GetKilled = "당신은 죽었습니다. ㅠㅠ\n"

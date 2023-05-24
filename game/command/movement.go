@@ -145,6 +145,9 @@ func printLine() {
 func PrintUserNameAndStatus(status *structure.Status) {
 	printLine()
 	fmt.Printf("이름 : %s, Health: %d, Attack: %d, Defense: %d\n", status.Name, status.Attribute.Health, status.Attribute.Attack, status.Attribute.Defense)
+	if status.GuardFlag {
+		fmt.Println("방어 중입니다.")
+	}
 }
 
 func printObjectsInDirections(room *structure.Room) {
