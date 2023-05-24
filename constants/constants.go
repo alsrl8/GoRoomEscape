@@ -161,13 +161,24 @@ var StringMonsterTypeMap = map[string]MonsterType{
 	"사슴":  Deer,
 }
 
-// Common Messages
 const SucceedOpeningDoor = "문을 열었습니다."
 const SucceedClosingDoor = "문을 닫았습니다."
 const SucceedBreakingGlassDoor = "유리문을 망치로 부쉈습니다."
 const SucceedUnlockLockedDoor = "잠긴문을 열쇠로 열었습니다."
 
-// Warnings
+const GetItem = "아이템을 얻었습니다 >> %s: %d개\n"
+
+const MonsterStatus = "%s >> Health: %d, Attack: %d, Defense: %d\n"
+
+const DuringBattle = "<<< 몬스터(%s)와 전투 중입니다 >>>\n"
+const AttackMonster = "몬스터(%s)를 공격했습니다.\n"
+const DamageMonster = "%s에게 %d 만큼 피해를 입혔습니다.\n"
+const GetAttackedByMonster = "몬스터(%s)가 공격했습니다.\n"
+const DamageByMonster = "몬스터(%s)로부터 %d 만큼 피해를 입었습니다.\n"
+
+const KillMonster = "당신은 %s를 죽였습니다. ㅠㅠ\n"
+const GetKilled = "당신은 죽었습니다. ㅠㅠ\n"
+
 const InvalidUserName = "!!!사용자 이름이 잘못 입력되었습니다!!!"
 const WrongInput = "!!!잘못 입력하였습니다!!!"
 const CanNotMoveWarning = "!!!그 방향으로 움직일 수 없습니다!!!"
@@ -185,3 +196,7 @@ const NoEquipmentOnBodyPart = "!!!해당 부위에 장비하고 있는 아이템
 const MonsterExistsInTheRoom = "!!!방 안에 몬스터가 있습니다!!!"
 const NoSuchMonster = "!!!그런 몬스터는 없습니다!!!"
 const CanNotUseSuchItem = "!!!사용할 수 없는 종류의 아이템입니다!!!"
+
+const QuitGame = "종료했습니다."
+const GameOver = "실패했습니다."
+const GameClear = "탈출했습니다."

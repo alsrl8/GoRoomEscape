@@ -23,17 +23,23 @@ func PrintMonsterInRoom(room *structure.Room) {
 }
 
 func printMonster(monster *structure.Monster) {
-	fmt.Printf("%s >> Health: %d, Attack: %d, Defense: %d\n", constants.MonsterTypeStringMap[monster.MonsterType], monster.Attribute.Health, monster.Attribute.Attack, monster.Attribute.Defense)
+	fmt.Printf(constants.MonsterStatus, constants.MonsterTypeStringMap[monster.MonsterType], monster.Attribute.Health, monster.Attribute.Attack, monster.Attribute.Defense)
 }
 
-func reduceMonsterHealth(monster *structure.Monster, attack int) {
-	reduceHealth(&monster.Attribute, attack)
+func reduceMonsterHealth(monster *structure.Monster, attack int) int {
+	return reduceHealth(&monster.Attribute, attack)
 }
 
-func AttackMonster(status *structure.Status, monster *structure.Monster) {
-	reduceMonsterHealth(monster, status.Attribute.Attack)
-	reduceHealth(&status.Attribute, monster.Attribute.Attack)
-	fmt.Printf("몬스터(%s)와 공격을 주고 받았습니다.\n", constants.MonsterTypeStringMap[monster.MonsterType])
+func DamageMonsterByPlayer(status *structure.Status, monster *structure.Monster) {
+	damage := reduceMonsterHealth(monster, status.Attribute.Attack)
+	fmt.Printf(constants.AttackMonster, constants.MonsterTypeStringMap[monster.MonsterType])
+	fmt.Printf(constants.DamageMonster, constants.MonsterTypeStringMap[monster.MonsterType], damage)
+}
+
+func DamagePlayerByMonster(status *structure.Status, monster *structure.Monster) {
+	damage := reduceHealth(&status.Attribute, monster.Attribute.Attack)
+	fmt.Printf(constants.GetAttackedByMonster, constants.MonsterTypeStringMap[monster.MonsterType])
+	fmt.Printf(constants.DamageByMonster, constants.MonsterTypeStringMap[monster.MonsterType], damage)
 }
 
 func RemoveMonsterInRoom(room *structure.Room) {
@@ -46,5 +52,5 @@ func CarveMonster(status *structure.Status, monster *structure.Monster) {
 		return
 	}
 	(*status.Inventory)[itemType] += itemNum
-	fmt.Printf("다음을 얻었습니다 >> %s: %d개\n", constants.ItemTypeStringMap[itemType], itemNum)
+	fmt.Printf(constants.GetItem, constants.ItemTypeStringMap[itemType], itemNum)
 }

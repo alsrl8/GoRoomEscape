@@ -66,8 +66,6 @@ func RunTerminal(status *structure.Status) {
 			status.Room = command.Move(status.Room, constants.South)
 		case "eq", "장비":
 			command.ShowEquipment(*status)
-		case "도망":
-			continue // TODO 도망 명령어
 		// Multiple Words
 		default:
 			reg, _ := regexp.Compile(" 사용$")
@@ -130,13 +128,13 @@ func RunTerminal(status *structure.Status) {
 	}
 QuitLoop:
 	clearTerminal()
-	fmt.Println("종료했습니다.")
+	fmt.Println(constants.QuitGame)
 	return
 GameOver:
 	clearTerminal()
-	fmt.Println("실패했습니다.")
+	fmt.Println(constants.GameOver)
 	return
 ExitLoop:
 	clearTerminal()
-	fmt.Println("탈출했습니다.")
+	fmt.Println(constants.GameClear)
 }

@@ -9,7 +9,7 @@ import (
 
 func battleToMonster(status *structure.Status, monster *structure.Monster) (gameOverFlag bool) {
 	clearTerminal()
-	fmt.Printf("<<< 몬스터(%s)와 전투 중입니다 >>>\n", constants.MonsterTypeStringMap[monster.MonsterType])
+	fmt.Printf(constants.DuringBattle, constants.MonsterTypeStringMap[monster.MonsterType])
 	for {
 		command.PrintUserNameAndStatus(status)
 		command.PrintMonsterInRoom(status.Room)
@@ -17,22 +17,25 @@ func battleToMonster(status *structure.Status, monster *structure.Monster) (game
 		clearTerminal()
 		switch input {
 		case "공격":
-			command.AttackMonster(status, monster)
+			command.DamageMonsterByPlayer(status, monster)
+			if command.IsDead(monster.Attribute) {
+				command.RemoveMonsterInRoom(status.Room)
+				command.CarveMonster(status, monster)
+				fmt.Printf(constants.KillMonster, constants.MonsterTypeStringMap[monster.MonsterType])
+				goto FinishTheBattle
+			}
+			command.DamagePlayerByMonster(status, monster)
+			if command.IsDead(status.Attribute) {
+				gameOverFlag = true
+				fmt.Printf(constants.GetKilled)
+				goto FinishTheBattle
+			}
 		case "방어":
 		case "도망":
 		default:
 			fmt.Println(constants.WrongInput, input)
 		}
-		if command.IsDead(status.Attribute) {
-			gameOverFlag = true
-			fmt.Println("당신은 죽었습니다. ㅠㅠ")
-			goto FinishTheBattle
-		} else if command.IsDead(monster.Attribute) {
-			command.RemoveMonsterInRoom(status.Room)
-			command.CarveMonster(status, monster)
-			fmt.Printf("당신은 %s를 죽였습니다. ㅠㅠ", constants.MonsterTypeStringMap[monster.MonsterType])
-			goto FinishTheBattle
-		}
+
 	}
 FinishTheBattle:
 	return
