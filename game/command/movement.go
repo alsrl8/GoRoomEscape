@@ -1,6 +1,7 @@
 package command
 
 import (
+	"errors"
 	"fmt"
 	"goproject/constants"
 	"goproject/structure"
@@ -98,10 +99,7 @@ func unlockLockedDoor(room *structure.Room, inventory *structure.Inventory) {
 
 func OpenDoorByName(room *structure.Room, inventory *structure.Inventory, doorName string) {
 	door := findDoorByName(room, doorName)
-	if door == nil {
-		fmt.Println(constants.NoSuchDoor, doorName)
-		return
-	} else if !door.Closed {
+	if !door.Closed {
 		fmt.Println(constants.AlreadyOpenDoor, doorName)
 		return
 	}
@@ -111,10 +109,7 @@ func OpenDoorByName(room *structure.Room, inventory *structure.Inventory, doorNa
 
 func CloseDoorByName(room *structure.Room, doorName string) {
 	door := findDoorByName(room, doorName)
-	if door == nil {
-		fmt.Println(constants.NoSuchDoor, doorName)
-		return
-	} else if door.Closed {
+	if door.Closed {
 		fmt.Println(constants.AlreadyClosedDoor, doorName)
 		return
 	}
@@ -204,4 +199,11 @@ func PickUpItems(room *structure.Room, inventory *structure.Inventory) {
 		room.Items[itemType] -= itemNum
 		addItemToInventory(inventory, itemType, itemNum)
 	}
+}
+
+func ValidateDoorByName(room *structure.Room, doorName string) error {
+	if findDoorByName(room, doorName) == nil {
+		return errors.New(constants.NoSuchDoor)
+	}
+	return nil
 }

@@ -214,6 +214,7 @@ const NoEquipmentOnBodyPart = "!!!해당 부위에 장비하고 있는 아이템
 const MonsterExistsInTheRoom = "!!!방 안에 몬스터가 있습니다"
 const NoSuchMonster = "!!!그런 몬스터는 없습니다"
 const CanNotUseSuchItem = "!!!사용할 수 없는 종류의 아이템입니다"
+const NoSpecificTargetForItem = "!!!아이템을 사용할 타겟이 없습니다"
 
 const QuitGame = "종료했습니다."
 const GameOver = "실패했습니다."

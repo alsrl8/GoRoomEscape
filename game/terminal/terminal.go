@@ -16,8 +16,7 @@ import (
 func clearTerminal() {
 	cmd := exec.Command("cmd", "/c", "cls")
 	cmd.Stdout = os.Stdout
-	err := cmd.Run()
-	if err != nil {
+	if err := cmd.Run(); err != nil {
 		return
 	}
 }
@@ -72,8 +71,7 @@ func RunTerminal(status *structure.Status) {
 			if reg.MatchString(input) {
 				itemName := reg.ReplaceAllString(input, "")
 				itemType := constants.StringItemTypeMap[itemName]
-				err := command.ValidateItemUsability(status.Inventory, itemType)
-				if err != nil {
+				if err := command.ValidateItemUsability(status.Inventory, itemType, false); err != nil {
 					fmt.Println(err.Error())
 					continue
 				}
@@ -86,8 +84,10 @@ func RunTerminal(status *structure.Status) {
 				s := strings.Split(input, " 사용 ")
 				itemName, doorName := s[0], s[1]
 				itemType := constants.StringItemTypeMap[itemName]
-				err := command.ValidateItemUsability(status.Inventory, itemType)
-				if err != nil {
+				if err := command.ValidateItemUsability(status.Inventory, itemType, true); err != nil {
+					fmt.Println(err.Error())
+					continue
+				} else if err = command.ValidateDoorByName(status.Room, doorName); err != nil {
 					fmt.Println(err.Error())
 					continue
 				}
@@ -98,12 +98,20 @@ func RunTerminal(status *structure.Status) {
 			reg, _ = regexp.Compile("( 열기| 열어| 열)$")
 			if reg.MatchString(input) {
 				doorName := reg.ReplaceAllString(input, "")
+				if err := command.ValidateDoorByName(status.Room, doorName); err != nil {
+					fmt.Println(err.Error())
+					continue
+				}
 				command.OpenDoorByName(status.Room, status.Inventory, doorName)
 				continue
 			}
 			reg, _ = regexp.Compile("( 닫기| 닫아| 닫)$")
 			if reg.MatchString(input) {
 				doorName := reg.ReplaceAllString(input, "")
+				if err := command.ValidateDoorByName(status.Room, doorName); err != nil {
+					fmt.Println(err.Error())
+					continue
+				}
 				command.CloseDoorByName(status.Room, doorName)
 				continue
 			}

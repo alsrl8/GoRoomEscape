@@ -51,8 +51,7 @@ func battleToMonster(status *structure.Status, monster *structure.Monster) (game
 			if reg.MatchString(input) {
 				itemName := reg.ReplaceAllString(input, "")
 				itemType := constants.StringItemTypeMap[itemName]
-				err := command.ValidateItemUsability(status.Inventory, itemType)
-				if err != nil {
+				if err := command.ValidateItemUsability(status.Inventory, itemType, false); err != nil {
 					fmt.Println(err.Error())
 					continue
 				}

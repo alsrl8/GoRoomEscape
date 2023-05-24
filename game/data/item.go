@@ -5,9 +5,16 @@ import (
 	"goproject/structure"
 )
 
-var ItemTypeUsableAloneMap = map[constants.ItemType]bool{
+var ItemTypeUsableMap = map[constants.ItemType]bool{
+	constants.Hammer:     true,
+	constants.Key:        true,
 	constants.Box:        true,
 	constants.HealPotion: true,
+}
+
+var ItemTypeTargetNeededMap = map[constants.ItemType]bool{
+	constants.Hammer: true,
+	constants.Key:    true,
 }
 
 var BoxDropItems = []structure.DropItem{

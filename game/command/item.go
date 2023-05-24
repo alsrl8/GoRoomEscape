@@ -24,7 +24,7 @@ func hasItemInInventory(inventory *structure.Inventory, itemType constants.ItemT
 }
 
 func isUsableItem(itemType constants.ItemType) bool {
-	return data.ItemTypeUsableAloneMap[itemType]
+	return data.ItemTypeUsableMap[itemType]
 }
 
 func UseItemByName(status *structure.Status, itemName string) {
@@ -79,11 +79,13 @@ func GetItemByPercentage(dropItems *[]structure.DropItem) (constants.ItemType, i
 	return constants.Nothing, 0
 }
 
-func ValidateItemUsability(inventory *structure.Inventory, itemType constants.ItemType) error {
+func ValidateItemUsability(inventory *structure.Inventory, itemType constants.ItemType, includeTargetFlag bool) error {
 	if !hasItemInInventory(inventory, itemType) {
 		return errors.New(constants.NoItemInInventory)
 	} else if !isUsableItem(itemType) {
 		return errors.New(constants.CanNotUseSuchItem)
+	} else if !includeTargetFlag && data.ItemTypeTargetNeededMap[itemType] {
+		return errors.New(constants.NoSpecificTargetForItem)
 	}
 	return nil
 }
