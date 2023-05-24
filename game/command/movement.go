@@ -47,7 +47,7 @@ func findDoorInRoom(room *structure.Room, doorType constants.DoorType) *structur
 	for _, direction := range constants.DirectionList {
 		if room.Doors[direction] == nil {
 			continue
-		} else if doorType == room.Doors[direction].DoorType {
+		} else if doorType != room.Doors[direction].DoorType {
 			continue
 		}
 		return room.Doors[direction]
