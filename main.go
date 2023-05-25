@@ -29,14 +29,14 @@ func main() {
 		{RoomPosition: structure.Position{Row: 2, Col: 1}, Direction: constants.East, DoorType: constants.GlassDoor},
 		{RoomPosition: structure.Position{Row: 4, Col: 3}, Direction: constants.East, DoorType: constants.WoodDoor},
 	}
-	startPositon := structure.Position{Row: 5, Col: 1}
+	startPosition := structure.Position{Row: 5, Col: 1}
 	endPosition := structure.Position{Row: 0, Col: 6}
 	endDirection := constants.East
-	itemPositionAndtype := []structure.ItemPositionAndType{
+	itemPositionAndType := []structure.ItemPositionAndType{
 		{RoomPosition: structure.Position{Row: 2, Col: 0}, ItemType: constants.Hammer},
 		{RoomPosition: structure.Position{Row: 5, Col: 4}, ItemType: constants.Key},
 	}
 
-	startRoom := initialize.InitGameAndReturnStartPoint(rowLen, colLen, &roomPositions, &doorPositionAndType, startPositon, endPosition, endDirection, &itemPositionAndtype)
+	startRoom := initialize.InitGameAndReturnStartPoint(rowLen, colLen, &roomPositions, &doorPositionAndType, startPosition, endPosition, endDirection, &itemPositionAndType)
 	gameStart(startRoom)
 }
