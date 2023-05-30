@@ -15,6 +15,6 @@ type Weapon struct {
 }
 
 type BodyPartForWeapon struct {
-	LeftHand  *Weapon
-	RightHand *Weapon
+	LeftHand  Weapon
+	RightHand Weapon
 }

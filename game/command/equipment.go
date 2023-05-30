@@ -60,15 +60,26 @@ func isBodyPartToWearExist(status *structure.Status, itemType constants.ItemType
 
 func Equip(status *structure.Status, itemName string) {
 	itemType := constants.StringItemTypeMap[itemName]
-	if (*status.Inventory)[itemType] == 0 {
+	if !hasItemInInventory(status.Inventory, itemType) {
 		fmt.Println(constants.NoItemInInventory, itemName)
 		return
 	} else if !isWearableItem(itemType) {
 		fmt.Println(constants.CanNotWear, itemName)
 		return
-	} else if !isBodyPartToWearExist(status, itemType) {
-		fmt.Println(constants.NoBodyPartToWear)
+	}
+
+	parts, has := data.ItemTypeBodyPartMap[itemType]
+	if !has {
+		fmt.Println(constants.NoItemInInventory, itemName)
 		return
+	}
+
+	for _, part := range parts {
+		if !isBodyPartsEmpty(status, part) {
+			continue
+		}
+		status.LeftHand.Equip(itemType) //
+		setEquipmentToBodyPart(status, part, itemType)
 	}
 
 	for _, bodyPart := range data.ItemTypeBodyPartMap[itemType] {

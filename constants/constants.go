@@ -114,10 +114,10 @@ var StringItemTypeMap = map[string]ItemType{
 
 type BodyPart int
 
-var BodyPartList = []BodyPart{Top, Pants, Shoes, LeftHand, RightHand}
+var BodyPartList = []BodyPart{NoWhere, Top, Pants, Shoes, LeftHand, RightHand}
 
 const (
-	Nowhere BodyPart = iota - 1
+	NoWhere = iota - 1
 	Top
 	Pants
 	Shoes
@@ -126,6 +126,7 @@ const (
 )
 
 var BodyPartStringMap = map[BodyPart]string{
+	NoWhere:   "",
 	Top:       "상의",
 	Pants:     "하의",
 	Shoes:     "신발",
@@ -134,6 +135,7 @@ var BodyPartStringMap = map[BodyPart]string{
 }
 
 var StringBodyPartMap = map[string]BodyPart{
+	"":    NoWhere,
 	"상의":  Top,
 	"하의":  Pants,
 	"신발":  Shoes,
