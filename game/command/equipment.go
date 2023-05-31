@@ -8,56 +8,33 @@ import (
 	"reflect"
 )
 
-func getEquipmentList(status structure.Status) []constants.ItemType {
-	return []constants.ItemType{
-		status.Equipment.Top,
-		status.Equipment.Pants,
-		status.Equipment.Shoes,
-		status.Equipment.LeftHand,
-		status.Equipment.RightHand,
-	}
+func ShowBodyParts(status structure.Status) {
+	showBodyPartsForArmors(status.BodyPartForArmor)
+	showBodyPartsForWeapons(status.BodyPartForWeapon)
 }
 
-func ShowBodyParts(status structure.Status) {
-	bodyParts := status.Equipment
-	t := reflect.TypeOf(*bodyParts)
-	v := reflect.ValueOf(*bodyParts)
+func showBodyPartsForArmors(bodyParts structure.BodyPartForArmor) {
+	t := reflect.TypeOf(bodyParts)
+	v := reflect.ValueOf(bodyParts)
 	for i := 0; i < t.NumField(); i++ {
 		field := t.Field(i)
-		fieldValue := v.Field(i).Interface()
-
-		fmt.Printf("%s : %s\n", field.Name, constants.ItemTypeStringMap[fieldValue.(constants.ItemType)])
+		armor := v.Field(i).Interface().(structure.Armor)
+		fmt.Printf("%10s : %s\n", field.Name, constants.ItemTypeStringMap[armor.ItemType])
 	}
 }
 
-func isBodyPartsEmpty(status *structure.Status, part constants.BodyPart) bool {
-	itemOnBody := getEquipmentPartByBodyPart(status.Equipment, part)
-	return *itemOnBody == constants.Nothing
+func showBodyPartsForWeapons(bodyParts structure.BodyPartForWeapon) {
+	t := reflect.TypeOf(bodyParts)
+	v := reflect.ValueOf(bodyParts)
+	for i := 0; i < t.NumField(); i++ {
+		field := t.Field(i)
+		weapon := v.Field(i).Interface().(structure.Weapon)
+		fmt.Printf("%10s : %s\n", field.Name, constants.ItemTypeStringMap[weapon.ItemType])
+	}
 }
 
-func isWearableItem(itemType constants.ItemType) bool {
-	wearable := data.ItemTypeWearableMap[itemType]
-	return wearable
-}
-
-func isBodyPartToWearExist(status *structure.Status, itemType constants.ItemType) bool {
-	bodyParts := data.ItemTypeBodyPartMap[itemType]
-	if len(bodyParts) == 0 {
-		return false
-	}
-
-	var emptyBodyParts []constants.BodyPart
-	for _, part := range bodyParts {
-		if !isBodyPartsEmpty(status, part) {
-			continue
-		}
-		emptyBodyParts = append(emptyBodyParts, part)
-	}
-	if len(emptyBodyParts) == 0 {
-		return false
-	}
-
-	return true
+func isWearableItem(wearable structure.Wearable, itemType constants.ItemType) bool {
+	return wearable.IsWearable(itemType)
 }
 
 func Equip(status *structure.Status, itemName string) {
@@ -65,35 +42,51 @@ func Equip(status *structure.Status, itemName string) {
 	if !hasItemInInventory(status.Inventory, itemType) {
 		fmt.Println(constants.NoItemInInventory, itemName)
 		return
-	} else if !isWearableItem(itemType) {
-		fmt.Println(constants.CanNotWear, itemName)
-		return
 	}
+	//else if !isWearableItem(itemType) {
+	//	fmt.Println(constants.CanNotWear, itemName)
+	//	return
+	//}
 
-	parts, has := data.ItemTypeBodyPartMap[itemType]
-	if !has {
-		fmt.Println(constants.NoItemInInventory, itemName)
-		return
-	}
+	//parts := data.ItemTypeBodyPartMap[itemType]
+	//for _ := range parts {
+	//	status.LeftHand.Equip(itemType)
+	//}
+	//
+	//for _, bodyPart := range data.ItemTypeBodyPartMap[itemType] {
+	//	setEquipmentToBodyPart(status, bodyPart, itemType)
+	//	applyEquipmentEffect(status, itemType)
+	//	removeItemInInventory(status.Inventory, itemType, 1)
+	//	fmt.Printf(constants.EquipEquipment, constants.BodyPartStringMap[bodyPart], constants.ItemTypeStringMap[itemType])
+	//	return
+	//}
 
-	for _, part := range parts {
-		if !isBodyPartsEmpty(status, part) {
+	wearableBodyParts := getWearableBodyParts(status, itemType)
+	fmt.Println(wearableBodyParts)
+}
+
+func getWearableBodyParts(status *structure.Status, itemType constants.ItemType) (ret []structure.Wearable) {
+	bodyPartForArmor := status.BodyPartForArmor
+	t := reflect.TypeOf(bodyPartForArmor)
+	v := reflect.ValueOf(bodyPartForArmor)
+	for i := 0; i < t.NumField(); i++ {
+		wearable := v.Field(i).Interface().(structure.Wearable)
+		if !isWearableItem(wearable, itemType) {
 			continue
 		}
-		status.LeftHand.Equip(itemType) //
-		setEquipmentToBodyPart(status, part, itemType)
+		ret = append(ret, wearable)
 	}
-
-	for _, bodyPart := range data.ItemTypeBodyPartMap[itemType] {
-		if !isBodyPartsEmpty(status, bodyPart) {
+	bodyPartForWeapon := status.BodyPartForWeapon
+	t = reflect.TypeOf(bodyPartForWeapon)
+	v = reflect.ValueOf(bodyPartForWeapon)
+	for i := 0; i < t.NumField(); i++ {
+		wearable := v.Field(i).Interface().(structure.Wearable)
+		if !isWearableItem(wearable, itemType) {
 			continue
 		}
-		setEquipmentToBodyPart(status, bodyPart, itemType)
-		applyEquipmentEffect(status, itemType)
-		removeItemInInventory(status.Inventory, itemType, 1)
-		fmt.Printf(constants.EquipEquipment, constants.BodyPartStringMap[bodyPart], constants.ItemTypeStringMap[itemType])
-		return
+		ret = append(ret, wearable)
 	}
+	return
 }
 
 func setEquipmentToBodyPart(status *structure.Status, bodyPart constants.BodyPart, itemType constants.ItemType) {

@@ -30,14 +30,6 @@ func battleToMonster(status *structure.Status, monster *structure.Monster) (game
 				fmt.Printf(constants.KillMonster, constants.MonsterTypeStringMap[monster.MonsterType])
 				goto FinishTheBattle
 			}
-		case "방어":
-			if !command.IsGuardAble(status) {
-				fmt.Println(constants.CanNotGuard)
-				continue
-			}
-			command.Guard(status)
-			fmt.Println(constants.RaiseShield)
-			continue
 		case "도망":
 			runSuccessFlag := command.Run(data.RunSuccessPercentage)
 			if runSuccessFlag {
