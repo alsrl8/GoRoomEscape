@@ -64,7 +64,7 @@ func RunTerminal(status *structure.Status) {
 		case "s", "south", "S", "남", "남 가", "남쪽으로 가":
 			status.Room = command.Move(status.Room, constants.South)
 		case "eq", "장비":
-			command.ShowEquipment(*status)
+			command.ShowBodyParts(*status)
 		// Multiple Words
 		default:
 			reg, _ := regexp.Compile(" 사용$")

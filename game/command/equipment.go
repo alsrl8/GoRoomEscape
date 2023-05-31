@@ -5,6 +5,7 @@ import (
 	"goproject/constants"
 	"goproject/game/data"
 	"goproject/structure"
+	"reflect"
 )
 
 func getEquipmentList(status structure.Status) []constants.ItemType {
@@ -17,14 +18,15 @@ func getEquipmentList(status structure.Status) []constants.ItemType {
 	}
 }
 
-func ShowEquipment(status structure.Status) {
-	equipmentList := getEquipmentList(status)
-	if len(equipmentList) != len(constants.BodyPartList) {
-		panic(constants.PanicEquipmentListLengthAndBodyPartListLength)
-	}
-	for i, equipment := range equipmentList {
-		bodyPartName := constants.BodyPartStringMap[constants.BodyPartList[i]]
-		fmt.Println(bodyPartName + ": " + constants.ItemTypeStringMap[equipment])
+func ShowBodyParts(status structure.Status) {
+	bodyParts := status.Equipment
+	t := reflect.TypeOf(*bodyParts)
+	v := reflect.ValueOf(*bodyParts)
+	for i := 0; i < t.NumField(); i++ {
+		field := t.Field(i)
+		fieldValue := v.Field(i).Interface()
+
+		fmt.Printf("%s : %s\n", field.Name, constants.ItemTypeStringMap[fieldValue.(constants.ItemType)])
 	}
 }
 
@@ -148,23 +150,4 @@ func IsAttackAble(status *structure.Status) bool {
 		return false
 	}
 	return true
-}
-
-func IsGuardAble(status *structure.Status) bool {
-	if status.GuardFlag {
-		return false
-	} else if !isSpecificItemEquipped(status.Equipment, constants.WoodShield) {
-		return false
-	}
-	return true
-}
-
-func isSpecificItemEquipped(equipment *structure.Equipment, itemType constants.ItemType) bool {
-	for _, bodyPart := range constants.BodyPartList {
-		equipmentOnBody := getEquipmentPartByBodyPart(equipment, bodyPart)
-		if *equipmentOnBody == itemType {
-			return true
-		}
-	}
-	return false
 }

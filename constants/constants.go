@@ -114,8 +114,6 @@ var StringItemTypeMap = map[string]ItemType{
 
 type BodyPart int
 
-var BodyPartList = []BodyPart{NoWhere, Top, Pants, Shoes, LeftHand, RightHand}
-
 const (
 	NoWhere = iota - 1
 	Top
