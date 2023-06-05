@@ -132,6 +132,28 @@ var StringMonsterTypeMap = map[string]MonsterType{
 	"사슴":  Deer,
 }
 
+type NpcType int
+
+const (
+	Merchant NpcType = iota
+	Blacksmith
+	GodOfDeath
+)
+
+var NpcStringMap = map[NpcType]string{
+	Merchant:   "상인",
+	Blacksmith: "대장장이",
+	GodOfDeath: "사신",
+}
+
+type PlaceType int
+
+const (
+	Nowhere PlaceType = iota
+	Plaza
+	DungeonEntrance
+)
+
 const LineDivider = "=================================================="
 
 const SucceedOpeningDoor = "문을 열었습니다."

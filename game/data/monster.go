@@ -16,7 +16,7 @@ func GetMonsterWithPositionData() []structure.MonsterWithPosition {
 					Attack:  5,
 					Defense: 0,
 				},
-				DropItem: []structure.DropItem{
+				DropItems: []structure.DropItem{
 					{ItemType: constants.HealPotion, DropPercentage: structure.DropPercentage{Percentage: 0.7, Num: 1}},
 				},
 			},
@@ -30,7 +30,7 @@ func GetMonsterWithPositionData() []structure.MonsterWithPosition {
 					Attack:  5,
 					Defense: 0,
 				},
-				DropItem: []structure.DropItem{
+				DropItems: []structure.DropItem{
 					{ItemType: constants.HealPotion, DropPercentage: structure.DropPercentage{Percentage: 0.7, Num: 1}},
 				},
 			},
@@ -44,7 +44,7 @@ func GetMonsterWithPositionData() []structure.MonsterWithPosition {
 					Attack:  10,
 					Defense: 5,
 				},
-				DropItem: []structure.DropItem{
+				DropItems: []structure.DropItem{
 					{ItemType: constants.Key, DropPercentage: structure.DropPercentage{Percentage: 1.0, Num: 1}},
 				},
 			},
@@ -58,7 +58,7 @@ func GetMonsterWithPositionData() []structure.MonsterWithPosition {
 					Attack:  7,
 					Defense: 3,
 				},
-				DropItem: []structure.DropItem{
+				DropItems: []structure.DropItem{
 					{ItemType: constants.HealPotion, DropPercentage: structure.DropPercentage{Percentage: 0.5, Num: 1}},
 					{ItemType: constants.HealPotion, DropPercentage: structure.DropPercentage{Percentage: 0.3, Num: 2}},
 				},

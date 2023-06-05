@@ -3,12 +3,12 @@ package structure
 import "goproject/constants"
 
 type Monster struct {
-	MonsterType constants.MonsterType
-	Attribute   Attribute
-	DropItem    []DropItem
+	constants.MonsterType
+	Attribute
+	DropItems []DropItem
 }
 
 type MonsterWithPosition struct {
 	RoomPosition Position
-	Monster      Monster
+	Monster
 }

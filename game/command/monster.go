@@ -48,7 +48,7 @@ func RemoveMonsterInRoom(room *structure.Room) {
 }
 
 func CarveMonster(status *structure.Status, monster *structure.Monster) {
-	itemType, itemNum := GetItemByPercentage(&monster.DropItem)
+	itemType, itemNum := GetItemByPercentage(&monster.DropItems)
 	if itemType == constants.Nothing {
 		return
 	}

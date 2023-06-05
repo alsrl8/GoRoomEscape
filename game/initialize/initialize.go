@@ -98,7 +98,7 @@ func putMonstersOnRooms(grid *[][]*structure.Room, monsterWithPosition *[]struct
 		(*grid)[monsterInfo.RoomPosition.Row][monsterInfo.RoomPosition.Col].Monster = &structure.Monster{
 			MonsterType: monsterInfo.Monster.MonsterType,
 			Attribute:   monsterInfo.Monster.Attribute,
-			DropItem:    monsterInfo.Monster.DropItem,
+			DropItems:   monsterInfo.Monster.DropItems,
 		}
 	}
 }

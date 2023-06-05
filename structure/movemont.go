@@ -13,6 +13,8 @@ type Room struct {
 	GoalFlag   bool
 	Items      map[constants.ItemType]int
 	Monster    *Monster
+	NpcMap     map[constants.NpcType]int
+	Place      constants.PlaceType
 }
 
 type Door struct {
