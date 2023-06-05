@@ -11,16 +11,16 @@ type Wearable interface {
 }
 
 func (armor *Armor) Equip(itemType constants.ItemType) {
-	*armor = Armor{Item: Item{ItemType: itemType}, WearableItems: armor.WearableItems}
+	(*armor).Item = Item{ItemType: itemType}
 }
 
 func (armor *Armor) Disarm() {
-	*armor = Armor{Item: Item{ItemType: constants.Nothing}, WearableItems: armor.WearableItems}
+	(*armor).Item = Item{ItemType: constants.Nothing}
 }
 
 func (armor *Armor) IsWearable(itemType constants.ItemType) bool {
-	for i := 0; i < len(*armor.WearableItems); i++ {
-		if (*armor.WearableItems)[i] == itemType {
+	for i := 0; i < len(armor.WearableItems); i++ {
+		if (armor.WearableItems)[i] == itemType {
 			return true
 		}
 	}
@@ -28,16 +28,16 @@ func (armor *Armor) IsWearable(itemType constants.ItemType) bool {
 }
 
 func (weapon *Weapon) Equip(itemType constants.ItemType) {
-	*weapon = Weapon{Item: Item{ItemType: itemType}, WearableItems: weapon.WearableItems}
+	(*weapon).Item = Item{ItemType: itemType}
 }
 
 func (weapon *Weapon) Disarm() {
-	*weapon = Weapon{Item: Item{ItemType: constants.Nothing}, WearableItems: weapon.WearableItems}
+	(*weapon).Item = Item{ItemType: constants.Nothing}
 }
 
 func (weapon *Weapon) IsWearable(itemType constants.ItemType) bool {
-	for i := 0; i < len(*weapon.WearableItems); i++ {
-		if (*weapon.WearableItems)[i] == itemType {
+	for i := 0; i < len(weapon.WearableItems); i++ {
+		if (weapon.WearableItems)[i] == itemType {
 			return true
 		}
 	}

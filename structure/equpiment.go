@@ -4,7 +4,7 @@ import "goproject/constants"
 
 type Armor struct {
 	Item
-	WearableItems *[]constants.ItemType
+	WearableItems []constants.ItemType
 }
 
 type BodyPartForArmor struct {
@@ -15,7 +15,7 @@ type BodyPartForArmor struct {
 
 type Weapon struct {
 	Item
-	WearableItems *[]constants.ItemType
+	WearableItems []constants.ItemType
 }
 
 type BodyPartForWeapon struct {
