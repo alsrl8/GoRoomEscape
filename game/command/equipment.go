@@ -13,16 +13,15 @@ func ShowBodyParts(status structure.Status) {
 	showBodyPartsForWeapons(status.BodyPartForWeapon)
 }
 
-func Equip(status *structure.Status, itemName string) {
-	itemType := constants.StringItemTypeMap[itemName]
+func Equip(status *structure.Status, itemType constants.ItemType) {
 	if !hasItemInInventory(status.Inventory, itemType) {
-		fmt.Println(constants.NoItemInInventory, itemName)
+		fmt.Println(constants.NoItemInInventory, constants.ItemTypeStringMap[itemType])
 		return
 	}
 
 	wearableBodyParts := getWearableBodyParts(status, itemType)
 	if len(wearableBodyParts) == 0 {
-		fmt.Println(constants.CanNotWear, itemName)
+		fmt.Println(constants.CanNotWear, constants.ItemTypeStringMap[itemType])
 		return
 	}
 
@@ -31,10 +30,9 @@ func Equip(status *structure.Status, itemName string) {
 	removeItemInInventory(status.Inventory, itemType, 1)
 }
 
-func Disarm(status *structure.Status, itemName string) {
-	itemType := constants.StringItemTypeMap[itemName]
+func Disarm(status *structure.Status, itemType constants.ItemType) {
 	if itemType == constants.Nothing {
-		fmt.Println(constants.NoSuchItem, itemName)
+		fmt.Println(constants.NoSuchItem, constants.ItemTypeStringMap[itemType])
 		return
 	}
 
