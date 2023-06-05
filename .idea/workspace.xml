@@ -6,8 +6,14 @@
   <component name="ChangeListManager">
     <list default="true" id="42d6d73e-db6e-4c3d-af37-f2be67f3413c" name="Changes" comment="몬스터 전투 코드 분리">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/constants/constants.go" beforeDir="false" afterPath="$PROJECT_DIR$/constants/constants.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/command/battle.go" beforeDir="false" afterPath="$PROJECT_DIR$/game/command/battle.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/game/command/item.go" beforeDir="false" afterPath="$PROJECT_DIR$/game/command/item.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/command/monster.go" beforeDir="false" afterPath="$PROJECT_DIR$/game/command/monster.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/command/movement.go" beforeDir="false" afterPath="$PROJECT_DIR$/game/command/movement.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/terminal/battle.go" beforeDir="false" afterPath="$PROJECT_DIR$/game/terminal/battle.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/game/terminal/terminal.go" beforeDir="false" afterPath="$PROJECT_DIR$/game/terminal/terminal.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/structure/player.go" beforeDir="false" afterPath="$PROJECT_DIR$/structure/player.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

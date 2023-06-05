@@ -116,6 +116,38 @@ func ValidateItemDoorMatch(itemType constants.ItemType, doorType constants.DoorT
 	}
 }
 
+func PickUpItems(status *structure.Status, itemType constants.ItemType, itemNum int) {
+	room := status.Room
+	_itemNum := room.Items[itemType]
+	if _itemNum == 0 {
+		fmt.Println(constants.NoSuchItem, constants.ItemTypeStringMap[itemType])
+		return
+	} else if _itemNum < itemNum {
+		fmt.Println(constants.NotEnoughItem, constants.ItemTypeStringMap[itemType])
+		return
+	}
+
+	inventory := status.Inventory
+	(*inventory)[itemType] += itemNum
+	room.Items[itemType] -= itemNum
+}
+
+func DropItems(status *structure.Status, itemType constants.ItemType, itemNum int) {
+	inventory := status.Inventory
+	_itemNum := (*inventory)[itemType]
+	if _itemNum == 0 {
+		fmt.Println(constants.NoItemInInventory, constants.ItemTypeStringMap[itemType])
+		return
+	} else if _itemNum < itemNum {
+		fmt.Println(constants.NotEnoughItem, constants.ItemTypeStringMap[itemType])
+		return
+	}
+
+	room := status.Room
+	room.Items[itemType] += itemNum
+	(*inventory)[itemType] -= itemNum
+}
+
 func DiscardItem(inventory *structure.Inventory, itemType constants.ItemType) {
 	(*inventory)[itemType] -= 1
 }

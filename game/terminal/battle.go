@@ -13,7 +13,7 @@ func battleToMonster(status *structure.Status, monster *structure.Monster) (game
 	clearTerminal()
 	fmt.Printf(constants.DuringBattle, constants.MonsterTypeStringMap[monster.MonsterType])
 	for {
-		command.PrintUserNameAndStatus(status)
+		command.ShowUserNameAndStatus(status)
 		command.PrintMonsterInRoom(status.Room)
 		input := getInput()
 		clearTerminal()
@@ -44,7 +44,6 @@ func battleToMonster(status *structure.Status, monster *structure.Monster) (game
 					continue
 				}
 				command.UseItemByName(status, itemName)
-				command.DropGuard(status)
 				fmt.Printf(constants.UseItem, itemName)
 			} else {
 				fmt.Println(constants.WrongInput, input)

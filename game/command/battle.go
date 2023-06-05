@@ -17,22 +17,6 @@ func IsDead(attribute structure.Attribute) bool {
 	return attribute.Health <= 0
 }
 
-func Guard(status *structure.Status) {
-	if status.GuardFlag {
-		return
-	}
-	status.GuardFlag = true
-	status.Attribute.Defense += 10
-}
-
-func DropGuard(status *structure.Status) {
-	if !status.GuardFlag {
-		return
-	}
-	status.GuardFlag = false
-	status.Attribute.Defense -= 10
-}
-
 func Run(successPercentage float64) bool {
 	rand.Seed(time.Now().UnixNano())
 	randomNum := rand.Float64()

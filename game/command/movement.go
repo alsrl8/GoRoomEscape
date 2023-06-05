@@ -128,27 +128,44 @@ func getNextRoomInfo(room *structure.Room, direction constants.Direction) string
 	}
 }
 
-func printLine() {
+func PrintLine() {
 	fmt.Println(constants.LineDivider)
 }
 
-func PrintUserNameAndStatus(status *structure.Status) {
-	printLine()
-	fmt.Printf(constants.PlayerStatus, status.Name, status.Attribute.Health, status.Attribute.Attack, status.Attribute.Defense)
-	if status.GuardFlag {
-		fmt.Println(constants.OnGuard)
+func ShowRoomInfo(room *structure.Room) {
+	showObjectsInDirections(room)
+	showItemsInRoom(room)
+	if isMonsterExistInRoom(room) {
+		PrintMonsterInRoom(room)
 	}
 }
 
-func printObjectsInDirections(room *structure.Room) {
-	printLine()
+func ShowUserNameAndStatus(status *structure.Status) {
+	PrintLine()
+	fmt.Printf(constants.PlayerStatus, status.Name, status.Attribute.Health, status.Attribute.Attack, status.Attribute.Defense)
+}
+
+func showObjectsInDirections(room *structure.Room) {
+	PrintLine()
 	for _, d := range constants.DirectionList {
 		fmt.Printf(constants.DirectionInfoWithRoomInfo, constants.DirStringMap[d], constants.DirStringEngMap[d], getNextRoomInfo(room, d))
 	}
 }
 
-func printInventory(inventory *structure.Inventory) {
-	printLine()
+func showItemsInRoom(room *structure.Room) {
+	PrintLine()
+	fmt.Printf("방에 있는 아이템 >>> ")
+	for itemType, itemNum := range room.Items {
+		if itemNum <= 0 {
+			continue
+		}
+		fmt.Printf(constants.ItemTypeAndNum+" ", constants.ItemTypeStringMap[itemType], itemNum)
+	}
+	fmt.Println()
+}
+
+func ShowInventory(inventory *structure.Inventory) {
+	PrintLine()
 	fmt.Printf(constants.ItemInfoTitle)
 	for itemType, itemNum := range *inventory {
 		if itemNum == 0 {
@@ -159,8 +176,8 @@ func printInventory(inventory *structure.Inventory) {
 	fmt.Println()
 }
 
-func printMovableDirections(room *structure.Room) {
-	printLine()
+func ShowMovableDirections(room *structure.Room) {
+	PrintLine()
 	fmt.Printf(constants.MovableDirectionTitle)
 	for _, d := range constants.DirectionList {
 		if !canMove(room, d) {
@@ -174,28 +191,17 @@ func printMovableDirections(room *structure.Room) {
 func ShowRoomAndInventoryInfo(status *structure.Status) {
 	room := status.Room
 
-	PrintUserNameAndStatus(status)
-	printObjectsInDirections(status.Room)
-	printInventory(status.Inventory)
-	printMovableDirections(status.Room)
+	ShowUserNameAndStatus(status)
+	showObjectsInDirections(status.Room)
+	ShowInventory(status.Inventory)
+	ShowMovableDirections(status.Room)
 
 	if isMonsterExistInRoom(room) {
-		printLine()
+		PrintLine()
 		PrintMonsterInRoom(room)
 	}
 
-	printLine()
-}
-
-func PickUpItems(room *structure.Room, inventory *structure.Inventory) {
-	for itemType, itemNum := range room.Items {
-		if itemNum == 0 {
-			continue
-		}
-		fmt.Printf(constants.GetItem, constants.ItemTypeStringMap[itemType], itemNum)
-		room.Items[itemType] -= itemNum
-		addItemToInventory(inventory, itemType, itemNum)
-	}
+	PrintLine()
 }
 
 func ValidateDoorExist(room *structure.Room, doorType constants.DoorType) error {

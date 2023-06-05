@@ -12,7 +12,6 @@ type Status struct {
 	BodyPartForArmor
 	BodyPartForWeapon
 	Attribute Attribute
-	GuardFlag bool
 }
 
 type Attribute struct {

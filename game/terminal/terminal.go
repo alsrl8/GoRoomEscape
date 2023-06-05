@@ -8,6 +8,7 @@ import (
 	"goproject/structure"
 	"os"
 	"os/exec"
+	"strconv"
 	"strings"
 )
 
@@ -47,7 +48,8 @@ func SetUserInputAsUserName(status *structure.Status) {
 func RunTerminal(status *structure.Status) {
 	clearTerminal()
 	for {
-		command.ShowRoomAndInventoryInfo(status)
+		//command.ShowRoomAndInventoryInfo(status)
+		command.PrintLine()
 		input := getInput()
 		clearTerminal()
 
@@ -96,8 +98,14 @@ func handleSingleTokenCommand(input string, status *structure.Status) (ret struc
 		status.Room = command.Move(status.Room, constants.West)
 	case "S", "s":
 		status.Room = command.Move(status.Room, constants.South)
+	case "정보":
+		command.ShowUserNameAndStatus(status)
+		command.ShowInventory(status.Inventory)
 	case "EQ", "eq":
 		command.ShowBodyParts(*status)
+	case "보다", "봐":
+		command.ShowRoomInfo(status.Room)
+		command.ShowMovableDirections(status.Room)
 	}
 	return
 }
@@ -132,6 +140,29 @@ func HandleMultiTokenCommand(input string, status *structure.Status) (ret struct
 		}
 		command.CloseDoorByName(status.Room, doorType)
 	case "보다", "봐":
+		tokenLen := len(tokens)
+		switch tokenLen {
+		case 2:
+			// TODO 물건/몬스터 정보를 보는 기능 추가
+		}
+	case "주워":
+		itemName := tokens[0]
+		itemType := constants.StringItemTypeMap[itemName]
+		itemNum, err := strconv.Atoi(tokens[1])
+		if err != nil {
+			fmt.Println(constants.WrongInput, input)
+			return
+		}
+		command.PickUpItems(status, itemType, itemNum)
+	case "버려":
+		itemName := tokens[0]
+		itemType := constants.StringItemTypeMap[itemName]
+		itemNum, err := strconv.Atoi(tokens[1])
+		if err != nil {
+			fmt.Println(constants.WrongInput, input)
+			return
+		}
+		command.DropItems(status, itemType, itemNum)
 	case "입어", "장비":
 		itemName := tokens[0]
 		itemType := constants.StringItemTypeMap[itemName]

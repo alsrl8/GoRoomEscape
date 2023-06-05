@@ -23,6 +23,7 @@ func PrintMonsterInRoom(room *structure.Room) {
 }
 
 func printMonster(monster *structure.Monster) {
+	PrintLine()
 	fmt.Printf(constants.MonsterStatus, constants.MonsterTypeStringMap[monster.MonsterType], monster.Attribute.Health, monster.Attribute.Attack, monster.Attribute.Defense)
 }
 
