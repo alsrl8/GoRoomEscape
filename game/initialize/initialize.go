@@ -137,26 +137,26 @@ func initStatus(startRoom *structure.Room) *structure.Status {
 		Attribute: data.GetAttribute(),
 		BodyPartForArmor: structure.BodyPartForArmor{
 			Top: &structure.Armor{
-				Item:          nil,
-				WearableItems: &[]constants.ItemType{constants.WoodSword},
+				Item:          structure.Item{ItemType: constants.Nothing},
+				WearableItems: &[]constants.ItemType{},
 			},
 			Pants: &structure.Armor{
-				Item:          nil,
-				WearableItems: &[]constants.ItemType{constants.WoodSword},
+				Item:          structure.Item{ItemType: constants.Nothing},
+				WearableItems: &[]constants.ItemType{},
 			},
 			Shoes: &structure.Armor{
-				Item:          nil,
+				Item:          structure.Item{ItemType: constants.Nothing},
 				WearableItems: &[]constants.ItemType{},
 			},
 		},
 		BodyPartForWeapon: structure.BodyPartForWeapon{
 			LeftHand: &structure.Weapon{
-				Item:          nil,
-				WearableItems: &[]constants.ItemType{},
+				Item:          structure.Item{ItemType: constants.Nothing},
+				WearableItems: &[]constants.ItemType{constants.WoodSword},
 			},
 			RightHand: &structure.Weapon{
-				Item:          nil,
-				WearableItems: &[]constants.ItemType{},
+				Item:          structure.Item{ItemType: constants.Nothing},
+				WearableItems: &[]constants.ItemType{constants.WoodSword},
 			},
 		},
 	}

@@ -128,8 +128,8 @@ func RunTerminal(status *structure.Status) {
 			}
 			reg, _ = regexp.Compile(" 해제$")
 			if reg.MatchString(input) {
-				bodyPartName := reg.ReplaceAllString(input, "")
-				command.Disarm(status, bodyPartName)
+				itemName := reg.ReplaceAllString(input, "")
+				command.Disarm(status, itemName)
 				continue
 			}
 			reg, _ = regexp.Compile(" 공격$")

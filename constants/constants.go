@@ -112,39 +112,10 @@ var StringItemTypeMap = map[string]ItemType{
 	"회복약":  HealPotion,
 }
 
-type BodyPart int
-
-const (
-	NoWhere = iota - 1
-	Top
-	Pants
-	Shoes
-	LeftHand
-	RightHand
-)
-
-var BodyPartStringMap = map[BodyPart]string{
-	NoWhere:   "",
-	Top:       "상의",
-	Pants:     "하의",
-	Shoes:     "신발",
-	LeftHand:  "왼손",
-	RightHand: "오른손",
-}
-
-var StringBodyPartMap = map[string]BodyPart{
-	"":    NoWhere,
-	"상의":  Top,
-	"하의":  Pants,
-	"신발":  Shoes,
-	"왼손":  LeftHand,
-	"오른손": RightHand,
-}
-
 type MonsterType int
 
 const (
-	Squirrel = iota
+	Squirrel MonsterType = iota
 	Rabbit
 	Deer
 )
@@ -211,6 +182,7 @@ const CanNotWear = "!!!장비할 수 없는 아이템입니다"
 const NoBodyPartToWear = "!!!몸에 장비할 빈 공간이 없습니다"
 const NoItemInInventory = "!!!해당 아이템이 가방에 없습니다"
 const NoEquipmentOnBodyPart = "!!!해당 부위에 장비하고 있는 아이템이 없습니다"
+const NoSuchEquipmentOnBody = "!!!장비하고 있는 아이템이 아닙니다"
 const MonsterExistInTheRoom = "!!!방 안에 몬스터가 있습니다"
 const NoSuchMonster = "!!!그런 몬스터는 없습니다"
 const CanNotUseSuchItem = "!!!사용할 수 없는 종류의 아이템입니다"

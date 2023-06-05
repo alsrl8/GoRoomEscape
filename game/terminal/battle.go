@@ -19,10 +19,6 @@ func battleToMonster(status *structure.Status, monster *structure.Monster) (game
 		clearTerminal()
 		switch input {
 		case "공격":
-			if !command.IsAttackAble(status) {
-				fmt.Println(constants.CanNotAttack)
-				continue
-			}
 			command.DamageMonsterByPlayer(status, monster)
 			if command.IsDead(monster.Attribute) {
 				command.RemoveMonsterInRoom(status.Room)

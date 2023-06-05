@@ -3,7 +3,7 @@ package structure
 import "goproject/constants"
 
 type Armor struct {
-	*Item
+	Item
 	WearableItems *[]constants.ItemType
 }
 
@@ -14,7 +14,7 @@ type BodyPartForArmor struct {
 }
 
 type Weapon struct {
-	*Item
+	Item
 	WearableItems *[]constants.ItemType
 }
 
