@@ -149,10 +149,28 @@ var NpcStringMap = map[NpcType]string{
 type PlaceType int
 
 const (
-	Nowhere PlaceType = iota
+	EmptyPlace PlaceType = iota
 	Plaza
+	DungeonRoom
 	DungeonEntrance
 )
+
+var PlaceTypeStringMap = map[PlaceType]string{
+	EmptyPlace:      "",
+	Plaza:           "광장",
+	DungeonRoom:     "방",
+	DungeonEntrance: "던전 입구",
+}
+
+type ObjectType int
+
+const (
+	Fountain ObjectType = iota
+)
+
+var ObjectTypeStringMap = map[ObjectType]string{
+	Fountain: "분수",
+}
 
 const LineDivider = "=================================================="
 
