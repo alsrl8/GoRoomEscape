@@ -140,6 +140,14 @@ func HandleMultiTokenCommand(input string, status *structure.Status) (ret struct
 		itemName := tokens[0]
 		itemType := constants.StringItemTypeMap[itemName]
 		command.Disarm(status, itemType)
+	case "태워":
+		itemName := tokens[0]
+		itemType := constants.StringItemTypeMap[itemName]
+		if err := command.ValidateItemExist(status.Inventory, itemType); err != nil {
+			fmt.Println(err.Error())
+			return
+		}
+		command.DiscardItem(status.Inventory, itemType)
 	case "풀어":
 		tokenLen := len(tokens)
 		switch tokenLen {

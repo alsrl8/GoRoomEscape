@@ -5,9 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="42d6d73e-db6e-4c3d-af37-f2be67f3413c" name="Changes" comment="몬스터 전투 코드 분리">
-      <change beforePath="$PROJECT_DIR$/.idea/goproject.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/goproject.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/game/command/equipment.go" beforeDir="false" afterPath="$PROJECT_DIR$/game/command/equipment.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/command/item.go" beforeDir="false" afterPath="$PROJECT_DIR$/game/command/item.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/game/terminal/terminal.go" beforeDir="false" afterPath="$PROJECT_DIR$/game/terminal/terminal.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

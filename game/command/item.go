@@ -79,6 +79,13 @@ func GetItemByPercentage(dropItems *[]structure.DropItem) (constants.ItemType, i
 	return constants.Nothing, 0
 }
 
+func ValidateItemExist(inventory *structure.Inventory, itemType constants.ItemType) error {
+	if !hasItemInInventory(inventory, itemType) {
+		return errors.New(constants.NoItemInInventory)
+	}
+	return nil
+}
+
 func ValidateItemUsability(inventory *structure.Inventory, itemType constants.ItemType, includeTargetFlag bool) error {
 	if !hasItemInInventory(inventory, itemType) {
 		return errors.New(constants.NoItemInInventory)
@@ -107,4 +114,8 @@ func ValidateItemDoorMatch(itemType constants.ItemType, doorType constants.DoorT
 	default:
 		return errors.New(constants.NoMatchItemAndDoor)
 	}
+}
+
+func DiscardItem(inventory *structure.Inventory, itemType constants.ItemType) {
+	(*inventory)[itemType] -= 1
 }
