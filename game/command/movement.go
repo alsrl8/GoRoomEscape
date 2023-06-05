@@ -188,22 +188,6 @@ func ShowMovableDirections(room *structure.Room) {
 	fmt.Println()
 }
 
-func ShowRoomAndInventoryInfo(status *structure.Status) {
-	room := status.Room
-
-	ShowUserNameAndStatus(status)
-	showObjectsInDirections(status.Room)
-	ShowInventory(status.Inventory)
-	ShowMovableDirections(status.Room)
-
-	if isMonsterExistInRoom(room) {
-		PrintLine()
-		PrintMonsterInRoom(room)
-	}
-
-	PrintLine()
-}
-
 func ValidateDoorExist(room *structure.Room, doorType constants.DoorType) error {
 	if findDoorInRoom(room, doorType) == nil {
 		return errors.New(constants.NoSuchDoor)

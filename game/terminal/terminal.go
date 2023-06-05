@@ -10,6 +10,7 @@ import (
 	"os/exec"
 	"strconv"
 	"strings"
+	"time"
 )
 
 // Terminal 내용을 Clear 한다.(Windows)
@@ -28,6 +29,11 @@ func getInput() string {
 	input, _ := reader.ReadString('\r')
 	input = strings.TrimSuffix(input, "\r")
 	return input
+}
+
+func printTime() {
+	currentTime := time.Now()
+	fmt.Println("현재 시각:", currentTime)
 }
 
 func SetUserInputAsUserName(status *structure.Status) {
@@ -100,12 +106,15 @@ func handleSingleTokenCommand(input string, status *structure.Status) (ret struc
 		status.Room = command.Move(status.Room, constants.South)
 	case "정보":
 		command.ShowUserNameAndStatus(status)
+	case "소지":
 		command.ShowInventory(status.Inventory)
-	case "EQ", "eq":
+	case "장비", "EQ", "eq":
 		command.ShowBodyParts(*status)
 	case "보다", "봐":
 		command.ShowRoomInfo(status.Room)
 		command.ShowMovableDirections(status.Room)
+	case "시간":
+		printTime()
 	}
 	return
 }
