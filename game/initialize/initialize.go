@@ -3,12 +3,13 @@ package initialize
 import (
 	"goproject/constants"
 	"goproject/game/command"
+	"goproject/game/data"
 	"goproject/structure"
 )
 
 func initGrid(rowLen int, colLen int) *[][]*structure.Room {
 	var grid [][]*structure.Room
-	for i := 0; i < 6; i++ {
+	for i := 0; i < rowLen; i++ {
 		grid = append(grid, make([]*structure.Room, colLen))
 	}
 	return &grid
@@ -92,14 +93,72 @@ func putItemsOnRooms(grid *[][]*structure.Room, itemPositionAndType *[]structure
 	}
 }
 
-func InitGameAndReturnStartPoint(rowLen int, colLen int, roomPositions *[]structure.Position, doorPositionAndType *[]structure.DoorPositionAndType, startPosition structure.Position, endPosition structure.Position, endDirection constants.Direction, itemPositionAndType *[]structure.ItemPositionAndType) *structure.Room {
+func putMonstersOnRooms(grid *[][]*structure.Room, monsterWithPosition *[]structure.MonsterWithPosition) {
+	for _, monsterInfo := range *monsterWithPosition {
+		(*grid)[monsterInfo.RoomPosition.Row][monsterInfo.RoomPosition.Col].Monster = &structure.Monster{
+			MonsterType: monsterInfo.Monster.MonsterType,
+			Attribute:   monsterInfo.Monster.Attribute,
+			DropItem:    monsterInfo.Monster.DropItem,
+		}
+	}
+}
 
-	var grid = initGrid(rowLen, colLen)
+func InitGameAndReturnStatus() *structure.Status {
+	rowLen := data.GetRowLen()
+	colLen := data.GetColLen()
+	roomPositions := data.GetRoomPositions()
+	grid := initGrid(rowLen, colLen)
 	createEmptyRooms(grid, roomPositions)
 	connectAdjacentRooms(grid)
-	buildDoorsBetweenRooms(grid, doorPositionAndType)
+
+	startPosition := data.GetStartPosition()
+	endPosition := data.GetEndPosition()
+	endDirection := data.GetEndDirection()
 	addEndPoint(grid, endPosition, endDirection)
+
+	doorPositionAndType := data.GetDoorPositionAndType()
+	buildDoorsBetweenRooms(grid, doorPositionAndType)
+
+	monsterWithPosition := data.GetMonsterWithPositionData()
+	putMonstersOnRooms(grid, &monsterWithPosition)
+
+	itemPositionAndType := data.GetItemPositionAndType()
 	putItemsOnRooms(grid, itemPositionAndType)
 
-	return (*grid)[startPosition.Row][startPosition.Col]
+	status := initStatus((*grid)[startPosition.Row][startPosition.Col])
+	return status
+}
+
+func initStatus(startRoom *structure.Room) *structure.Status {
+	status := structure.Status{
+		Room:      startRoom,
+		Inventory: &structure.Inventory{},
+		Equipment: &structure.Equipment{},
+		Attribute: data.GetAttribute(),
+		BodyPartForArmor: structure.BodyPartForArmor{
+			Top: &structure.Armor{
+				Item:          structure.Item{ItemType: constants.Nothing},
+				WearableItems: &[]constants.ItemType{},
+			},
+			Pants: &structure.Armor{
+				Item:          structure.Item{ItemType: constants.Nothing},
+				WearableItems: &[]constants.ItemType{},
+			},
+			Shoes: &structure.Armor{
+				Item:          structure.Item{ItemType: constants.Nothing},
+				WearableItems: &[]constants.ItemType{},
+			},
+		},
+		BodyPartForWeapon: structure.BodyPartForWeapon{
+			LeftHand: &structure.Weapon{
+				Item:          structure.Item{ItemType: constants.Nothing},
+				WearableItems: &[]constants.ItemType{constants.WoodSword},
+			},
+			RightHand: &structure.Weapon{
+				Item:          structure.Item{ItemType: constants.Nothing},
+				WearableItems: &[]constants.ItemType{constants.WoodSword},
+			},
+		},
+	}
+	return &status
 }

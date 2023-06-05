@@ -1,14 +1,18 @@
 package structure
 
-import (
-	"goproject/constants"
-)
+import "goproject/constants"
+
+type Position struct {
+	Row int
+	Col int
+}
 
 type Room struct {
 	Doors      map[constants.Direction]*Door
 	Directions map[constants.Direction]*Room
 	GoalFlag   bool
 	Items      map[constants.ItemType]int
+	Monster    *Monster
 }
 
 type Door struct {
@@ -16,24 +20,8 @@ type Door struct {
 	DoorType constants.DoorType
 }
 
-type Item struct {
-	ItemType constants.ItemType
-}
-
-type Position struct {
-	Row int
-	Col int
-}
-
 type DoorPositionAndType struct {
 	RoomPosition Position
 	Direction    constants.Direction
 	DoorType     constants.DoorType
 }
-
-type ItemPositionAndType struct {
-	RoomPosition Position
-	ItemType     constants.ItemType
-}
-
-type Bag map[constants.ItemType]int
