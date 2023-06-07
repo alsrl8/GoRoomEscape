@@ -12,6 +12,7 @@ func gameStart(status *structure.Status) {
 }
 
 func main() {
-	status := initialize.InitGameAndReturnStatus()
+	status := initialize.InitGame()
+	//status := initialize.InitGameAndReturnStatus()
 	gameStart(status)
 }

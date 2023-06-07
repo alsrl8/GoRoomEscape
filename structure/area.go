@@ -1,33 +1,29 @@
 package structure
 
-import "goproject/constants"
-
-type Position struct {
-	Row int
-	Col int
-}
+import (
+	"fmt"
+	"goproject/constants"
+)
 
 type Area struct {
 	Directions map[constants.Direction]*Location
 }
 
-type Room struct {
-	Doors      map[constants.Direction]*Door
-	Directions map[constants.Direction]*Location
-	GoalFlag   bool
-	Items      map[constants.ItemType]int
-	Monster    *Monster
-	NpcMap     map[constants.NpcType]int
-	Place      constants.PlaceType
+func (area *Area) Move(direction constants.Direction) *Location {
+	return (*area).Directions[direction]
 }
 
-type Door struct {
-	Closed   bool
-	DoorType constants.DoorType
+func (area *Area) ShowInfo() {
+	fmt.Println(constants.LineDivider)
+	for _, dir := range constants.DirectionList {
+		fmt.Printf(constants.DirectionInfoWithRoomInfo, constants.DirStringMap[dir], constants.DirStringEngMap[dir], area.getNearAreaInfo(dir))
+	}
 }
 
-type DoorPositionAndType struct {
-	RoomPosition Position
-	Direction    constants.Direction
-	DoorType     constants.DoorType
+func (area *Area) getNearAreaInfo(direction constants.Direction) string {
+	if area.Directions[direction] == nil {
+		return fmt.Sprintf(constants.SpaceTypeStringMap[constants.Wall])
+	} else {
+		return fmt.Sprintf(constants.SpaceTypeStringMap[constants.EmptyRoom])
+	}
 }

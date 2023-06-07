@@ -3,13 +3,15 @@ package constants
 type SpaceType int
 
 const (
-	Wall SpaceType = iota
+	EmptyArea SpaceType = iota
 	EmptyRoom
+	Wall
 )
 
 var SpaceTypeStringMap = map[SpaceType]string{
-	Wall:      "벽",
+	EmptyArea: "비어있음",
 	EmptyRoom: "방",
+	Wall:      "벽",
 }
 
 type Direction int

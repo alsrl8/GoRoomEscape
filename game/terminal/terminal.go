@@ -54,7 +54,6 @@ func SetUserInputAsUserName(status *structure.Status) {
 func RunTerminal(status *structure.Status) {
 	clearTerminal()
 	for {
-		//command.ShowRoomAndInventoryInfo(status)
 		command.PrintLine()
 		input := getInput()
 		clearTerminal()
@@ -76,10 +75,10 @@ func RunTerminal(status *structure.Status) {
 			goto GameOver
 		}
 
-		room := command.GetCurrentRoom(status)
-		if room.GoalFlag {
-			goto ExitLoop
-		}
+		//room := command.GetCurrentRoom(status)
+		//if room.GoalFlag {
+		//	goto ExitLoop
+		//}
 	}
 QuitLoop:
 	clearTerminal()
@@ -112,9 +111,10 @@ func handleSingleTokenCommand(input string, status *structure.Status) (ret struc
 	case "장비", "EQ", "eq":
 		command.ShowBodyParts(*status)
 	case "보다", "봐":
-		room := command.GetCurrentRoom(status)
-		command.ShowRoomInfo(room)
-		command.ShowMovableDirections(room)
+		//room := command.GetCurrentRoom(status)
+		(*status.Location).ShowInfo()
+		//command.ShowRoomInfo(room)
+		//command.ShowMovableDirections(room)
 	case "시간":
 		printTime()
 	}

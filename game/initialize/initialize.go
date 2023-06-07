@@ -7,12 +7,26 @@ import (
 	"goproject/structure"
 )
 
-func initGrid(rowLen int, colLen int) *[][]*structure.Room {
+func initGrid(rowLen int, colLen int) [][]*structure.Room {
 	var grid [][]*structure.Room
 	for i := 0; i < rowLen; i++ {
 		grid = append(grid, make([]*structure.Room, colLen))
 	}
-	return &grid
+	return grid
+}
+
+func initGameMap(rowLen, colLen int) [][]*structure.Area {
+	var grid [][]*structure.Area
+	for r := 0; r < rowLen; r++ {
+		row := make([]*structure.Area, colLen)
+		for c := 0; c < colLen; c++ {
+			row[c] = &structure.Area{
+				Directions: make(map[constants.Direction]*structure.Location),
+			}
+		}
+		grid = append(grid, row)
+	}
+	return grid
 }
 
 func generateRoom(goalFlag bool) *structure.Room {
@@ -24,14 +38,14 @@ func generateRoom(goalFlag bool) *structure.Room {
 	}
 }
 
-func getNextRoom(grid *[][]*structure.Room, position structure.Position, direction constants.Direction) *structure.Room {
-	room := (*grid)[position.Row][position.Col]
+func getNextRoom(grid [][]*structure.Room, position structure.Position, direction constants.Direction) *structure.Room {
+	room := grid[position.Row][position.Col]
 	return (*room.Directions[direction]).(*structure.Room)
 }
 
-func createEmptyRooms(grid *[][]*structure.Room, roomPositions *[]structure.Position) {
+func createEmptyRooms(grid [][]*structure.Room, roomPositions *[]structure.Position) {
 	for _, pos := range *roomPositions {
-		(*grid)[pos.Row][pos.Col] = generateRoom(false)
+		grid[pos.Row][pos.Col] = generateRoom(false)
 	}
 }
 
@@ -47,12 +61,12 @@ func connectTwoRooms(fromRoom *structure.Room, toRoom *structure.Room, direction
 	toRoom.Directions[counterDirection] = &_fromRoom
 }
 
-func connectAdjacentRooms(grid *[][]*structure.Room) {
-	rowLen, colLen := len(*grid), len((*grid)[0])
+func connectAdjacentRooms(grid [][]*structure.Room) {
+	rowLen, colLen := len(grid), len(grid[0])
 
 	for row := 0; row < rowLen; row++ {
 		for col := 0; col < colLen; col++ {
-			if (*grid)[row][col] == nil {
+			if grid[row][col] == nil {
 				continue
 			}
 
@@ -60,19 +74,19 @@ func connectAdjacentRooms(grid *[][]*structure.Room) {
 				nr, nc := row+constants.DRow[d], col+constants.DCol[d]
 				if nr < 0 || rowLen <= nr || nc < 0 || colLen <= nc {
 					continue
-				} else if (*grid)[nr][nc] == nil {
+				} else if grid[nr][nc] == nil {
 					continue
 				}
 
-				connectTwoRooms((*grid)[row][col], (*grid)[nr][nc], d)
+				connectTwoRooms(grid[row][col], grid[nr][nc], d)
 			}
 		}
 	}
 }
 
-func buildDoorsBetweenRooms(grid *[][]*structure.Room, doorPositionAndType *[]structure.DoorPositionAndType) {
+func buildDoorsBetweenRooms(grid [][]*structure.Room, doorPositionAndType *[]structure.DoorPositionAndType) {
 	for _, door := range *doorPositionAndType {
-		room := (*grid)[door.RoomPosition.Row][door.RoomPosition.Col]
+		room := grid[door.RoomPosition.Row][door.RoomPosition.Col]
 		room.Doors[door.Direction] = &structure.Door{Closed: true, DoorType: door.DoorType}
 
 		oppositeRoom := getNextRoom(grid, door.RoomPosition, door.Direction)
@@ -84,21 +98,21 @@ func buildDoorsBetweenRooms(grid *[][]*structure.Room, doorPositionAndType *[]st
 	}
 }
 
-func addEndPoint(grid *[][]*structure.Room, endPosition structure.Position, direction constants.Direction) {
-	room := (*grid)[endPosition.Row][endPosition.Col]
+func addEndPoint(grid [][]*structure.Room, endPosition structure.Position, direction constants.Direction) {
+	room := grid[endPosition.Row][endPosition.Col]
 	var goalRoom structure.Location = generateRoom(true)
 	room.Directions[direction] = &goalRoom
 }
 
-func putItemsOnRooms(grid *[][]*structure.Room, itemPositionAndType *[]structure.ItemPositionAndType) {
+func putItemsOnRooms(grid [][]*structure.Room, itemPositionAndType *[]structure.ItemPositionAndType) {
 	for _, item := range *itemPositionAndType {
-		(*grid)[item.RoomPosition.Row][item.RoomPosition.Col].Items[item.ItemType] += 1
+		grid[item.RoomPosition.Row][item.RoomPosition.Col].Items[item.ItemType] += 1
 	}
 }
 
-func putMonstersOnRooms(grid *[][]*structure.Room, monsterWithPosition *[]structure.MonsterWithPosition) {
+func putMonstersOnRooms(grid [][]*structure.Room, monsterWithPosition *[]structure.MonsterWithPosition) {
 	for _, monsterInfo := range *monsterWithPosition {
-		(*grid)[monsterInfo.RoomPosition.Row][monsterInfo.RoomPosition.Col].Monster = &structure.Monster{
+		grid[monsterInfo.RoomPosition.Row][monsterInfo.RoomPosition.Col].Monster = &structure.Monster{
 			MonsterType: monsterInfo.Monster.MonsterType,
 			Attribute:   monsterInfo.Monster.Attribute,
 			DropItems:   monsterInfo.Monster.DropItems,
@@ -106,36 +120,46 @@ func putMonstersOnRooms(grid *[][]*structure.Room, monsterWithPosition *[]struct
 	}
 }
 
-func InitGameAndReturnStatus() *structure.Status {
-	rowLen := data.GetRowLen()
-	colLen := data.GetColLen()
-	roomPositions := data.GetRoomPositions()
-	grid := initGrid(rowLen, colLen)
-	createEmptyRooms(grid, roomPositions)
-	connectAdjacentRooms(grid)
+func InitDungeon(status *structure.Status, stageNum int) {
+	switch stageNum {
+	case 2:
+		rowLen := data.GetRowLen()
+		colLen := data.GetColLen()
+		roomPositions := data.GetRoomPositions()
+		grid := initGrid(rowLen, colLen)
+		createEmptyRooms(grid, roomPositions)
+		connectAdjacentRooms(grid)
 
-	startPosition := data.GetStartPosition()
-	endPosition := data.GetEndPosition()
-	endDirection := data.GetEndDirection()
-	addEndPoint(grid, endPosition, endDirection)
+		startPosition := data.GetStartPosition()
+		endPosition := data.GetEndPosition()
+		endDirection := data.GetEndDirection()
+		addEndPoint(grid, endPosition, endDirection)
 
-	doorPositionAndType := data.GetDoorPositionAndType()
-	buildDoorsBetweenRooms(grid, doorPositionAndType)
+		doorPositionAndType := data.GetDoorPositionAndType()
+		buildDoorsBetweenRooms(grid, doorPositionAndType)
 
-	monsterWithPosition := data.GetMonsterWithPositionData()
-	putMonstersOnRooms(grid, &monsterWithPosition)
+		monsterWithPosition := data.GetMonsterWithPositionData()
+		putMonstersOnRooms(grid, &monsterWithPosition)
 
-	itemPositionAndType := data.GetItemPositionAndType()
-	putItemsOnRooms(grid, itemPositionAndType)
+		itemPositionAndType := data.GetItemPositionAndType()
+		putItemsOnRooms(grid, itemPositionAndType)
 
-	status := initStatus((*grid)[startPosition.Row][startPosition.Col])
-	return status
+		var startLocation structure.Location = grid[startPosition.Row][startPosition.Col]
+		status.Location = &startLocation
+	}
 }
 
-func initStatus(startRoom *structure.Room) *structure.Status {
-	var location structure.Location = startRoom
+func InitGame() *structure.Status {
+	rowLen := 2
+	colLen := 2
+	area := initGameMap(rowLen, colLen)
+	var startLocation structure.Location = area[0][0]
+	return initStatus(&startLocation)
+}
+
+func initStatus(startLocation *structure.Location) *structure.Status {
 	status := structure.Status{
-		Location:  &location,
+		Location:  startLocation,
 		Inventory: &structure.Inventory{},
 		Equipment: &structure.Equipment{},
 		Attribute: data.GetAttribute(),
