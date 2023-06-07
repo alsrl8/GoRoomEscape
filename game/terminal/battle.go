@@ -13,15 +13,16 @@ func battleToMonster(status *structure.Status, monster *structure.Monster) (game
 	clearTerminal()
 	fmt.Printf(constants.DuringBattle, constants.MonsterTypeStringMap[monster.MonsterType])
 	for {
+		room := command.GetCurrentRoom(status)
 		command.ShowUserNameAndStatus(status)
-		command.PrintMonsterInRoom(status.Room)
+		command.PrintMonsterInRoom(room)
 		input := getInput()
 		clearTerminal()
 		switch input {
 		case "공격":
 			command.DamageMonsterByPlayer(status, monster)
 			if command.IsDead(monster.Attribute) {
-				command.RemoveMonsterInRoom(status.Room)
+				command.RemoveMonsterInRoom(room)
 				command.CarveMonster(status, monster)
 				fmt.Printf(constants.KillMonster, constants.MonsterTypeStringMap[monster.MonsterType])
 				goto FinishTheBattle

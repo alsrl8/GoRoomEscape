@@ -6,7 +6,7 @@ import (
 
 type Status struct {
 	Name      string
-	Room      *Room
+	Location  *Location
 	Inventory *Inventory
 	Equipment *Equipment
 	BodyPartForArmor

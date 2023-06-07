@@ -15,9 +15,9 @@ func initGrid(rowLen int, colLen int) *[][]*structure.Room {
 	return &grid
 }
 
-func newRoom(goalFlag bool) *structure.Room {
+func generateRoom(goalFlag bool) *structure.Room {
 	return &structure.Room{
-		Directions: make(map[constants.Direction]*structure.Room),
+		Directions: make(map[constants.Direction]*structure.Location),
 		Doors:      make(map[constants.Direction]*structure.Door),
 		GoalFlag:   goalFlag,
 		Items:      make(map[constants.ItemType]int),
@@ -26,12 +26,12 @@ func newRoom(goalFlag bool) *structure.Room {
 
 func getNextRoom(grid *[][]*structure.Room, position structure.Position, direction constants.Direction) *structure.Room {
 	room := (*grid)[position.Row][position.Col]
-	return room.Directions[direction]
+	return (*room.Directions[direction]).(*structure.Room)
 }
 
 func createEmptyRooms(grid *[][]*structure.Room, roomPositions *[]structure.Position) {
 	for _, pos := range *roomPositions {
-		(*grid)[pos.Row][pos.Col] = newRoom(false)
+		(*grid)[pos.Row][pos.Col] = generateRoom(false)
 	}
 }
 
@@ -40,9 +40,11 @@ func connectTwoRooms(fromRoom *structure.Room, toRoom *structure.Room, direction
 		return
 	}
 
-	fromRoom.Directions[direction] = toRoom
+	var _toRoom structure.Location = toRoom
+	fromRoom.Directions[direction] = &_toRoom
 	counterDirection := command.GetCounterDirection(direction)
-	toRoom.Directions[counterDirection] = fromRoom
+	var _fromRoom structure.Location = fromRoom
+	toRoom.Directions[counterDirection] = &_fromRoom
 }
 
 func connectAdjacentRooms(grid *[][]*structure.Room) {
@@ -84,7 +86,8 @@ func buildDoorsBetweenRooms(grid *[][]*structure.Room, doorPositionAndType *[]st
 
 func addEndPoint(grid *[][]*structure.Room, endPosition structure.Position, direction constants.Direction) {
 	room := (*grid)[endPosition.Row][endPosition.Col]
-	room.Directions[direction] = newRoom(true)
+	var goalRoom structure.Location = generateRoom(true)
+	room.Directions[direction] = &goalRoom
 }
 
 func putItemsOnRooms(grid *[][]*structure.Room, itemPositionAndType *[]structure.ItemPositionAndType) {
@@ -130,8 +133,9 @@ func InitGameAndReturnStatus() *structure.Status {
 }
 
 func initStatus(startRoom *structure.Room) *structure.Status {
+	var location structure.Location = startRoom
 	status := structure.Status{
-		Room:      startRoom,
+		Location:  &location,
 		Inventory: &structure.Inventory{},
 		Equipment: &structure.Equipment{},
 		Attribute: data.GetAttribute(),

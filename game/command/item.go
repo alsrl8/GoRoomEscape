@@ -117,7 +117,7 @@ func ValidateItemDoorMatch(itemType constants.ItemType, doorType constants.DoorT
 }
 
 func PickUpItems(status *structure.Status, itemType constants.ItemType, itemNum int) {
-	room := status.Room
+	room := GetCurrentRoom(status)
 	_itemNum := room.Items[itemType]
 	if _itemNum == 0 {
 		fmt.Println(constants.NoSuchItem, constants.ItemTypeStringMap[itemType])
@@ -143,7 +143,7 @@ func DropItems(status *structure.Status, itemType constants.ItemType, itemNum in
 		return
 	}
 
-	room := status.Room
+	room := GetCurrentRoom(status)
 	room.Items[itemType] += itemNum
 	(*inventory)[itemType] -= itemNum
 }

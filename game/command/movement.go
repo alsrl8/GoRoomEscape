@@ -7,15 +7,13 @@ import (
 	"goproject/structure"
 )
 
-func Move(room *structure.Room, direction constants.Direction) *structure.Room {
+func Move(status *structure.Status, direction constants.Direction) {
+	room := GetCurrentRoom(status)
 	if !canMove(room, direction) {
-		fmt.Println(constants.CanNotMoveWarning, constants.DirStringMap[direction], constants.DirStringEngMap[direction])
-		return room
-	} else if isMonsterExistInRoom(room) {
-		fmt.Println(constants.MonsterExistInTheRoom, constants.MonsterTypeStringMap[room.Monster.MonsterType])
-		return room
+		fmt.Println(constants.CanNotMoveWarning, constants.DirStringMap[direction])
+		return
 	}
-	return getNextRoomInDirection(room, direction)
+	status.Location = (*status.Location).Move(direction)
 }
 
 func canMove(room *structure.Room, direction constants.Direction) bool {
@@ -28,7 +26,7 @@ func canMove(room *structure.Room, direction constants.Direction) bool {
 }
 
 func getNextRoomInDirection(room *structure.Room, direction constants.Direction) *structure.Room {
-	return room.Directions[direction]
+	return (*room.Directions[direction]).(*structure.Room)
 }
 
 func findDoorDirectionByType(room *structure.Room, doorType constants.DoorType) constants.Direction {
@@ -73,7 +71,7 @@ func GetCounterDirection(direction constants.Direction) constants.Direction {
 func breakGlassDoor(room *structure.Room, inventory *structure.Inventory) {
 	glassDoorDirection := findDoorDirectionByType(room, constants.GlassDoor)
 	room.Doors[glassDoorDirection] = nil
-	oppositeRoom := room.Directions[glassDoorDirection]
+	oppositeRoom := (*room.Directions[glassDoorDirection]).(*structure.Room)
 	if oppositeRoom != nil {
 		counterDirection := GetCounterDirection(glassDoorDirection)
 		oppositeRoom.Doors[counterDirection] = nil
@@ -84,7 +82,7 @@ func breakGlassDoor(room *structure.Room, inventory *structure.Inventory) {
 func unlockLockedDoor(room *structure.Room, inventory *structure.Inventory) {
 	lockedDoorDirection := findDoorDirectionByType(room, constants.LockedDoor)
 	room.Doors[lockedDoorDirection].DoorType = constants.WoodDoor
-	oppositeRoom := room.Directions[lockedDoorDirection]
+	oppositeRoom := (*room.Directions[lockedDoorDirection]).(*structure.Room)
 	if oppositeRoom != nil {
 		counterDirection := GetCounterDirection(lockedDoorDirection)
 		if oppositeRoom.Doors[counterDirection] != nil {

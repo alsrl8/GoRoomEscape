@@ -7,9 +7,13 @@ type Position struct {
 	Col int
 }
 
+type Area struct {
+	Directions map[constants.Direction]*Location
+}
+
 type Room struct {
 	Doors      map[constants.Direction]*Door
-	Directions map[constants.Direction]*Room
+	Directions map[constants.Direction]*Location
 	GoalFlag   bool
 	Items      map[constants.ItemType]int
 	Monster    *Monster

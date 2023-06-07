@@ -76,7 +76,8 @@ func RunTerminal(status *structure.Status) {
 			goto GameOver
 		}
 
-		if status.Room.GoalFlag {
+		room := command.GetCurrentRoom(status)
+		if room.GoalFlag {
 			goto ExitLoop
 		}
 	}
@@ -97,13 +98,13 @@ func handleSingleTokenCommand(input string, status *structure.Status) (ret struc
 	case "Q", "q":
 		ret.QuitLoopFlag = true
 	case "E", "e":
-		status.Room = command.Move(status.Room, constants.East)
+		command.Move(status, constants.East)
 	case "N", "n":
-		status.Room = command.Move(status.Room, constants.North)
+		command.Move(status, constants.North)
 	case "W", "w":
-		status.Room = command.Move(status.Room, constants.West)
+		command.Move(status, constants.West)
 	case "S", "s":
-		status.Room = command.Move(status.Room, constants.South)
+		command.Move(status, constants.South)
 	case "정보":
 		command.ShowUserNameAndStatus(status)
 	case "소지":
@@ -111,8 +112,9 @@ func handleSingleTokenCommand(input string, status *structure.Status) (ret struc
 	case "장비", "EQ", "eq":
 		command.ShowBodyParts(*status)
 	case "보다", "봐":
-		command.ShowRoomInfo(status.Room)
-		command.ShowMovableDirections(status.Room)
+		room := command.GetCurrentRoom(status)
+		command.ShowRoomInfo(room)
+		command.ShowMovableDirections(room)
 	case "시간":
 		printTime()
 	}
@@ -135,19 +137,21 @@ func HandleMultiTokenCommand(input string, status *structure.Status) (ret struct
 	case "열어", "열":
 		doorName := tokens[0]
 		doorType := constants.StringDoorTypeMap[doorName]
-		if err := command.ValidateDoorExist(status.Room, doorType); err != nil {
+		room := command.GetCurrentRoom(status)
+		if err := command.ValidateDoorExist(room, doorType); err != nil {
 			fmt.Println(err.Error())
 			return
 		}
-		command.OpenDoorByName(status.Room, doorType)
+		command.OpenDoorByName(room, doorType)
 	case "닫아", "닫":
 		doorName := tokens[0]
 		doorType := constants.StringDoorTypeMap[doorName]
-		if err := command.ValidateDoorExist(status.Room, doorType); err != nil {
+		room := command.GetCurrentRoom(status)
+		if err := command.ValidateDoorExist(room, doorType); err != nil {
 			fmt.Println(err.Error())
 			return
 		}
-		command.CloseDoorByName(status.Room, doorType)
+		command.CloseDoorByName(room, doorType)
 	case "보다", "봐":
 		tokenLen := len(tokens)
 		switch tokenLen {
@@ -195,32 +199,34 @@ func HandleMultiTokenCommand(input string, status *structure.Status) (ret struct
 			itemName, doorName := tokens[0], tokens[1]
 			itemType := constants.StringItemTypeMap[itemName]
 			doorType := constants.StringDoorTypeMap[doorName]
+			room := command.GetCurrentRoom(status)
 			if err := command.ValidateItemUsability(status.Inventory, itemType, true); err != nil {
 				fmt.Println(err.Error())
 				return
-			} else if err = command.ValidateDoorExist(status.Room, doorType); err != nil {
+			} else if err = command.ValidateDoorExist(room, doorType); err != nil {
 				fmt.Println(err.Error())
 				return
 			} else if err = command.ValidateItemDoorMatch(itemType, doorType); err != nil {
 				fmt.Println(err.Error())
 			}
-			command.UseItemToDoorByName(status.Room, status.Inventory, itemName, doorName)
+			command.UseItemToDoorByName(room, status.Inventory, itemName, doorName)
 			fmt.Printf(constants.UseItem, itemName)
 		case 5:
 			itemName, doorName := tokens[0], tokens[2]
 			//itemNum, doorNum := tokens[1], tokens[3]	TODO 문과 아이템 번호가 주어졌을 때 `풀어` 명령어 처리
 			itemType := constants.StringItemTypeMap[itemName]
 			doorType := constants.StringDoorTypeMap[doorName]
+			room := command.GetCurrentRoom(status)
 			if err := command.ValidateItemUsability(status.Inventory, itemType, true); err != nil {
 				fmt.Println(err.Error())
 				return
-			} else if err = command.ValidateDoorExist(status.Room, doorType); err != nil {
+			} else if err = command.ValidateDoorExist(room, doorType); err != nil {
 				fmt.Println(err.Error())
 				return
 			} else if err = command.ValidateItemDoorMatch(itemType, doorType); err != nil {
 				fmt.Println(err.Error())
 			}
-			command.UseItemToDoorByName(status.Room, status.Inventory, itemName, doorName)
+			command.UseItemToDoorByName(room, status.Inventory, itemName, doorName)
 			fmt.Printf(constants.UseItem, itemName)
 		default:
 			fmt.Println(constants.WrongInput, input)
@@ -230,7 +236,8 @@ func HandleMultiTokenCommand(input string, status *structure.Status) (ret struct
 		switch tokenLen {
 		case 2:
 			monsterName := tokens[0]
-			monster := command.FindMonsterByName(status.Room, monsterName)
+			room := command.GetCurrentRoom(status)
+			monster := command.FindMonsterByName(room, monsterName)
 			if monster == nil {
 				fmt.Println(constants.NoSuchMonster, monsterName)
 				return
@@ -242,7 +249,8 @@ func HandleMultiTokenCommand(input string, status *structure.Status) (ret struct
 		case 3:
 			monsterName := tokens[0]
 			//monsterNum := tokens[1] TODO 몬스터 번호가 주어졌을 때 `공격` 명령어 처리
-			monster := command.FindMonsterByName(status.Room, monsterName)
+			room := command.GetCurrentRoom(status)
+			monster := command.FindMonsterByName(room, monsterName)
 			if monster == nil {
 				fmt.Println(constants.NoSuchMonster, monsterName)
 				return
