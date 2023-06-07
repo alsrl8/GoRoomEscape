@@ -112,7 +112,7 @@ func handleSingleTokenCommand(input string, status *structure.Status) (ret struc
 		command.ShowBodyParts(*status)
 	case "보다", "봐":
 		//room := command.GetCurrentRoom(status)
-		(*status.Location).ShowInfo()
+		status.Location.ShowInfo()
 		//command.ShowRoomInfo(room)
 		//command.ShowMovableDirections(room)
 	case "시간":

@@ -11,16 +11,16 @@ import (
 	"time"
 )
 
-func addItemToInventory(inventory *structure.Inventory, itemType constants.ItemType, itemNum int) {
-	(*inventory)[itemType] += itemNum
+func addItemToInventory(inventory structure.Inventory, itemType constants.ItemType, itemNum int) {
+	inventory[itemType] += itemNum
 }
 
-func removeItemInInventory(inventory *structure.Inventory, itemType constants.ItemType, itemNum int) {
-	(*inventory)[itemType] -= itemNum
+func removeItemInInventory(inventory structure.Inventory, itemType constants.ItemType, itemNum int) {
+	inventory[itemType] -= itemNum
 }
 
-func hasItemInInventory(inventory *structure.Inventory, itemType constants.ItemType) bool {
-	return (*inventory)[itemType] > 0
+func hasItemInInventory(inventory structure.Inventory, itemType constants.ItemType) bool {
+	return inventory[itemType] > 0
 }
 
 func isUsableItem(itemType constants.ItemType) bool {
@@ -45,12 +45,12 @@ func UseItemByName(status *structure.Status, itemName string) {
 	}
 }
 
-func UseItemToDoorByName(room *structure.Room, inventory *structure.Inventory, itemName string, doorName string) {
+func UseItemToDoorByName(room *structure.Room, inventory structure.Inventory, itemName string, doorName string) {
 	itemType := constants.StringItemTypeMap[itemName]
 
 	if constants.Hammer == itemType {
 		if constants.GlassDoor == constants.StringDoorTypeMap[doorName] {
-			breakGlassDoor(room, inventory)
+			breakGlassDoor(room)
 			removeItemInInventory(inventory, constants.Hammer, 1)
 			return
 		}
@@ -58,7 +58,7 @@ func UseItemToDoorByName(room *structure.Room, inventory *structure.Inventory, i
 
 	if constants.Key == itemType {
 		if constants.LockedDoor == constants.StringDoorTypeMap[doorName] {
-			unlockLockedDoor(room, inventory)
+			unlockLockedDoor(room)
 			removeItemInInventory(inventory, constants.Key, 1)
 			return
 		}
@@ -79,14 +79,14 @@ func GetItemByPercentage(dropItems *[]structure.DropItem) (constants.ItemType, i
 	return constants.Nothing, 0
 }
 
-func ValidateItemExist(inventory *structure.Inventory, itemType constants.ItemType) error {
+func ValidateItemExist(inventory structure.Inventory, itemType constants.ItemType) error {
 	if !hasItemInInventory(inventory, itemType) {
 		return errors.New(constants.NoItemInInventory)
 	}
 	return nil
 }
 
-func ValidateItemUsability(inventory *structure.Inventory, itemType constants.ItemType, includeTargetFlag bool) error {
+func ValidateItemUsability(inventory structure.Inventory, itemType constants.ItemType, includeTargetFlag bool) error {
 	if !hasItemInInventory(inventory, itemType) {
 		return errors.New(constants.NoItemInInventory)
 	} else if !isUsableItem(itemType) {
@@ -128,13 +128,13 @@ func PickUpItems(status *structure.Status, itemType constants.ItemType, itemNum 
 	}
 
 	inventory := status.Inventory
-	(*inventory)[itemType] += itemNum
+	inventory[itemType] += itemNum
 	room.Items[itemType] -= itemNum
 }
 
 func DropItems(status *structure.Status, itemType constants.ItemType, itemNum int) {
 	inventory := status.Inventory
-	_itemNum := (*inventory)[itemType]
+	_itemNum := inventory[itemType]
 	if _itemNum == 0 {
 		fmt.Println(constants.NoItemInInventory, constants.ItemTypeStringMap[itemType])
 		return
@@ -145,9 +145,9 @@ func DropItems(status *structure.Status, itemType constants.ItemType, itemNum in
 
 	room := GetCurrentRoom(status)
 	room.Items[itemType] += itemNum
-	(*inventory)[itemType] -= itemNum
+	inventory[itemType] -= itemNum
 }
 
-func DiscardItem(inventory *structure.Inventory, itemType constants.ItemType) {
-	(*inventory)[itemType] -= 1
+func DiscardItem(inventory structure.Inventory, itemType constants.ItemType) {
+	inventory[itemType] -= 1
 }

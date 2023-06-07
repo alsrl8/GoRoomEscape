@@ -13,7 +13,7 @@ func Move(status *structure.Status, direction constants.Direction) {
 		fmt.Println(constants.CanNotMoveWarning, constants.DirStringMap[direction])
 		return
 	}
-	status.Location = (*status.Location).Move(direction)
+	status.Location = *status.Location.Move(direction)
 }
 
 func canMove(room *structure.Room, direction constants.Direction) bool {
@@ -68,7 +68,7 @@ func GetCounterDirection(direction constants.Direction) constants.Direction {
 	return constants.DirectionList[(direction+2)%4]
 }
 
-func breakGlassDoor(room *structure.Room, inventory *structure.Inventory) {
+func breakGlassDoor(room *structure.Room) {
 	glassDoorDirection := findDoorDirectionByType(room, constants.GlassDoor)
 	room.Doors[glassDoorDirection] = nil
 	oppositeRoom := (*room.Directions[glassDoorDirection]).(*structure.Room)
@@ -79,7 +79,7 @@ func breakGlassDoor(room *structure.Room, inventory *structure.Inventory) {
 	fmt.Println(constants.SucceedBreakingGlassDoor, constants.DirStringMap[glassDoorDirection])
 }
 
-func unlockLockedDoor(room *structure.Room, inventory *structure.Inventory) {
+func unlockLockedDoor(room *structure.Room) {
 	lockedDoorDirection := findDoorDirectionByType(room, constants.LockedDoor)
 	room.Doors[lockedDoorDirection].DoorType = constants.WoodDoor
 	oppositeRoom := (*room.Directions[lockedDoorDirection]).(*structure.Room)
@@ -162,10 +162,10 @@ func showItemsInRoom(room *structure.Room) {
 	fmt.Println()
 }
 
-func ShowInventory(inventory *structure.Inventory) {
+func ShowInventory(inventory structure.Inventory) {
 	PrintLine()
 	fmt.Printf(constants.ItemInfoTitle)
-	for itemType, itemNum := range *inventory {
+	for itemType, itemNum := range inventory {
 		if itemNum == 0 {
 			continue
 		}

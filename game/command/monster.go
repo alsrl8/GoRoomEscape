@@ -52,6 +52,6 @@ func CarveMonster(status *structure.Status, monster *structure.Monster) {
 	if itemType == constants.Nothing {
 		return
 	}
-	(*status.Inventory)[itemType] += itemNum
+	status.Inventory[itemType] += itemNum
 	fmt.Printf(constants.GetItem, constants.ItemTypeStringMap[itemType], itemNum)
 }

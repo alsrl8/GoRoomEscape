@@ -6,8 +6,8 @@ import (
 
 type Status struct {
 	Name      string
-	Location  *Location
-	Inventory *Inventory
+	Location  Location
+	Inventory Inventory
 	Equipment *Equipment
 	BodyPartForArmor
 	BodyPartForWeapon

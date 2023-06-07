@@ -145,7 +145,7 @@ func InitDungeon(status *structure.Status, stageNum int) {
 		putItemsOnRooms(grid, itemPositionAndType)
 
 		var startLocation structure.Location = grid[startPosition.Row][startPosition.Col]
-		status.Location = &startLocation
+		status.Location = startLocation
 	}
 }
 
@@ -154,13 +154,13 @@ func InitGame() *structure.Status {
 	colLen := 2
 	area := initGameMap(rowLen, colLen)
 	var startLocation structure.Location = area[0][0]
-	return initStatus(&startLocation)
+	return initStatus(startLocation)
 }
 
-func initStatus(startLocation *structure.Location) *structure.Status {
+func initStatus(startLocation structure.Location) *structure.Status {
 	status := structure.Status{
 		Location:  startLocation,
-		Inventory: &structure.Inventory{},
+		Inventory: structure.Inventory{},
 		Equipment: &structure.Equipment{},
 		Attribute: data.GetAttribute(),
 		BodyPartForArmor: structure.BodyPartForArmor{
