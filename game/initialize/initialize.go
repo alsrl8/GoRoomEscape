@@ -2,12 +2,11 @@ package initialize
 
 import (
 	"goproject/constants"
-	"goproject/game/command"
 	"goproject/game/data"
 	"goproject/structure"
 )
 
-func initGrid(rowLen int, colLen int) [][]*structure.Room {
+func initDungeonMap(rowLen int, colLen int) [][]*structure.Room {
 	var grid [][]*structure.Room
 	for i := 0; i < rowLen; i++ {
 		grid = append(grid, make([]*structure.Room, colLen))
@@ -21,17 +20,20 @@ func initGameMap(rowLen, colLen int) [][]*structure.Area {
 		row := make([]*structure.Area, colLen)
 		for c := 0; c < colLen; c++ {
 			row[c] = &structure.Area{
-				Directions: make(map[constants.Direction]*structure.Location),
+				LocationType: constants.EmptyArea,
+				Directions:   make(map[constants.Direction]structure.Location),
+				Object:       make(map[constants.ObjectType]int),
 			}
 		}
 		grid = append(grid, row)
 	}
+	connectAdjacentArea(grid)
 	return grid
 }
 
 func generateRoom(goalFlag bool) *structure.Room {
 	return &structure.Room{
-		Directions: make(map[constants.Direction]*structure.Location),
+		Directions: make(map[constants.Direction]structure.Location),
 		Doors:      make(map[constants.Direction]*structure.Door),
 		GoalFlag:   goalFlag,
 		Items:      make(map[constants.ItemType]int),
@@ -40,25 +42,13 @@ func generateRoom(goalFlag bool) *structure.Room {
 
 func getNextRoom(grid [][]*structure.Room, position structure.Position, direction constants.Direction) *structure.Room {
 	room := grid[position.Row][position.Col]
-	return (*room.Directions[direction]).(*structure.Room)
+	return room.Directions[direction].(*structure.Room)
 }
 
 func createEmptyRooms(grid [][]*structure.Room, roomPositions *[]structure.Position) {
 	for _, pos := range *roomPositions {
 		grid[pos.Row][pos.Col] = generateRoom(false)
 	}
-}
-
-func connectTwoRooms(fromRoom *structure.Room, toRoom *structure.Room, direction constants.Direction) {
-	if fromRoom.Directions[direction] != nil {
-		return
-	}
-
-	var _toRoom structure.Location = toRoom
-	fromRoom.Directions[direction] = &_toRoom
-	counterDirection := command.GetCounterDirection(direction)
-	var _fromRoom structure.Location = fromRoom
-	toRoom.Directions[counterDirection] = &_fromRoom
 }
 
 func connectAdjacentRooms(grid [][]*structure.Room) {
@@ -78,7 +68,27 @@ func connectAdjacentRooms(grid [][]*structure.Room) {
 					continue
 				}
 
-				connectTwoRooms(grid[row][col], grid[nr][nc], d)
+				location := grid[row][col]
+				near := grid[nr][nc]
+				location.Connect(near, d)
+			}
+		}
+	}
+}
+
+func connectAdjacentArea(grid [][]*structure.Area) {
+	rowLen, colLen := len(grid), len(grid[0])
+
+	for r := 0; r < rowLen; r++ {
+		for c := 0; c < colLen; c++ {
+			location := grid[r][c]
+			for _, d := range constants.DirectionList {
+				nr, nc := r+constants.DRow[d], c+constants.DCol[d]
+				if nr < 0 || rowLen <= nr || nc < 0 || colLen <= nc {
+					continue
+				}
+				near := grid[nr][nc]
+				location.Connect(near, d)
 			}
 		}
 	}
@@ -93,15 +103,15 @@ func buildDoorsBetweenRooms(grid [][]*structure.Room, doorPositionAndType *[]str
 		if oppositeRoom == nil {
 			continue
 		}
-		counterDirection := command.GetCounterDirection(door.Direction)
+		counterDirection := constants.GetCounterDirection(door.Direction)
 		oppositeRoom.Doors[counterDirection] = room.Doors[door.Direction]
 	}
 }
 
-func addEndPoint(grid [][]*structure.Room, endPosition structure.Position, direction constants.Direction) {
-	room := grid[endPosition.Row][endPosition.Col]
+func addDungeonExit(dungeon [][]*structure.Room, endPosition structure.Position, direction constants.Direction) {
+	room := dungeon[endPosition.Row][endPosition.Col]
 	var goalRoom structure.Location = generateRoom(true)
-	room.Directions[direction] = &goalRoom
+	room.Directions[direction] = goalRoom
 }
 
 func putItemsOnRooms(grid [][]*structure.Room, itemPositionAndType *[]structure.ItemPositionAndType) {
@@ -121,38 +131,36 @@ func putMonstersOnRooms(grid [][]*structure.Room, monsterWithPosition *[]structu
 }
 
 func InitDungeon(status *structure.Status, stageNum int) {
-	switch stageNum {
-	case 2:
-		rowLen := data.GetRowLen()
-		colLen := data.GetColLen()
-		roomPositions := data.GetRoomPositions()
-		grid := initGrid(rowLen, colLen)
-		createEmptyRooms(grid, roomPositions)
-		connectAdjacentRooms(grid)
+	rowLen := data.GetDungeonRowLen(stageNum)
+	colLen := data.GetDungeonColLen(stageNum)
+	roomPositions := data.GetDungeonRoomPositions(stageNum)
+	dungeon := initDungeonMap(rowLen, colLen)
+	createEmptyRooms(dungeon, roomPositions)
+	connectAdjacentRooms(dungeon)
 
-		startPosition := data.GetStartPosition()
-		endPosition := data.GetEndPosition()
-		endDirection := data.GetEndDirection()
-		addEndPoint(grid, endPosition, endDirection)
+	startPosition := data.GetDungeonStartPosition(stageNum)
+	endPosition := data.GetDungeonExitPosition(stageNum)
+	endDirection := data.GetDungeonExitDirection(stageNum)
+	addDungeonExit(dungeon, endPosition, endDirection)
 
-		doorPositionAndType := data.GetDoorPositionAndType()
-		buildDoorsBetweenRooms(grid, doorPositionAndType)
+	doorPositionAndType := data.GetDungeonDoorPositionAndType(stageNum)
+	buildDoorsBetweenRooms(dungeon, doorPositionAndType)
 
-		monsterWithPosition := data.GetMonsterWithPositionData()
-		putMonstersOnRooms(grid, &monsterWithPosition)
+	monsterWithPosition := data.GetMonsterWithPositionData(stageNum)
+	putMonstersOnRooms(dungeon, &monsterWithPosition)
 
-		itemPositionAndType := data.GetItemPositionAndType()
-		putItemsOnRooms(grid, itemPositionAndType)
+	itemPositionAndType := data.GetItemPositionAndType(stageNum)
+	putItemsOnRooms(dungeon, itemPositionAndType)
 
-		var startLocation structure.Location = grid[startPosition.Row][startPosition.Col]
-		status.Location = startLocation
-	}
+	var startLocation structure.Location = dungeon[startPosition.Row][startPosition.Col]
+	status.Location = startLocation
 }
 
 func InitGame() *structure.Status {
 	rowLen := 2
 	colLen := 2
 	area := initGameMap(rowLen, colLen)
+	area[0][0].Object[constants.DungeonEntrance] += 1
 	var startLocation structure.Location = area[0][0]
 	return initStatus(startLocation)
 }

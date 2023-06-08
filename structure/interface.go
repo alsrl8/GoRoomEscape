@@ -11,6 +11,9 @@ type Wearable interface {
 }
 
 type Location interface {
-	Move(direction constants.Direction) *Location
+	GetLocationType() constants.LocationType
+	Move(direction constants.Direction) Location
 	ShowInfo()
+	CanMove(direction constants.Direction) bool
+	Connect(near Location, direction constants.Direction)
 }

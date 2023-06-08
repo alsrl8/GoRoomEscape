@@ -1,15 +1,17 @@
 package constants
 
-type SpaceType int
+type LocationType int
 
 const (
-	EmptyArea SpaceType = iota
+	VoidArea LocationType = iota
+	EmptyArea
 	EmptyRoom
 	Wall
 )
 
-var SpaceTypeStringMap = map[SpaceType]string{
-	EmptyArea: "비어있음",
+var LocationTypeStringMap = map[LocationType]string{
+	VoidArea:  "",
+	EmptyArea: "빈 공간",
 	EmptyRoom: "방",
 	Wall:      "벽",
 }
@@ -19,6 +21,10 @@ type Direction int
 var DirectionList = []Direction{East, North, West, South}
 var DRow = [4]int{0, -1, 0, 1}
 var DCol = [4]int{1, 0, -1, 0}
+
+func GetCounterDirection(direction Direction) Direction {
+	return DirectionList[(direction+2)%4]
+}
 
 const (
 	NoDirection Direction = iota - 1
@@ -148,30 +154,16 @@ var NpcStringMap = map[NpcType]string{
 	GodOfDeath: "사신",
 }
 
-type PlaceType int
-
-const (
-	EmptyPlace PlaceType = iota
-	Plaza
-	DungeonRoom
-	DungeonEntrance
-)
-
-var PlaceTypeStringMap = map[PlaceType]string{
-	EmptyPlace:      "",
-	Plaza:           "광장",
-	DungeonRoom:     "방",
-	DungeonEntrance: "던전 입구",
-}
-
 type ObjectType int
 
 const (
 	Fountain ObjectType = iota
+	DungeonEntrance
 )
 
 var ObjectTypeStringMap = map[ObjectType]string{
-	Fountain: "분수",
+	Fountain:        "분수",
+	DungeonEntrance: "던전 입구",
 }
 
 const LineDivider = "=================================================="
@@ -193,7 +185,8 @@ const DirectionInfoWithRoomInfo = "%s(%s) - %s\n"
 const DirectionInfo = "%s(%s) "
 const MovableDirectionTitle = "이동 가능한 방향 >>> "
 const ItemInfoTitle = "아이템 정보 >>> "
-const ItemTypeAndNum = "%s(%d)"
+const ItemTypeAndNum = "%s(%d) "
+const ObjectTypeAndNum = "%s(%d) "
 
 const DuringBattle = "<<< 몬스터(%s)와 전투 중입니다 >>>\n"
 const AttackMonster = "몬스터(%s)를 공격했습니다.\n"

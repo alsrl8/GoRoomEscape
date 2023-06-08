@@ -28,16 +28,23 @@ var BoxDropItems = []structure.DropItem{
 	{ItemType: constants.HealPotion, DropPercentage: structure.DropPercentage{Percentage: 0.05, Num: 3}},
 }
 
-func GetItemPositionAndType() *[]structure.ItemPositionAndType {
-	return &[]structure.ItemPositionAndType{
-		{RoomPosition: structure.Position{Row: 0, Col: 4}, ItemType: constants.Hammer},
-		{RoomPosition: structure.Position{Row: 0, Col: 4}, ItemType: constants.Box},
-		{RoomPosition: structure.Position{Row: 3, Col: 3}, ItemType: constants.Box},
-		{RoomPosition: structure.Position{Row: 3, Col: 6}, ItemType: constants.HealPotion},
-		{RoomPosition: structure.Position{Row: 3, Col: 9}, ItemType: constants.Box},
-		{RoomPosition: structure.Position{Row: 6, Col: 4}, ItemType: constants.Hammer},
-		{RoomPosition: structure.Position{Row: 7, Col: 6}, ItemType: constants.Hammer},
-		{RoomPosition: structure.Position{Row: 7, Col: 9}, ItemType: constants.WoodSword},
-		{RoomPosition: structure.Position{Row: 9, Col: 6}, ItemType: constants.Box},
+func GetItemPositionAndType(stageNum int) *[]structure.ItemPositionAndType {
+	switch stageNum {
+	case 0:
+		return &[]structure.ItemPositionAndType{}
+	case 2:
+		return &[]structure.ItemPositionAndType{
+			{RoomPosition: structure.Position{Row: 0, Col: 4}, ItemType: constants.Hammer},
+			{RoomPosition: structure.Position{Row: 0, Col: 4}, ItemType: constants.Box},
+			{RoomPosition: structure.Position{Row: 3, Col: 3}, ItemType: constants.Box},
+			{RoomPosition: structure.Position{Row: 3, Col: 6}, ItemType: constants.HealPotion},
+			{RoomPosition: structure.Position{Row: 3, Col: 9}, ItemType: constants.Box},
+			{RoomPosition: structure.Position{Row: 6, Col: 4}, ItemType: constants.Hammer},
+			{RoomPosition: structure.Position{Row: 7, Col: 6}, ItemType: constants.Hammer},
+			{RoomPosition: structure.Position{Row: 7, Col: 9}, ItemType: constants.WoodSword},
+			{RoomPosition: structure.Position{Row: 9, Col: 6}, ItemType: constants.Box},
+		}
+	default:
+		panic("Invalid Dungeon Level")
 	}
 }

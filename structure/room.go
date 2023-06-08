@@ -6,13 +6,14 @@ import (
 )
 
 type Room struct {
+	constants.LocationType
 	Doors      map[constants.Direction]*Door
-	Directions map[constants.Direction]*Location
+	Directions map[constants.Direction]Location
 	GoalFlag   bool
 	Items      map[constants.ItemType]int
 	Monster    *Monster
 	NpcMap     map[constants.NpcType]int
-	Place      constants.PlaceType
+	Object     map[constants.ObjectType]int
 }
 
 type Door struct {
@@ -26,11 +27,57 @@ type DoorPositionAndType struct {
 	DoorType     constants.DoorType
 }
 
-func (room *Room) Move(direction constants.Direction) *Location {
+func (room *Room) GetLocationType() constants.LocationType {
+	return room.LocationType
+}
+
+func (room *Room) Move(direction constants.Direction) Location {
 	return (*room).Directions[direction]
 }
 
+func (room *Room) CanMove(direction constants.Direction) bool {
+	if room.Directions[direction] == nil {
+		return false
+	} else if room.Doors[direction] != nil && room.Doors[direction].Closed {
+		return false
+	}
+	return true
+}
+
+func (room *Room) Connect(near Location, direction constants.Direction) {
+	room.Directions[direction] = near
+}
+
 func (room *Room) ShowInfo() {
+	room.showObjectInRoom()
+	room.showItemInRoom()
+	room.showNearRoomInfo()
+	room.showMovableRoom()
+}
+
+func (room *Room) showObjectInRoom() {
+	fmt.Println(constants.LineDivider)
+	for objectType, objectNum := range room.Object {
+		if objectNum <= 0 {
+			continue
+		}
+		fmt.Printf(constants.ObjectTypeAndNum, constants.ObjectTypeStringMap[objectType], objectNum)
+	}
+	fmt.Println()
+}
+
+func (room *Room) showItemInRoom() {
+	fmt.Println(constants.LineDivider)
+	for itemType, itemNum := range room.Items {
+		if itemNum <= 0 {
+			continue
+		}
+		fmt.Printf(constants.ItemTypeAndNum, constants.ItemTypeStringMap[itemType], itemNum)
+	}
+	fmt.Println()
+}
+
+func (room *Room) showNearRoomInfo() {
 	fmt.Println(constants.LineDivider)
 	for _, dir := range constants.DirectionList {
 		fmt.Printf(constants.DirectionInfoWithRoomInfo, constants.DirStringMap[dir], constants.DirStringEngMap[dir], room.getNearRoomInfo(dir))
@@ -45,8 +92,20 @@ func (room *Room) getNearRoomInfo(direction constants.Direction) string {
 	}
 
 	if room.Directions[direction] == nil {
-		return fmt.Sprintf(constants.SpaceTypeStringMap[constants.Wall])
+		return fmt.Sprintf(constants.LocationTypeStringMap[constants.Wall])
 	} else {
-		return fmt.Sprintf(constants.SpaceTypeStringMap[constants.EmptyRoom])
+		return fmt.Sprintf(constants.LocationTypeStringMap[room.GetLocationType()])
 	}
+}
+
+func (room *Room) showMovableRoom() {
+	fmt.Println(constants.LineDivider)
+	fmt.Printf(constants.MovableDirectionTitle)
+	for _, d := range constants.DirectionList {
+		if !room.CanMove(d) {
+			continue
+		}
+		fmt.Printf(constants.DirectionInfo, constants.DirStringMap[d], constants.DirStringEngMap[d])
+	}
+	fmt.Println()
 }

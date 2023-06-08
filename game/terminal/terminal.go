@@ -75,10 +75,9 @@ func RunTerminal(status *structure.Status) {
 			goto GameOver
 		}
 
-		//room := command.GetCurrentRoom(status)
-		//if room.GoalFlag {
-		//	goto ExitLoop
-		//}
+		if room, ok := status.Location.(*structure.Room); ok && room.GoalFlag {
+			goto ExitLoop
+		}
 	}
 QuitLoop:
 	clearTerminal()
@@ -111,12 +110,11 @@ func handleSingleTokenCommand(input string, status *structure.Status) (ret struc
 	case "장비", "EQ", "eq":
 		command.ShowBodyParts(*status)
 	case "보다", "봐":
-		//room := command.GetCurrentRoom(status)
 		status.Location.ShowInfo()
-		//command.ShowRoomInfo(room)
-		//command.ShowMovableDirections(room)
 	case "시간":
 		printTime()
+	case "입장":
+		*status = *command.EnterDungeon(status)
 	}
 	return
 }
