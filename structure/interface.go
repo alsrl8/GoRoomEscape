@@ -12,6 +12,7 @@ type Wearable interface {
 
 type Location interface {
 	GetLocationType() constants.LocationType
+	GetObjectMap() map[constants.ObjectType]int
 	Move(direction constants.Direction) Location
 	ShowInfo()
 	CanMove(direction constants.Direction) bool

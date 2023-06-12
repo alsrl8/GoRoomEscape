@@ -54,6 +54,10 @@ func (room *Room) ShowInfo() {
 	room.showMovableRoom()
 }
 
+func (room *Room) GetObjectMap() map[constants.ObjectType]int {
+	return room.Object
+}
+
 func (room *Room) showObjectInRoom() {
 	fmt.Println(constants.LineDivider)
 	for objectType, objectNum := range room.Object {

@@ -36,6 +36,10 @@ func (area *Area) ShowInfo() {
 	area.showMovableArea()
 }
 
+func (area *Area) GetObjectMap() map[constants.ObjectType]int {
+	return area.Object
+}
+
 func (area *Area) showObjectInArea() {
 	fmt.Println(constants.LineDivider)
 	for objectType, objectNum := range area.Object {

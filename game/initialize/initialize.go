@@ -130,7 +130,7 @@ func putMonstersOnRooms(grid [][]*structure.Room, monsterWithPosition *[]structu
 	}
 }
 
-func InitDungeon(status *structure.Status, stageNum int) {
+func GenerateDungeon(status *structure.Status, stageNum int) *structure.Room {
 	rowLen := data.GetDungeonRowLen(stageNum)
 	colLen := data.GetDungeonColLen(stageNum)
 	roomPositions := data.GetDungeonRoomPositions(stageNum)
@@ -151,8 +151,7 @@ func InitDungeon(status *structure.Status, stageNum int) {
 	itemPositionAndType := data.GetItemPositionAndType(stageNum)
 	putItemsOnRooms(dungeon, itemPositionAndType)
 
-	var startLocation structure.Location = dungeon[startPosition.Row][startPosition.Col]
-	status.Location = startLocation
+	return dungeon[startPosition.Row][startPosition.Col]
 }
 
 func InitGame() *structure.Status {

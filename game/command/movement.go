@@ -127,11 +127,20 @@ func ValidateDoorExist(room *structure.Room, doorType constants.DoorType) error 
 	return nil
 }
 
-func EnterDungeon(status *structure.Status) *structure.Status {
-	initialize.InitDungeon(status, 0)
-	return status
+func EnterDungeon(status *structure.Status) {
+	objectMap := status.Location.GetObjectMap()
+	dungeonEntranceNum, has := objectMap[constants.DungeonEntrance]
+	if dungeonEntranceNum == 0 || !has {
+		return
+	}
+	(*status).Location = initialize.GenerateDungeon(status, 0)
 }
 
 func ExitDungeon(status *structure.Status) {
+	objectMap := status.Location.GetObjectMap()
+	dungeonExitNum, has := objectMap[constants.DungeonExit]
+	if dungeonExitNum == 0 || !has {
+		return
+	}
 	(*status).Location = status.Location.Move(constants.Exit)
 }

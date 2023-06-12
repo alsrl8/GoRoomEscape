@@ -87,13 +87,13 @@ func handleSingleTokenCommand(input string, status *structure.Status) (ret struc
 	switch input {
 	case "Q", "q":
 		ret.QuitLoopFlag = true
-	case "E", "e": // TODO 동서남북 한글 입력 가능하게 수정
+	case "E", "e", "동", "동쪽": // TODO 동서남북 한글 입력 가능하게 수정
 		command.Move(status, constants.East)
-	case "N", "n":
+	case "N", "n", "북", "북쪽":
 		command.Move(status, constants.North)
-	case "W", "w":
+	case "W", "w", "서", "서쪽":
 		command.Move(status, constants.West)
-	case "S", "s":
+	case "S", "s", "남", "남쪽":
 		command.Move(status, constants.South)
 	case "정보":
 		command.ShowUserNameAndStatus(status)
@@ -106,7 +106,7 @@ func handleSingleTokenCommand(input string, status *structure.Status) (ret struc
 	case "시간":
 		printTime()
 	case "입장":
-		*status = *command.EnterDungeon(status)
+		command.EnterDungeon(status)
 	case "퇴장":
 		command.ExitDungeon(status)
 	}
