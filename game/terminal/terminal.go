@@ -87,7 +87,7 @@ func handleSingleTokenCommand(input string, status *structure.Status) (ret struc
 	switch input {
 	case "Q", "q":
 		ret.QuitLoopFlag = true
-	case "E", "e", "동", "동쪽": // TODO 동서남북 한글 입력 가능하게 수정
+	case "E", "e", "동", "동쪽":
 		command.Move(status, constants.East)
 	case "N", "n", "북", "북쪽":
 		command.Move(status, constants.North)

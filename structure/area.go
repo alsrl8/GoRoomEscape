@@ -9,6 +9,7 @@ type Area struct {
 	constants.LocationType
 	Directions map[constants.Direction]Location
 	Object     map[constants.ObjectType]int
+	Npc        map[constants.NpcType]int
 }
 
 func (area *Area) GetLocationType() constants.LocationType {
@@ -32,6 +33,7 @@ func (area *Area) Connect(near Location, direction constants.Direction) {
 
 func (area *Area) ShowInfo() {
 	area.showObjectInArea()
+	area.showNpcInArea()
 	area.showNearAreaInfo()
 	area.showMovableArea()
 }
@@ -47,6 +49,17 @@ func (area *Area) showObjectInArea() {
 			continue
 		}
 		fmt.Printf(constants.ObjectTypeAndNum, constants.ObjectTypeStringMap[objectType], objectNum)
+	}
+	fmt.Println()
+}
+
+func (area *Area) showNpcInArea() {
+	fmt.Println(constants.LineDivider)
+	for npcType, npcNum := range area.Npc {
+		if npcNum <= 0 {
+			continue
+		}
+		fmt.Printf(constants.NpcTypeAndNum, constants.NpcTypeStringMap[npcType], npcNum)
 	}
 	fmt.Println()
 }

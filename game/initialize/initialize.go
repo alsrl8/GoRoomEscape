@@ -23,6 +23,7 @@ func initGameMap(rowLen, colLen int) [][]*structure.Area {
 				LocationType: constants.EmptyArea,
 				Directions:   make(map[constants.Direction]structure.Location),
 				Object:       make(map[constants.ObjectType]int),
+				Npc:          make(map[constants.NpcType]int),
 			}
 		}
 		grid = append(grid, row)
@@ -159,6 +160,9 @@ func InitGame() *structure.Status {
 	colLen := 2
 	area := initGameMap(rowLen, colLen)
 	area[0][0].Object[constants.DungeonEntrance] += 1
+	area[0][0].Npc[constants.Merchant] += 1
+	area[0][1].Npc[constants.GodOfDeath] += 1
+	area[1][0].Npc[constants.Blacksmith] += 1
 	var startLocation structure.Location = area[0][0]
 	return initStatus(startLocation)
 }

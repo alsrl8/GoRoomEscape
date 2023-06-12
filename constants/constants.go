@@ -151,7 +151,7 @@ const (
 	GodOfDeath
 )
 
-var NpcStringMap = map[NpcType]string{
+var NpcTypeStringMap = map[NpcType]string{
 	Merchant:   "상인",
 	Blacksmith: "대장장이",
 	GodOfDeath: "사신",
@@ -192,6 +192,7 @@ const MovableDirectionTitle = "이동 가능한 방향 >>> "
 const ItemInfoTitle = "아이템 정보 >>> "
 const ItemTypeAndNum = "%s(%d) "
 const ObjectTypeAndNum = "%s(%d) "
+const NpcTypeAndNum = "%s(%d) "
 
 const DuringBattle = "<<< 몬스터(%s)와 전투 중입니다 >>>\n"
 const AttackMonster = "몬스터(%s)를 공격했습니다.\n"
