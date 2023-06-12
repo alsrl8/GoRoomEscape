@@ -43,6 +43,9 @@ func generateRoom() *structure.Room {
 
 func getNextRoom(grid [][]*structure.Room, position structure.Position, direction constants.Direction) *structure.Room {
 	room := grid[position.Row][position.Col]
+	if room.Directions[direction] == nil {
+		return nil
+	}
 	return room.Directions[direction].(*structure.Room)
 }
 

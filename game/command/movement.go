@@ -133,7 +133,7 @@ func EnterDungeon(status *structure.Status) {
 	if dungeonEntranceNum == 0 || !has {
 		return
 	}
-	(*status).Location = initialize.GenerateDungeon(status, 0)
+	(*status).Location = initialize.GenerateDungeon(status, 2)
 }
 
 func ExitDungeon(status *structure.Status) {

@@ -49,6 +49,7 @@ func (room *Room) Connect(near Location, direction constants.Direction) {
 
 func (room *Room) ShowInfo() {
 	room.showObjectInRoom()
+	room.showMonsterInRoom()
 	room.showItemInRoom()
 	room.showNearRoomInfo()
 	room.showMovableRoom()
@@ -56,6 +57,16 @@ func (room *Room) ShowInfo() {
 
 func (room *Room) GetObjectMap() map[constants.ObjectType]int {
 	return room.Object
+}
+
+func (room *Room) showMonsterInRoom() {
+	if room.Monster == nil {
+		return
+	}
+
+	fmt.Println(constants.LineDivider)
+	monster := room.Monster
+	fmt.Printf(constants.MonsterStatus, constants.MonsterTypeStringMap[monster.MonsterType], monster.Attribute.Health, monster.Attribute.Attack, monster.Attribute.Defense)
 }
 
 func (room *Room) showObjectInRoom() {
