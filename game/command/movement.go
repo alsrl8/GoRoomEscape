@@ -131,3 +131,7 @@ func EnterDungeon(status *structure.Status) *structure.Status {
 	initialize.InitDungeon(status, 0)
 	return status
 }
+
+func ExitDungeon(status *structure.Status) {
+	(*status).Location = status.Location.Move(constants.Exit)
+}

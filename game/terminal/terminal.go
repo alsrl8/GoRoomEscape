@@ -69,33 +69,25 @@ func RunTerminal(status *structure.Status) {
 
 		if ret.QuitLoopFlag {
 			goto QuitLoop
-		} else if ret.ExitLoopFlag {
-			goto ExitLoop
 		} else if ret.GameOverFlag {
 			goto GameOver
-		}
-
-		if room, ok := status.Location.(*structure.Room); ok && room.GoalFlag {
-			goto ExitLoop
 		}
 	}
 QuitLoop:
 	clearTerminal()
 	fmt.Println(constants.QuitGame)
+	return
 GameOver:
 	clearTerminal()
 	fmt.Println(constants.GameOver)
 	return
-ExitLoop:
-	clearTerminal()
-	fmt.Println(constants.GameClear)
 }
 
 func handleSingleTokenCommand(input string, status *structure.Status) (ret structure.CommandResult) {
 	switch input {
 	case "Q", "q":
 		ret.QuitLoopFlag = true
-	case "E", "e":
+	case "E", "e": // TODO 동서남북 한글 입력 가능하게 수정
 		command.Move(status, constants.East)
 	case "N", "n":
 		command.Move(status, constants.North)
@@ -115,6 +107,8 @@ func handleSingleTokenCommand(input string, status *structure.Status) (ret struc
 		printTime()
 	case "입장":
 		*status = *command.EnterDungeon(status)
+	case "퇴장":
+		command.ExitDungeon(status)
 	}
 	return
 }

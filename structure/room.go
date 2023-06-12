@@ -9,7 +9,6 @@ type Room struct {
 	constants.LocationType
 	Doors      map[constants.Direction]*Door
 	Directions map[constants.Direction]Location
-	GoalFlag   bool
 	Items      map[constants.ItemType]int
 	Monster    *Monster
 	NpcMap     map[constants.NpcType]int

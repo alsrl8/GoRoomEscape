@@ -32,6 +32,7 @@ const (
 	North
 	West
 	South
+	Exit
 )
 
 var DirStringMap = map[Direction]string{
@@ -39,6 +40,7 @@ var DirStringMap = map[Direction]string{
 	North: "북쪽",
 	West:  "서쪽",
 	South: "남쪽",
+	Exit:  "출구",
 }
 
 var DirStringEngMap = map[Direction]string{
@@ -46,6 +48,7 @@ var DirStringEngMap = map[Direction]string{
 	North: "N",
 	West:  "W",
 	South: "S",
+	Exit:  "Exit",
 }
 
 // DoorType Door Type
@@ -159,11 +162,13 @@ type ObjectType int
 const (
 	Fountain ObjectType = iota
 	DungeonEntrance
+	DungeonExit
 )
 
 var ObjectTypeStringMap = map[ObjectType]string{
 	Fountain:        "분수",
 	DungeonEntrance: "던전 입구",
+	DungeonExit:     "던전 출구",
 }
 
 const LineDivider = "=================================================="

@@ -31,12 +31,12 @@ func initGameMap(rowLen, colLen int) [][]*structure.Area {
 	return grid
 }
 
-func generateRoom(goalFlag bool) *structure.Room {
+func generateRoom() *structure.Room {
 	return &structure.Room{
 		Directions: make(map[constants.Direction]structure.Location),
 		Doors:      make(map[constants.Direction]*structure.Door),
-		GoalFlag:   goalFlag,
 		Items:      make(map[constants.ItemType]int),
+		Object:     make(map[constants.ObjectType]int),
 	}
 }
 
@@ -47,7 +47,7 @@ func getNextRoom(grid [][]*structure.Room, position structure.Position, directio
 
 func createEmptyRooms(grid [][]*structure.Room, roomPositions *[]structure.Position) {
 	for _, pos := range *roomPositions {
-		grid[pos.Row][pos.Col] = generateRoom(false)
+		grid[pos.Row][pos.Col] = generateRoom()
 	}
 }
 
@@ -108,10 +108,10 @@ func buildDoorsBetweenRooms(grid [][]*structure.Room, doorPositionAndType *[]str
 	}
 }
 
-func addDungeonExit(dungeon [][]*structure.Room, endPosition structure.Position, direction constants.Direction) {
+func addDungeonExit(currentLocation structure.Location, dungeon [][]*structure.Room, endPosition structure.Position) {
 	room := dungeon[endPosition.Row][endPosition.Col]
-	var goalRoom structure.Location = generateRoom(true)
-	room.Directions[direction] = goalRoom
+	room.Object[constants.DungeonExit] += 1
+	room.Directions[constants.Exit] = currentLocation
 }
 
 func putItemsOnRooms(grid [][]*structure.Room, itemPositionAndType *[]structure.ItemPositionAndType) {
@@ -140,8 +140,7 @@ func InitDungeon(status *structure.Status, stageNum int) {
 
 	startPosition := data.GetDungeonStartPosition(stageNum)
 	endPosition := data.GetDungeonExitPosition(stageNum)
-	endDirection := data.GetDungeonExitDirection(stageNum)
-	addDungeonExit(dungeon, endPosition, endDirection)
+	addDungeonExit(status.Location, dungeon, endPosition)
 
 	doorPositionAndType := data.GetDungeonDoorPositionAndType(stageNum)
 	buildDoorsBetweenRooms(dungeon, doorPositionAndType)

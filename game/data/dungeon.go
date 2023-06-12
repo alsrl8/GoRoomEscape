@@ -93,14 +93,3 @@ func GetDungeonExitPosition(stageNum int) structure.Position {
 		panic("Invalid Dungeon Level")
 	}
 }
-
-func GetDungeonExitDirection(stageNum int) constants.Direction {
-	switch stageNum {
-	case 0:
-		return constants.West
-	case 2:
-		return constants.West
-	default:
-		panic("Invalid Dungeon Level")
-	}
-}
