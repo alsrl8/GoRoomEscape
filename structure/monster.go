@@ -7,7 +7,7 @@ import (
 
 type Monster struct {
 	constants.MonsterType
-	Attribute
+	*Attribute
 	DropItems []DropItem
 }
 
@@ -21,13 +21,13 @@ func (monster *Monster) ShowInfo() {
 	fmt.Printf(constants.MonsterStatus, constants.MonsterTypeStringMap[monster.MonsterType], monster.Attribute.Health, monster.Attribute.Attack, monster.Attribute.Defense)
 }
 
-func (monster *Monster) Attack(target Attribute) (damage int) {
+func (monster *Monster) Attack(target *Attribute) (damage int) {
 	damage = monster.Attribute.Attack - target.Defense
 	target.Health -= damage
 	return damage
 }
 
-func (monster *Monster) GetDamage(enemy Attribute) (damage int) {
+func (monster *Monster) GetDamage(enemy *Attribute) (damage int) {
 	damage = enemy.Attack - monster.Attribute.Defense
 	monster.Attribute.Health -= damage
 	return

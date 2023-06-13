@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-func IsDead(attribute structure.Attribute) bool {
+func IsDead(attribute *structure.Attribute) bool {
 	return attribute.Health <= 0
 }
 

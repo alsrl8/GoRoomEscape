@@ -5,13 +5,13 @@ import (
 )
 
 type Status struct {
-	Name      string
-	Location  Location
-	Inventory Inventory
-	Equipment *Equipment
+	Name string
+	Location
+	Inventory
+	*Equipment
 	*BodyPartForArmor
 	*BodyPartForWeapon
-	Attribute Attribute
+	*Attribute
 }
 
 type Attribute struct {

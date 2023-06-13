@@ -73,8 +73,8 @@ func isWearableItem(wearable structure.Wearable, itemType constants.ItemType) bo
 
 func getWearableBodyParts(status *structure.Status, itemType constants.ItemType) (ret []structure.Wearable) {
 	bodyPartForArmor := status.BodyPartForArmor
-	t := reflect.TypeOf(bodyPartForArmor)
-	v := reflect.ValueOf(bodyPartForArmor)
+	t := reflect.TypeOf(*bodyPartForArmor)
+	v := reflect.ValueOf(*bodyPartForArmor)
 	for i := 0; i < t.NumField(); i++ {
 		wearable := v.Field(i).Interface().(structure.Wearable)
 		if !isWearableItem(wearable, itemType) {
@@ -83,8 +83,8 @@ func getWearableBodyParts(status *structure.Status, itemType constants.ItemType)
 		ret = append(ret, wearable)
 	}
 	bodyPartForWeapon := status.BodyPartForWeapon
-	t = reflect.TypeOf(bodyPartForWeapon)
-	v = reflect.ValueOf(bodyPartForWeapon)
+	t = reflect.TypeOf(*bodyPartForWeapon)
+	v = reflect.ValueOf(*bodyPartForWeapon)
 	for i := 0; i < t.NumField(); i++ {
 		wearable := v.Field(i).Interface().(structure.Wearable)
 		if !isWearableItem(wearable, itemType) {
@@ -97,8 +97,8 @@ func getWearableBodyParts(status *structure.Status, itemType constants.ItemType)
 
 func getBodyPartsWhereEquipmentIsWorn(status *structure.Status, itemType constants.ItemType) (ret []structure.Wearable) {
 	bodyPartForArmor := status.BodyPartForArmor
-	t := reflect.TypeOf(bodyPartForArmor)
-	v := reflect.ValueOf(bodyPartForArmor)
+	t := reflect.TypeOf(*bodyPartForArmor)
+	v := reflect.ValueOf(*bodyPartForArmor)
 	for i := 0; i < t.NumField(); i++ {
 		armor := v.Field(i).Interface().(*structure.Armor)
 		if armor.ItemType != itemType {
@@ -107,8 +107,8 @@ func getBodyPartsWhereEquipmentIsWorn(status *structure.Status, itemType constan
 		ret = append(ret, armor)
 	}
 	bodyPartForWeapon := status.BodyPartForWeapon
-	t = reflect.TypeOf(bodyPartForWeapon)
-	v = reflect.ValueOf(bodyPartForWeapon)
+	t = reflect.TypeOf(*bodyPartForWeapon)
+	v = reflect.ValueOf(*bodyPartForWeapon)
 	for i := 0; i < t.NumField(); i++ {
 		weapon := v.Field(i).Interface().(*structure.Weapon)
 		if weapon.ItemType != itemType {
