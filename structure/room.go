@@ -121,3 +121,7 @@ func (room *Room) showMovableRoom() {
 	}
 	fmt.Println()
 }
+
+func (room *Room) GetItemNumber(itemType constants.ItemType) int {
+	return room.Items[itemType]
+}
