@@ -19,26 +19,17 @@ func isMonsterExistInRoom(room *structure.Room) bool {
 
 func PrintMonsterInRoom(room *structure.Room) {
 	monster := room.Monster
-	printMonster(monster)
-}
-
-func printMonster(monster *structure.Monster) {
-	PrintLine()
-	fmt.Printf(constants.MonsterStatus, constants.MonsterTypeStringMap[monster.MonsterType], monster.Attribute.Health, monster.Attribute.Attack, monster.Attribute.Defense)
-}
-
-func reduceMonsterHealth(monster *structure.Monster, attack int) int {
-	return reduceHealth(&monster.Attribute, attack)
+	monster.ShowInfo()
 }
 
 func DamageMonsterByPlayer(status *structure.Status, monster *structure.Monster) {
-	damage := reduceMonsterHealth(monster, status.Attribute.Attack)
+	damage := monster.GetDamage(status.Attribute)
 	fmt.Printf(constants.AttackMonster, constants.MonsterTypeStringMap[monster.MonsterType])
 	fmt.Printf(constants.DamageMonster, constants.MonsterTypeStringMap[monster.MonsterType], damage)
 }
 
 func DamagePlayerByMonster(status *structure.Status, monster *structure.Monster) {
-	damage := reduceHealth(&status.Attribute, monster.Attribute.Attack)
+	damage := monster.Attack(status.Attribute)
 	fmt.Printf(constants.GetAttackedByMonster, constants.MonsterTypeStringMap[monster.MonsterType])
 	fmt.Printf(constants.DamageByMonster, constants.MonsterTypeStringMap[monster.MonsterType], damage)
 }
@@ -48,7 +39,7 @@ func RemoveMonsterInRoom(room *structure.Room) {
 }
 
 func CarveMonster(status *structure.Status, monster *structure.Monster) {
-	itemType, itemNum := GetItemByPercentage(&monster.DropItems)
+	itemType, itemNum := monster.Carve()
 	if itemType == constants.Nothing {
 		return
 	}

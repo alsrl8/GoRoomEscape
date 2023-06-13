@@ -7,8 +7,6 @@ import (
 	"goproject/game/data"
 	"goproject/structure"
 	"math"
-	"math/rand"
-	"time"
 )
 
 func addItemToInventory(inventory structure.Inventory, itemType constants.ItemType, itemNum int) {
@@ -36,7 +34,8 @@ func UseItemByName(status *structure.Status, itemName string) {
 		status.Attribute.Health = int(math.Min(float64(data.MaxHealth), float64(status.Attribute.Health+healPoint)))
 		removeItemInInventory(status.Inventory, constants.HealPotion, 1)
 	case constants.Box:
-		boxItemType, boxItemNum := GetItemByPercentage(&data.BoxDropItems)
+		var dropItems structure.DropItemSlice = data.BoxDropItems
+		boxItemType, boxItemNum := dropItems.GetItemByPercentage()
 		addItemToInventory(status.Inventory, boxItemType, boxItemNum)
 		removeItemInInventory(status.Inventory, constants.Box, 1)
 		fmt.Printf(constants.GetItem, constants.ItemTypeStringMap[boxItemType], boxItemNum)
@@ -63,20 +62,6 @@ func UseItemToDoorByName(room *structure.Room, inventory structure.Inventory, it
 			return
 		}
 	}
-}
-
-func GetItemByPercentage(dropItems *[]structure.DropItem) (constants.ItemType, int) {
-	rand.Seed(time.Now().UnixNano())
-	randomNum := rand.Float64()
-	totalProbability := 0.0
-
-	for _, dropItem := range *dropItems {
-		totalProbability += dropItem.DropPercentage.Percentage
-		if totalProbability >= randomNum {
-			return dropItem.ItemType, dropItem.DropPercentage.Num
-		}
-	}
-	return constants.Nothing, 0
 }
 
 func ValidateItemExist(inventory structure.Inventory, itemType constants.ItemType) error {

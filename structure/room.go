@@ -63,10 +63,8 @@ func (room *Room) showMonsterInRoom() {
 	if room.Monster == nil {
 		return
 	}
-
-	fmt.Println(constants.LineDivider)
 	monster := room.Monster
-	fmt.Printf(constants.MonsterStatus, constants.MonsterTypeStringMap[monster.MonsterType], monster.Attribute.Health, monster.Attribute.Attack, monster.Attribute.Defense)
+	monster.ShowInfo()
 }
 
 func (room *Room) showObjectInRoom() {
