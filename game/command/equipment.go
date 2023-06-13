@@ -47,9 +47,9 @@ func Disarm(status *structure.Status, itemType constants.ItemType) {
 	addItemToInventory(status.Inventory, itemType, 1)
 }
 
-func showBodyPartsForArmors(bodyParts structure.BodyPartForArmor) {
-	t := reflect.TypeOf(bodyParts)
-	v := reflect.ValueOf(bodyParts)
+func showBodyPartsForArmors(bodyParts *structure.BodyPartForArmor) {
+	t := reflect.TypeOf(*bodyParts)
+	v := reflect.ValueOf(*bodyParts)
 	for i := 0; i < t.NumField(); i++ {
 		field := t.Field(i)
 		armor := v.Field(i).Interface().(*structure.Armor)
@@ -57,9 +57,9 @@ func showBodyPartsForArmors(bodyParts structure.BodyPartForArmor) {
 	}
 }
 
-func showBodyPartsForWeapons(bodyParts structure.BodyPartForWeapon) {
-	t := reflect.TypeOf(bodyParts)
-	v := reflect.ValueOf(bodyParts)
+func showBodyPartsForWeapons(bodyParts *structure.BodyPartForWeapon) {
+	t := reflect.TypeOf(*bodyParts)
+	v := reflect.ValueOf(*bodyParts)
 	for i := 0; i < t.NumField(); i++ {
 		field := t.Field(i)
 		weapon := v.Field(i).Interface().(*structure.Weapon)

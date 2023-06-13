@@ -176,7 +176,7 @@ func initStatus(startLocation structure.Location) *structure.Status {
 		Inventory: structure.Inventory{},
 		Equipment: &structure.Equipment{},
 		Attribute: data.GetAttribute(),
-		BodyPartForArmor: structure.BodyPartForArmor{
+		BodyPartForArmor: &structure.BodyPartForArmor{
 			Top: &structure.Armor{
 				Item:          structure.Item{ItemType: constants.Nothing},
 				WearableItems: []constants.ItemType{constants.LeatherCloth},
@@ -190,7 +190,7 @@ func initStatus(startLocation structure.Location) *structure.Status {
 				WearableItems: []constants.ItemType{constants.LeatherShoes},
 			},
 		},
-		BodyPartForWeapon: structure.BodyPartForWeapon{
+		BodyPartForWeapon: &structure.BodyPartForWeapon{
 			LeftHand: &structure.Weapon{
 				Item:          structure.Item{ItemType: constants.Nothing},
 				WearableItems: []constants.ItemType{constants.WoodSword, constants.IronSword},

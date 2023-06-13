@@ -9,8 +9,8 @@ type Status struct {
 	Location  Location
 	Inventory Inventory
 	Equipment *Equipment
-	BodyPartForArmor
-	BodyPartForWeapon
+	*BodyPartForArmor
+	*BodyPartForWeapon
 	Attribute Attribute
 }
 
