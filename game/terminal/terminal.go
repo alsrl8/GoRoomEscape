@@ -92,6 +92,49 @@ func isMaxNumCommand(cmd string) bool {
 	}
 }
 
+func handlePickUpItemCommand(status *structure.Status, tokens []string) {
+	itemName := tokens[0]
+	itemType, has := constants.StringItemTypeMap[itemName]
+	if !has {
+		fmt.Println(constants.NoSuchItem, itemName)
+		return
+	}
+	var itemNum int
+	if isMaxNumCommand(tokens[1]) {
+		room := status.Location.(*structure.Room)
+		itemNum = room.GetItemNumber(itemType)
+	} else {
+		var err error
+		itemNum, err = strconv.Atoi(tokens[1])
+		if err != nil {
+			fmt.Println(constants.WrongInput, strings.Join(tokens, ""))
+			return
+		}
+	}
+	command.PickUpItems(status, itemType, itemNum)
+}
+
+func handleRemoveItemCommand(status *structure.Status, tokens []string) {
+	itemName := tokens[0]
+	itemType, has := constants.StringItemTypeMap[itemName]
+	if !has {
+		fmt.Println(constants.NoSuchItem, itemName)
+		return
+	}
+	var itemNum int
+	if isMaxNumCommand(tokens[1]) {
+		itemNum = status.Inventory.GetItemNumber(itemType)
+	} else {
+		var err error
+		itemNum, err = strconv.Atoi(tokens[1])
+		if err != nil {
+			fmt.Println(constants.WrongInput, strings.Join(tokens, ""))
+			return
+		}
+	}
+	command.DropItems(status, itemType, itemNum)
+}
+
 func handleSingleTokenCommand(input string, status *structure.Status) (ret structure.CommandResult) {
 	switch input {
 	case "Q", "q":
@@ -160,36 +203,9 @@ func HandleMultiTokenCommand(input string, status *structure.Status) (ret struct
 			// TODO 물건/몬스터 정보를 보는 기능 추가
 		}
 	case "주워":
-		itemName := tokens[0]
-		itemType := constants.StringItemTypeMap[itemName]
-		var itemNum int
-		if isMaxNumCommand(tokens[1]) {
-			room := status.Location.(*structure.Room)
-			itemNum = room.GetItemNumber(itemType)
-		} else {
-			var err error
-			itemNum, err = strconv.Atoi(tokens[1])
-			if err != nil {
-				fmt.Println(constants.WrongInput, input)
-				return
-			}
-		}
-		command.PickUpItems(status, itemType, itemNum)
+		handlePickUpItemCommand(status, tokens)
 	case "버려":
-		itemName := tokens[0]
-		itemType := constants.StringItemTypeMap[itemName]
-		var itemNum int
-		if isMaxNumCommand(tokens[1]) {
-			itemNum = status.Inventory.GetItemNumber(itemType)
-		} else {
-			var err error
-			itemNum, err = strconv.Atoi(tokens[1])
-			if err != nil {
-				fmt.Println(constants.WrongInput, input)
-				return
-			}
-		}
-		command.DropItems(status, itemType, itemNum)
+		handleRemoveItemCommand(status, tokens)
 	case "입어", "장비":
 		itemName := tokens[0]
 		itemType := constants.StringItemTypeMap[itemName]
