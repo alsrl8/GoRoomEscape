@@ -14,7 +14,7 @@ func ShowBodyParts(status structure.Status) {
 }
 
 func Equip(status *structure.Status, itemType constants.ItemType) {
-	if !hasItemInInventory(status.Inventory, itemType) {
+	if !hasItemInInventory(status.Inventory, itemType, 1) {
 		fmt.Println(constants.NoItemInInventory, constants.ItemTypeStringMap[itemType])
 		return
 	}

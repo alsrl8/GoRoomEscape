@@ -17,8 +17,8 @@ func removeItemInInventory(inventory structure.Inventory, itemType constants.Ite
 	inventory[itemType] -= itemNum
 }
 
-func hasItemInInventory(inventory structure.Inventory, itemType constants.ItemType) bool {
-	return inventory[itemType] > 0
+func hasItemInInventory(inventory structure.Inventory, itemType constants.ItemType, itemNum int) bool {
+	return inventory[itemType] > itemNum
 }
 
 func isUsableItem(itemType constants.ItemType) bool {
@@ -64,15 +64,15 @@ func UseItemToDoorByName(room *structure.Room, inventory structure.Inventory, it
 	}
 }
 
-func ValidateItemExist(inventory structure.Inventory, itemType constants.ItemType) error {
-	if !hasItemInInventory(inventory, itemType) {
+func ValidateItemExist(inventory structure.Inventory, itemType constants.ItemType, itemNum int) error {
+	if !hasItemInInventory(inventory, itemType, itemNum) {
 		return errors.New(constants.NoItemInInventory)
 	}
 	return nil
 }
 
 func ValidateItemUsability(inventory structure.Inventory, itemType constants.ItemType, includeTargetFlag bool) error {
-	if !hasItemInInventory(inventory, itemType) {
+	if !hasItemInInventory(inventory, itemType, 1) {
 		return errors.New(constants.NoItemInInventory)
 	} else if !isUsableItem(itemType) {
 		return errors.New(constants.CanNotUseSuchItem)
@@ -133,6 +133,6 @@ func DropItems(status *structure.Status, itemType constants.ItemType, itemNum in
 	inventory[itemType] -= itemNum
 }
 
-func DiscardItem(inventory structure.Inventory, itemType constants.ItemType) {
-	inventory[itemType] -= 1
+func DiscardItem(inventory structure.Inventory, itemType constants.ItemType, itemNum int) {
+	inventory[itemType] -= itemNum
 }

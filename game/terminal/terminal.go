@@ -138,7 +138,32 @@ func handleRemoveItemCommand(status *structure.Status, tokens []string) {
 			return
 		}
 	}
+	if err := 1; true {
+		fmt.Println(err)
+	}
 	command.DropItems(status, itemType, itemNum)
+}
+
+func handleBurnItemCommand(status *structure.Status, tokens []string) {
+	itemName := tokens[0]
+	itemType, has := constants.StringItemTypeMap[itemName]
+	if !has {
+		fmt.Println(constants.NoSuchItem, itemName)
+		return
+	}
+
+	var itemNum int
+	if len(tokens) == 2 {
+		itemNum = 1
+	} else if isMaxNumCommand(tokens[1]) {
+		itemNum = status.Inventory.GetItemNumber(itemType)
+	} else {
+		if err := command.ValidateItemExist(status.Inventory, itemType, itemNum); err != nil {
+			fmt.Println(err.Error())
+			return
+		}
+	}
+	command.DiscardItem(status.Inventory, itemType, itemNum)
 }
 
 func handleSingleTokenCommand(input string, status *structure.Status) (ret structure.CommandResult) {
@@ -221,13 +246,7 @@ func HandleMultiTokenCommand(input string, status *structure.Status) (ret struct
 		itemType := constants.StringItemTypeMap[itemName]
 		command.Disarm(status, itemType)
 	case "태워":
-		itemName := tokens[0]
-		itemType := constants.StringItemTypeMap[itemName]
-		if err := command.ValidateItemExist(status.Inventory, itemType); err != nil {
-			fmt.Println(err.Error())
-			return
-		}
-		command.DiscardItem(status.Inventory, itemType)
+		handleBurnItemCommand(status, tokens)
 	case "풀어":
 		tokenLen := len(tokens)
 		switch tokenLen {
