@@ -114,10 +114,10 @@ func handlePickUpItemCommand(status *structure.Status, tokens []string) {
 			return
 		}
 	}
-	command.PickUpItems(status, itemType, itemNum)
+	command.PickupItem(status, itemType, itemNum)
 }
 
-func handleRemoveItemCommand(status *structure.Status, tokens []string) {
+func handleThrowItemCommand(status *structure.Status, tokens []string) {
 	itemName := tokens[0]
 	itemType, has := constants.StringItemTypeMap[itemName]
 	if !has {
@@ -137,14 +137,16 @@ func handleRemoveItemCommand(status *structure.Status, tokens []string) {
 			fmt.Println(constants.WrongInput, strings.Join(tokens, ""))
 			return
 		}
+		err = command.ValidateItemExist(status.Inventory, itemType, itemNum)
+		if err != nil {
+			fmt.Println(err.Error())
+			return
+		}
 	}
-	if err := 1; true {
-		fmt.Println(err)
-	}
-	command.DropItems(status, itemType, itemNum)
+	command.ThrowItem(status, itemType, itemNum)
 }
 
-func handleBurnItemCommand(status *structure.Status, tokens []string) {
+func handleDiscardItemCommand(status *structure.Status, tokens []string) {
 	itemName := tokens[0]
 	itemType, has := constants.StringItemTypeMap[itemName]
 	if !has {
@@ -236,7 +238,7 @@ func HandleMultiTokenCommand(input string, status *structure.Status) (ret struct
 	case "주워":
 		handlePickUpItemCommand(status, tokens)
 	case "버려":
-		handleRemoveItemCommand(status, tokens)
+		handleThrowItemCommand(status, tokens)
 	case "입어", "장비":
 		itemName := tokens[0]
 		itemType := constants.StringItemTypeMap[itemName]
@@ -246,7 +248,7 @@ func HandleMultiTokenCommand(input string, status *structure.Status) (ret struct
 		itemType := constants.StringItemTypeMap[itemName]
 		command.Disarm(status, itemType)
 	case "태워":
-		handleBurnItemCommand(status, tokens)
+		handleDiscardItemCommand(status, tokens)
 	case "풀어":
 		tokenLen := len(tokens)
 		switch tokenLen {

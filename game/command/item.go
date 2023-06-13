@@ -18,7 +18,7 @@ func removeItemInInventory(inventory structure.Inventory, itemType constants.Ite
 }
 
 func hasItemInInventory(inventory structure.Inventory, itemType constants.ItemType, itemNum int) bool {
-	return inventory[itemType] > itemNum
+	return inventory[itemType] >= itemNum
 }
 
 func isUsableItem(itemType constants.ItemType) bool {
@@ -101,7 +101,7 @@ func ValidateItemDoorMatch(itemType constants.ItemType, doorType constants.DoorT
 	}
 }
 
-func PickUpItems(status *structure.Status, itemType constants.ItemType, itemNum int) {
+func PickupItem(status *structure.Status, itemType constants.ItemType, itemNum int) {
 	room := GetCurrentRoom(status)
 	_itemNum := room.Items[itemType]
 	if _itemNum == 0 {
@@ -117,7 +117,7 @@ func PickUpItems(status *structure.Status, itemType constants.ItemType, itemNum 
 	room.Items[itemType] -= itemNum
 }
 
-func DropItems(status *structure.Status, itemType constants.ItemType, itemNum int) {
+func ThrowItem(status *structure.Status, itemType constants.ItemType, itemNum int) {
 	inventory := status.Inventory
 	_itemNum := inventory[itemType]
 	if _itemNum == 0 {
