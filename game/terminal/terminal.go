@@ -99,8 +99,11 @@ func handlePickUpItemCommand(status *structure.Status, tokens []string) {
 		fmt.Println(constants.NoSuchItem, itemName)
 		return
 	}
+
 	var itemNum int
-	if isMaxNumCommand(tokens[1]) {
+	if len(tokens) == 2 {
+		itemNum = 1
+	} else if isMaxNumCommand(tokens[1]) {
 		room := status.Location.(*structure.Room)
 		itemNum = room.GetItemNumber(itemType)
 	} else {
@@ -121,8 +124,11 @@ func handleRemoveItemCommand(status *structure.Status, tokens []string) {
 		fmt.Println(constants.NoSuchItem, itemName)
 		return
 	}
+
 	var itemNum int
-	if isMaxNumCommand(tokens[1]) {
+	if len(tokens) == 2 {
+		itemNum = 1
+	} else if isMaxNumCommand(tokens[1]) {
 		itemNum = status.Inventory.GetItemNumber(itemType)
 	} else {
 		var err error
