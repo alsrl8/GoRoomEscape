@@ -28,11 +28,11 @@ var BoxDropItems = []structure.DropItem{
 	{ItemType: constants.HealPotion, DropPercentage: structure.DropPercentage{Percentage: 0.05, Num: 3}},
 }
 
-func GetItemPositionAndType(stageNum int) *[]structure.ItemPositionAndType {
+func GetItemPositionAndType(stageNum constants.StageNum) *[]structure.ItemPositionAndType {
 	switch stageNum {
-	case 0:
+	case constants.Stage0:
 		return &[]structure.ItemPositionAndType{}
-	case 2:
+	case constants.Stage2:
 		return &[]structure.ItemPositionAndType{
 			{RoomPosition: structure.Position{Row: 0, Col: 4}, ItemType: constants.Hammer},
 			{RoomPosition: structure.Position{Row: 0, Col: 4}, ItemType: constants.Box},

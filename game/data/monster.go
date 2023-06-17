@@ -5,11 +5,11 @@ import (
 	"goproject/structure"
 )
 
-func GetMonsterWithPositionData(stageNum int) []structure.MonsterWithPosition {
+func GetMonsterWithPositionData(stageNum constants.StageNum) []structure.MonsterWithPosition {
 	switch stageNum {
-	case 0:
+	case constants.Stage0:
 		return []structure.MonsterWithPosition{}
-	case 2:
+	case constants.Stage2:
 		return []structure.MonsterWithPosition{
 			{
 				RoomPosition: structure.Position{Row: 3, Col: 4},

@@ -171,6 +171,14 @@ var ObjectTypeStringMap = map[ObjectType]string{
 	DungeonExit:     "던전 출구",
 }
 
+type StageNum int
+
+const (
+	Stage0 StageNum = iota
+	Stage1
+	Stage2
+)
+
 const LineDivider = "=================================================="
 
 const SucceedOpeningDoor = "문을 열었습니다."

@@ -5,36 +5,36 @@ import (
 	"goproject/structure"
 )
 
-func GetDungeonRowLen(stageNum int) int {
+func GetDungeonRowLen(stageNum constants.StageNum) int {
 	switch stageNum {
-	case 0:
+	case constants.Stage0:
 		return 2
-	case 2:
+	case constants.Stage2:
 		return 10
 	default:
 		panic("Invalid Dungeon Level")
 	}
 }
 
-func GetDungeonColLen(stageNum int) int {
+func GetDungeonColLen(stageNum constants.StageNum) int {
 	switch stageNum {
-	case 0:
+	case constants.Stage0:
 		return 2
-	case 2:
+	case constants.Stage2:
 		return 10
 	default:
 		panic("Invalid Dungeon Level")
 	}
 }
 
-func GetDungeonRoomPositions(stageNum int) *[]structure.Position {
+func GetDungeonRoomPositions(stageNum constants.StageNum) *[]structure.Position {
 	switch stageNum {
-	case 0:
+	case constants.Stage0:
 		return &[]structure.Position{
 			{Row: 0, Col: 0}, {Row: 0, Col: 1},
 			{Row: 1, Col: 0}, {Row: 1, Col: 1},
 		}
-	case 2:
+	case constants.Stage2:
 		return &[]structure.Position{
 			{Row: 0, Col: 4},
 			{Row: 1, Col: 4},
@@ -52,13 +52,13 @@ func GetDungeonRoomPositions(stageNum int) *[]structure.Position {
 	}
 }
 
-func GetDungeonDoorPositionAndType(stageNum int) *[]structure.DoorPositionAndType {
+func GetDungeonDoorPositionAndType(stageNum constants.StageNum) *[]structure.DoorPositionAndType {
 	switch stageNum {
-	case 0:
+	case constants.Stage0:
 		return &[]structure.DoorPositionAndType{
 			{RoomPosition: structure.Position{Row: 0, Col: 0}, Direction: constants.East, DoorType: constants.WoodDoor},
 		}
-	case 2:
+	case constants.Stage2:
 		return &[]structure.DoorPositionAndType{
 			{RoomPosition: structure.Position{Row: 2, Col: 1}, Direction: constants.West, DoorType: constants.LockedDoor},
 			{RoomPosition: structure.Position{Row: 3, Col: 4}, Direction: constants.West, DoorType: constants.WoodDoor},
@@ -72,22 +72,22 @@ func GetDungeonDoorPositionAndType(stageNum int) *[]structure.DoorPositionAndTyp
 	}
 }
 
-func GetDungeonStartPosition(stageNum int) structure.Position {
+func GetDungeonStartPosition(stageNum constants.StageNum) structure.Position {
 	switch stageNum {
-	case 0:
+	case constants.Stage0:
 		return structure.Position{Row: 1, Col: 1}
-	case 2:
+	case constants.Stage2:
 		return structure.Position{Row: 9, Col: 9}
 	default:
 		panic("Invalid Dungeon Level")
 	}
 }
 
-func GetDungeonExitPosition(stageNum int) structure.Position {
+func GetDungeonExitPosition(stageNum constants.StageNum) structure.Position {
 	switch stageNum {
-	case 0:
+	case constants.Stage0:
 		return structure.Position{Row: 0, Col: 0}
-	case 2:
+	case constants.Stage2:
 		return structure.Position{Row: 2, Col: 1}
 	default:
 		panic("Invalid Dungeon Level")
