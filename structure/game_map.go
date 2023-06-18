@@ -6,7 +6,7 @@ type GameMap struct {
 	Grid [][]*Area
 }
 
-func (gameMap *GameMap) connectAdjacentArea() {
+func (gameMap *GameMap) ConnectAdjacentArea() {
 	grid := gameMap.Grid
 	rowLen, colLen := len(grid), len(grid[0])
 

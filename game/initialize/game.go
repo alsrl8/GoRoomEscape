@@ -37,8 +37,9 @@ func initGameMap(rowLen, colLen int) *structure.GameMap {
 		}
 		grid = append(grid, row)
 	}
-	connectAdjacentArea(grid)
-	return &structure.GameMap{Grid: grid}
+	gameMap := structure.GameMap{Grid: grid}
+	gameMap.ConnectAdjacentArea()
+	return &gameMap
 }
 
 func connectAdjacentArea(grid [][]*structure.Area) {
