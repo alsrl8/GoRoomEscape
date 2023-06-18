@@ -42,24 +42,6 @@ func initGameMap(rowLen, colLen int) *structure.GameMap {
 	return &gameMap
 }
 
-func connectAdjacentArea(grid [][]*structure.Area) {
-	rowLen, colLen := len(grid), len(grid[0])
-
-	for r := 0; r < rowLen; r++ {
-		for c := 0; c < colLen; c++ {
-			location := grid[r][c]
-			for _, d := range constants.DirectionList {
-				nr, nc := r+constants.DRow[d], c+constants.DCol[d]
-				if nr < 0 || rowLen <= nr || nc < 0 || colLen <= nc {
-					continue
-				}
-				near := grid[nr][nc]
-				location.Connect(near, d)
-			}
-		}
-	}
-}
-
 func initStatus(startLocation structure.Location) *structure.Status {
 	status := structure.Status{
 		Location:  startLocation,
