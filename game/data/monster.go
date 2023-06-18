@@ -12,7 +12,7 @@ func GetMonsterWithPositionData(stageNum constants.StageNum) []structure.Monster
 	case constants.Stage2:
 		return []structure.MonsterWithPosition{
 			{
-				RoomPosition: structure.Position{Row: 3, Col: 4},
+				Position: structure.Position{Row: 3, Col: 4},
 				Monster: structure.Monster{
 					MonsterType: constants.Squirrel,
 					Attribute: &structure.Attribute{
@@ -26,7 +26,7 @@ func GetMonsterWithPositionData(stageNum constants.StageNum) []structure.Monster
 				},
 			},
 			{
-				RoomPosition: structure.Position{Row: 4, Col: 6},
+				Position: structure.Position{Row: 4, Col: 6},
 				Monster: structure.Monster{
 					MonsterType: constants.Squirrel,
 					Attribute: &structure.Attribute{
@@ -40,7 +40,7 @@ func GetMonsterWithPositionData(stageNum constants.StageNum) []structure.Monster
 				},
 			},
 			{
-				RoomPosition: structure.Position{Row: 6, Col: 1},
+				Position: structure.Position{Row: 6, Col: 1},
 				Monster: structure.Monster{
 					MonsterType: constants.Deer,
 					Attribute: &structure.Attribute{
@@ -54,7 +54,7 @@ func GetMonsterWithPositionData(stageNum constants.StageNum) []structure.Monster
 				},
 			},
 			{
-				RoomPosition: structure.Position{Row: 6, Col: 4},
+				Position: structure.Position{Row: 6, Col: 4},
 				Monster: structure.Monster{
 					MonsterType: constants.Rabbit,
 					Attribute: &structure.Attribute{

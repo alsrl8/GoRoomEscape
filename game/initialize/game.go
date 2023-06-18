@@ -7,14 +7,19 @@ import (
 )
 
 func InitGame() *structure.Status {
-	rowLen := 2
-	colLen := 2
+	rowLen := data.GetMapRowLen()
+	colLen := data.GetMapColLen()
 	area := initGameMap(rowLen, colLen)
-	area[0][0].Object[constants.DungeonEntrance] += 1
-	area[0][0].Npc[constants.Merchant] += 1
-	area[0][1].Npc[constants.GodOfDeath] += 1
-	area[1][0].Npc[constants.Blacksmith] += 1
-	var startLocation structure.Location = area[0][0]
+
+	startPosition := data.GetMapStartPosition()
+	var startLocation structure.Location = area[startPosition.Row][startPosition.Col]
+
+	objectPositionAndType := data.GetMapObjectPositionAndType()
+	putObjectOnArea(area, objectPositionAndType)
+
+	npcPositionAndType := data.GetMapNpcPositionAndType()
+	putNpcOnArea(area, npcPositionAndType)
+
 	return initStatus(startLocation)
 }
 
@@ -51,6 +56,18 @@ func connectAdjacentArea(grid [][]*structure.Area) {
 				location.Connect(near, d)
 			}
 		}
+	}
+}
+
+func putObjectOnArea(grid [][]*structure.Area, objectPositionAndType *[]structure.ObjectPositionAndType) {
+	for _, object := range *objectPositionAndType {
+		grid[object.Position.Row][object.Position.Col].Object[object.ObjectType] += 1
+	}
+}
+
+func putNpcOnArea(grid [][]*structure.Area, npcPositionAndType *[]structure.NpcPositionAndType) {
+	for _, npc := range *npcPositionAndType {
+		grid[npc.Position.Row][npc.Position.Col].Npc[npc.NpcType] += 1
 	}
 }
 

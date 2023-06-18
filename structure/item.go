@@ -7,12 +7,12 @@ import (
 )
 
 type Item struct {
-	ItemType constants.ItemType
+	constants.ItemType
 }
 
 type ItemPositionAndType struct {
-	RoomPosition Position
-	ItemType     constants.ItemType
+	Position
+	constants.ItemType
 }
 
 type DropPercentage struct {
@@ -21,8 +21,8 @@ type DropPercentage struct {
 }
 
 type DropItem struct {
-	ItemType       constants.ItemType
-	DropPercentage DropPercentage
+	constants.ItemType
+	DropPercentage
 }
 
 type DropItemSlice []DropItem

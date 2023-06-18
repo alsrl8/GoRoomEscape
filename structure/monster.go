@@ -12,7 +12,7 @@ type Monster struct {
 }
 
 type MonsterWithPosition struct {
-	RoomPosition Position
+	Position
 	Monster
 }
 

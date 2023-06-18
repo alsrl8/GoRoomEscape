@@ -34,15 +34,15 @@ func GetItemPositionAndType(stageNum constants.StageNum) *[]structure.ItemPositi
 		return &[]structure.ItemPositionAndType{}
 	case constants.Stage2:
 		return &[]structure.ItemPositionAndType{
-			{RoomPosition: structure.Position{Row: 0, Col: 4}, ItemType: constants.Hammer},
-			{RoomPosition: structure.Position{Row: 0, Col: 4}, ItemType: constants.Box},
-			{RoomPosition: structure.Position{Row: 3, Col: 3}, ItemType: constants.Box},
-			{RoomPosition: structure.Position{Row: 3, Col: 6}, ItemType: constants.HealPotion},
-			{RoomPosition: structure.Position{Row: 3, Col: 9}, ItemType: constants.Box},
-			{RoomPosition: structure.Position{Row: 6, Col: 4}, ItemType: constants.Hammer},
-			{RoomPosition: structure.Position{Row: 7, Col: 6}, ItemType: constants.Hammer},
-			{RoomPosition: structure.Position{Row: 7, Col: 9}, ItemType: constants.WoodSword},
-			{RoomPosition: structure.Position{Row: 9, Col: 6}, ItemType: constants.Box},
+			{Position: structure.Position{Row: 0, Col: 4}, ItemType: constants.Hammer},
+			{Position: structure.Position{Row: 0, Col: 4}, ItemType: constants.Box},
+			{Position: structure.Position{Row: 3, Col: 3}, ItemType: constants.Box},
+			{Position: structure.Position{Row: 3, Col: 6}, ItemType: constants.HealPotion},
+			{Position: structure.Position{Row: 3, Col: 9}, ItemType: constants.Box},
+			{Position: structure.Position{Row: 6, Col: 4}, ItemType: constants.Hammer},
+			{Position: structure.Position{Row: 7, Col: 6}, ItemType: constants.Hammer},
+			{Position: structure.Position{Row: 7, Col: 9}, ItemType: constants.WoodSword},
+			{Position: structure.Position{Row: 9, Col: 6}, ItemType: constants.Box},
 		}
 	default:
 		panic("Invalid Dungeon Level")

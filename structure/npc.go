@@ -7,3 +7,8 @@ import (
 type Npc struct {
 	constants.NpcType
 }
+
+type NpcPositionAndType struct {
+	Npc
+	Position
+}

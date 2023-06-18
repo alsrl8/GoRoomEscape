@@ -27,7 +27,7 @@ func GetDungeonColLen(stageNum constants.StageNum) int {
 	}
 }
 
-func GetDungeonRoomPositions(stageNum constants.StageNum) *[]structure.Position {
+func GetDungeonRoomPosition(stageNum constants.StageNum) *[]structure.Position {
 	switch stageNum {
 	case constants.Stage0:
 		return &[]structure.Position{
@@ -56,16 +56,16 @@ func GetDungeonDoorPositionAndType(stageNum constants.StageNum) *[]structure.Doo
 	switch stageNum {
 	case constants.Stage0:
 		return &[]structure.DoorPositionAndType{
-			{RoomPosition: structure.Position{Row: 0, Col: 0}, Direction: constants.East, DoorType: constants.WoodDoor},
+			{Position: structure.Position{Row: 0, Col: 0}, Direction: constants.East, DoorType: constants.WoodDoor},
 		}
 	case constants.Stage2:
 		return &[]structure.DoorPositionAndType{
-			{RoomPosition: structure.Position{Row: 2, Col: 1}, Direction: constants.West, DoorType: constants.LockedDoor},
-			{RoomPosition: structure.Position{Row: 3, Col: 4}, Direction: constants.West, DoorType: constants.WoodDoor},
-			{RoomPosition: structure.Position{Row: 3, Col: 8}, Direction: constants.East, DoorType: constants.GlassDoor},
-			{RoomPosition: structure.Position{Row: 6, Col: 2}, Direction: constants.West, DoorType: constants.GlassDoor},
-			{RoomPosition: structure.Position{Row: 6, Col: 4}, Direction: constants.West, DoorType: constants.GlassDoor},
-			{RoomPosition: structure.Position{Row: 8, Col: 6}, Direction: constants.South, DoorType: constants.WoodDoor},
+			{Position: structure.Position{Row: 2, Col: 1}, Direction: constants.West, DoorType: constants.LockedDoor},
+			{Position: structure.Position{Row: 3, Col: 4}, Direction: constants.West, DoorType: constants.WoodDoor},
+			{Position: structure.Position{Row: 3, Col: 8}, Direction: constants.East, DoorType: constants.GlassDoor},
+			{Position: structure.Position{Row: 6, Col: 2}, Direction: constants.West, DoorType: constants.GlassDoor},
+			{Position: structure.Position{Row: 6, Col: 4}, Direction: constants.West, DoorType: constants.GlassDoor},
+			{Position: structure.Position{Row: 8, Col: 6}, Direction: constants.South, DoorType: constants.WoodDoor},
 		}
 	default:
 		panic("Invalid Dungeon Level")

@@ -16,14 +16,14 @@ type Room struct {
 }
 
 type Door struct {
-	Closed   bool
-	DoorType constants.DoorType
+	Closed bool
+	constants.DoorType
 }
 
 type DoorPositionAndType struct {
-	RoomPosition Position
-	Direction    constants.Direction
-	DoorType     constants.DoorType
+	Position
+	constants.Direction
+	constants.DoorType
 }
 
 func (room *Room) GetLocationType() constants.LocationType {

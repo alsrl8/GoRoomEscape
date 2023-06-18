@@ -31,13 +31,13 @@ func getNextRoom(grid [][]*structure.Room, position structure.Position, directio
 	return room.Directions[direction].(*structure.Room)
 }
 
-func createEmptyRooms(grid [][]*structure.Room, roomPositions *[]structure.Position) {
+func createEmptyRoom(grid [][]*structure.Room, roomPositions *[]structure.Position) {
 	for _, pos := range *roomPositions {
 		grid[pos.Row][pos.Col] = generateRoom()
 	}
 }
 
-func connectAdjacentRooms(grid [][]*structure.Room) {
+func connectAdjacentRoom(grid [][]*structure.Room) {
 	rowLen, colLen := len(grid), len(grid[0])
 
 	for row := 0; row < rowLen; row++ {
@@ -62,12 +62,12 @@ func connectAdjacentRooms(grid [][]*structure.Room) {
 	}
 }
 
-func buildDoorsBetweenRooms(grid [][]*structure.Room, doorPositionAndType *[]structure.DoorPositionAndType) {
+func buildDoorBetweenRoom(grid [][]*structure.Room, doorPositionAndType *[]structure.DoorPositionAndType) {
 	for _, door := range *doorPositionAndType {
-		room := grid[door.RoomPosition.Row][door.RoomPosition.Col]
+		room := grid[door.Position.Row][door.Position.Col]
 		room.Doors[door.Direction] = &structure.Door{Closed: true, DoorType: door.DoorType}
 
-		oppositeRoom := getNextRoom(grid, door.RoomPosition, door.Direction)
+		oppositeRoom := getNextRoom(grid, door.Position, door.Direction)
 		if oppositeRoom == nil {
 			continue
 		}
@@ -82,15 +82,15 @@ func addDungeonExit(currentLocation structure.Location, dungeon [][]*structure.R
 	room.Directions[constants.Exit] = currentLocation
 }
 
-func putItemsOnRooms(grid [][]*structure.Room, itemPositionAndType *[]structure.ItemPositionAndType) {
+func putItemOnRoom(grid [][]*structure.Room, itemPositionAndType *[]structure.ItemPositionAndType) {
 	for _, item := range *itemPositionAndType {
-		grid[item.RoomPosition.Row][item.RoomPosition.Col].Items[item.ItemType] += 1
+		grid[item.Position.Row][item.Position.Col].Items[item.ItemType] += 1
 	}
 }
 
-func putMonstersOnRooms(grid [][]*structure.Room, monsterWithPosition *[]structure.MonsterWithPosition) {
+func putMonsterOnRoom(grid [][]*structure.Room, monsterWithPosition *[]structure.MonsterWithPosition) {
 	for _, monsterInfo := range *monsterWithPosition {
-		grid[monsterInfo.RoomPosition.Row][monsterInfo.RoomPosition.Col].Monster = &structure.Monster{
+		grid[monsterInfo.Position.Row][monsterInfo.Position.Col].Monster = &structure.Monster{
 			MonsterType: monsterInfo.Monster.MonsterType,
 			Attribute:   monsterInfo.Monster.Attribute,
 			DropItems:   monsterInfo.Monster.DropItems,
@@ -101,23 +101,23 @@ func putMonstersOnRooms(grid [][]*structure.Room, monsterWithPosition *[]structu
 func GenerateDungeon(status *structure.Status, stageNum constants.StageNum) *structure.Room {
 	rowLen := data.GetDungeonRowLen(stageNum)
 	colLen := data.GetDungeonColLen(stageNum)
-	roomPositions := data.GetDungeonRoomPositions(stageNum)
+	roomPositions := data.GetDungeonRoomPosition(stageNum)
 	dungeon := initDungeonMap(rowLen, colLen)
-	createEmptyRooms(dungeon, roomPositions)
-	connectAdjacentRooms(dungeon)
+	createEmptyRoom(dungeon, roomPositions)
+	connectAdjacentRoom(dungeon)
 
 	startPosition := data.GetDungeonStartPosition(stageNum)
 	endPosition := data.GetDungeonExitPosition(stageNum)
 	addDungeonExit(status.Location, dungeon, endPosition)
 
 	doorPositionAndType := data.GetDungeonDoorPositionAndType(stageNum)
-	buildDoorsBetweenRooms(dungeon, doorPositionAndType)
+	buildDoorBetweenRoom(dungeon, doorPositionAndType)
 
 	monsterWithPosition := data.GetMonsterWithPositionData(stageNum)
-	putMonstersOnRooms(dungeon, &monsterWithPosition)
+	putMonsterOnRoom(dungeon, &monsterWithPosition)
 
 	itemPositionAndType := data.GetItemPositionAndType(stageNum)
-	putItemsOnRooms(dungeon, itemPositionAndType)
+	putItemOnRoom(dungeon, itemPositionAndType)
 
 	return dungeon[startPosition.Row][startPosition.Col]
 }
