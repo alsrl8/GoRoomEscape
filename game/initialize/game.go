@@ -9,21 +9,21 @@ import (
 func InitGame() *structure.Status {
 	rowLen := data.GetMapRowLen()
 	colLen := data.GetMapColLen()
-	area := initGameMap(rowLen, colLen)
-
-	startPosition := data.GetMapStartPosition()
-	var startLocation structure.Location = area[startPosition.Row][startPosition.Col]
+	gameMap := initGameMap(rowLen, colLen)
 
 	objectPositionAndType := data.GetMapObjectPositionAndType()
-	putObjectOnArea(area, objectPositionAndType)
+	gameMap.PutObject(objectPositionAndType)
 
 	npcPositionAndType := data.GetMapNpcPositionAndType()
-	putNpcOnArea(area, npcPositionAndType)
+	gameMap.PutNpc(npcPositionAndType)
+
+	startPosition := data.GetMapStartPosition()
+	var startLocation structure.Location = gameMap.Grid[startPosition.Row][startPosition.Col]
 
 	return initStatus(startLocation)
 }
 
-func initGameMap(rowLen, colLen int) [][]*structure.Area {
+func initGameMap(rowLen, colLen int) *structure.GameMap {
 	var grid [][]*structure.Area
 	for r := 0; r < rowLen; r++ {
 		row := make([]*structure.Area, colLen)
@@ -38,7 +38,7 @@ func initGameMap(rowLen, colLen int) [][]*structure.Area {
 		grid = append(grid, row)
 	}
 	connectAdjacentArea(grid)
-	return grid
+	return &structure.GameMap{Grid: grid}
 }
 
 func connectAdjacentArea(grid [][]*structure.Area) {
@@ -56,18 +56,6 @@ func connectAdjacentArea(grid [][]*structure.Area) {
 				location.Connect(near, d)
 			}
 		}
-	}
-}
-
-func putObjectOnArea(grid [][]*structure.Area, objectPositionAndType *[]structure.ObjectPositionAndType) {
-	for _, object := range *objectPositionAndType {
-		grid[object.Position.Row][object.Position.Col].Object[object.ObjectType] += 1
-	}
-}
-
-func putNpcOnArea(grid [][]*structure.Area, npcPositionAndType *[]structure.NpcPositionAndType) {
-	for _, npc := range *npcPositionAndType {
-		grid[npc.Position.Row][npc.Position.Col].Npc[npc.NpcType] += 1
 	}
 }
 
