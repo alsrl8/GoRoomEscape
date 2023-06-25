@@ -72,10 +72,18 @@ func SetUserInputAsUserName(status *structure.Status) {
 
 func RunTerminal(status *structure.Status) {
 	clearTerminal()
+	var inputChan chan string
+	inputChan = make(chan string, 1)
+
 	for {
 		command.PrintLine()
-		input := getInput()
+		go func() {
+			inputChan <- getInput()
+		}()
+
+		input := <-inputChan
 		clearTerminal()
+		fmt.Println("당신의 입력 >>>", input)
 
 		var ret structure.CommandResult
 		tokenLen := len(strings.Split(input, " "))
@@ -189,7 +197,7 @@ func handleDiscardItemCommand(status *structure.Status, tokens []string) {
 
 func handleSingleTokenCommand(input string, status *structure.Status) (ret structure.CommandResult) {
 	switch input {
-	case "Q", "q":
+	case "Q", "q", "quit":
 		ret.QuitLoopFlag = true
 	case "E", "e", "동", "동쪽":
 		command.Move(status, constants.East)
@@ -211,8 +219,12 @@ func handleSingleTokenCommand(input string, status *structure.Status) (ret struc
 		printTime()
 	case "입장":
 		command.EnterDungeon(status)
+		command.PrintLine()
+		fmt.Println("던전에 입장했습니다.")
 	case "퇴장":
 		command.ExitDungeon(status)
+		command.PrintLine()
+		fmt.Println("던전에서 퇴장했습니다.")
 	}
 	return
 }
