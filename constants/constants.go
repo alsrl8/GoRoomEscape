@@ -179,6 +179,8 @@ const (
 	Stage2
 )
 
+const UnsupportedOperatingSystem = "Unsupported operating system"
+
 const LineDivider = "=================================================="
 
 const SucceedOpeningDoor = "문을 열었습니다."

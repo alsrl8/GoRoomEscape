@@ -8,27 +8,44 @@ import (
 	"goproject/structure"
 	"os"
 	"os/exec"
+	"runtime"
 	"strconv"
 	"strings"
 	"time"
 )
 
-// Terminal 내용을 Clear 한다.(Windows)
 func clearTerminal() {
-	cmd := exec.Command("cmd", "/c", "cls")
-	cmd.Stdout = os.Stdout
-	if err := cmd.Run(); err != nil {
-		return
+	switch runtime.GOOS {
+	case "windows":
+		cmd := exec.Command("cmd", "/c", "cls")
+		cmd.Stdout = os.Stdout
+		if err := cmd.Run(); err != nil {
+			return
+		}
+	case "linux", "darwin":
+		cmd := exec.Command("clear")
+		cmd.Stdout = os.Stdout
+		err := cmd.Run()
+		if err != nil {
+			return
+		}
+	default:
+		fmt.Println(constants.UnsupportedOperatingSystem)
 	}
 }
 
-// Terminal 사용자 입력을 받는다.(Windows)
-func getInput() string {
+func getInput() (input string) {
 	fmt.Printf("입력 >>> ")
 	reader := bufio.NewReader(os.Stdin)
-	input, _ := reader.ReadString('\r')
-	input = strings.TrimSuffix(input, "\r")
-	return input
+	switch runtime.GOOS {
+	case "windows":
+		input, _ = reader.ReadString('\r')
+		input = strings.TrimSuffix(input, "\r")
+	case "linux", "darwin":
+		input, _ = reader.ReadString('\n')
+		input = strings.TrimSuffix(input, "\n")
+	}
+	return
 }
 
 func printTime() {
