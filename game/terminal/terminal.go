@@ -44,6 +44,8 @@ func getInput() (input string) {
 	case "linux", "darwin":
 		input, _ = reader.ReadString('\n')
 		input = strings.TrimSuffix(input, "\n")
+	default:
+		fmt.Println(constants.UnsupportedOperatingSystem)
 	}
 	return
 }
